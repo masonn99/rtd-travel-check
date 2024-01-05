@@ -1,0 +1,20 @@
+[
+  {
+    "country": "Belgium",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Croatia",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": "Available at major airports"
+  },
+  {
+    "country": "Germany",
+    "visaRequirement": "Visa not required",
+    "duration": "180 days",
+    "notes": "Must hold return ticket"
+  }
+]
