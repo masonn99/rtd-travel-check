@@ -9,12 +9,42 @@
     "country": "Croatia",
     "visaRequirement": "Visa not required",
     "duration": "90 days",
-    "notes": "Available at major airports"
+    "notes": ""
+  },
+  {
+    "country": "Cyprus",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
   },
   {
     "country": "Germany",
     "visaRequirement": "Visa not required",
-    "duration": "180 days",
-    "notes": "Must hold return ticket"
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Hungary",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Netherlands",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Slovakia",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Slovenia",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
   }
 ]
