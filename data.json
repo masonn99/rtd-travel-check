@@ -1,7 +1,7 @@
 [
   {
-    "country": "Argentina",
-    "visaRequirement": "Visa required",
+    "country": "Australia",
+    "visaRequirement": "E-Visa",
     "duration": "90 days",
     "notes": ""
   },
@@ -88,5 +88,12 @@
     "visaRequirement": "Visa not required",
     "duration": "90 days",
     "notes": ""
+  },
+  {
+    "country": "United Kingdom",
+    "visaRequirement": "Visa required",
+    "duration": "90 days",
+    "notes": "You can apply online and get a biometrics appointment at any VFS/USCIS centers"
+
   }
 ]
