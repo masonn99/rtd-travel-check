@@ -58,5 +58,35 @@
     "visaRequirement": "Visa required",
     "duration": "15 days",
     "notes": "Must apply in person at Japan Embassy/Consulates in USA"
+  },
+  {
+    "country": "Turkey",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Thailand",
+    "visaRequirement": "E-visa",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "United Arab Emirates",
+    "visaRequirement": "Does not recognize US Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Singapore",
+    "visaRequirement": "Does not recognize US Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Montenegro",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
   }
 ]
