@@ -38,11 +38,26 @@ function SearchBar() {
           <i className="fa fa-search"></i>
         </button>
       </div>
-      <div>
-        {countries.map((country, index) => (
-          <div key={index}>{country.country}</div>
-        ))}
-      </div>
+      {countries.map((country, index) => (
+        <div
+          key={index}
+          className={`countryBox ${
+            country.visaRequirement === "Visa not required"
+              ? "visaNotRequired"
+              : ""
+          }`}
+        >
+          <h2>{country.country}</h2>
+          <p>Visa Requirement: {country.visaRequirement}</p>
+          <p>Maximum Stay: {country.duration}</p>
+          <p>Passport must be validit at least: </p>
+          <p>Notes: {country.notes}</p>
+          <p>
+            Source: <a href="#">link</a>
+          </p>{" "}
+          {/* Replace # with the actual source URL */}
+        </div>
+      ))}
     </div>
   );
 }
