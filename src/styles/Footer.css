@@ -1,0 +1,9 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background-color: rgb(255, 255, 255); /* Or any color that matches your design */
+  z-index: 2; /* This will ensure the footer is always on top */
+}
