@@ -1,5 +1,11 @@
 [
   {
+    "country": "Argentina",
+    "visaRequirement": "Visa required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
     "country": "Belgium",
     "visaRequirement": "Visa not required",
     "duration": "90 days",
