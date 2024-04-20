@@ -52,5 +52,11 @@
     "visaRequirement": "Visa not required",
     "duration": "90 days",
     "notes": ""
+  },
+  {
+    "country": "Japan",
+    "visaRequirement": "Visa required",
+    "duration": "15 days",
+    "notes": "Must apply in person at Japan Embassy/Consulates in USA"
   }
 ]

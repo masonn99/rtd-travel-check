@@ -1,0 +1,7 @@
+.fixed-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  background-color: white; /* Or any color that matches your design */
+}

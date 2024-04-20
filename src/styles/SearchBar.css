@@ -1,8 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 body{
-  background: #ffffff;
-  font-family: 'Open Sans', sans-serif;
+  background: #000000;
+  font-family:'Times New Roman', Times, serif;
 }
 
 .search {
@@ -60,6 +60,25 @@ body{
   z-index: 1;
 }
 
+.countryBox h2,
+.countryBox p {
+  margin: 0.5em 0;
+}
+
+.countryBox h2 {
+  font-size: 18px;
+}
+
+.countryBox p {
+  font-size: 16px;
+}
+
+
 .countryBox.visaNotRequired {
   background-color: #f0fff0; /* Light green background */
+}
+
+.scrollable-countries {
+  max-height: calc(100vh - 120px); /* Subtract the total height of your header and search bar */
+  overflow-y: auto;
 }
