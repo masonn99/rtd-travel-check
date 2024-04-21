@@ -1,7 +1,7 @@
 [
   {
-    "country": "Argentina",
-    "visaRequirement": "Visa required",
+    "country": "Australia",
+    "visaRequirement": "E-Visa",
     "duration": "90 days",
     "notes": ""
   },
@@ -90,6 +90,7 @@
     "notes": ""
   },
   {
+
     "country": "Canada",
     "visaRequirement": "E-visa",
     "duration": "N/A",
@@ -100,5 +101,11 @@
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
+
+    "country": "United Kingdom",
+    "visaRequirement": "Visa required",
+    "duration": "90 days",
+    "notes": "You can apply online and get a biometrics appointment at any VFS/USCIS centers"
+
   }
 ]
