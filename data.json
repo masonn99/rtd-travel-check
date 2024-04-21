@@ -73,13 +73,13 @@
   },
   {
     "country": "United Arab Emirates",
-    "visaRequirement": "Does not recognize US Refugee Travel Docuemnt",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
     "duration": "N/A",
     "notes": ""
   },
   {
     "country": "Singapore",
-    "visaRequirement": "Does not recognize US Refugee Travel Docuemnt",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
     "duration": "N/A",
     "notes": ""
   },
@@ -90,6 +90,20 @@
     "notes": ""
   },
   {
+
+    "country": "Canada",
+    "visaRequirement": "E-visa",
+    "duration": "N/A",
+    "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
+  },
+  {
+    "country": "Mexico",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
+  },
+  {
+
     "country": "United Kingdom",
     "visaRequirement": "Visa required",
     "duration": "90 days",
