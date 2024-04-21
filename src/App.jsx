@@ -7,12 +7,12 @@ import { Analytics } from "@vercel/analytics/react";
 function App() {
   return (
     <div>
+      <Analytics />
       <div className="fixed-header">
         <Header />
         <SearchBar />
       </div>
-      <Footer /> 
-      
+      <Footer />
     </div>
   );
 }
