@@ -10,7 +10,7 @@ function App() {
     <div className="min-h-screen bg-zinc-900 text-zinc-100">
       <Analytics />
       <Header />
-      <main className="pt-20 pb-16"> {/* Add padding to account for fixed header and footer */}
+      <main className="pt-1 pb-16"> {/* Add padding to account for fixed header and footer */}
         <SearchBar />
       </main>
       <Footer />
