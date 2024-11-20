@@ -1,13 +1,23 @@
-import React from 'react';
+import { Globe } from 'lucide-react'
 
-import "../styles/Header.css";
-
-function Header() {
+const Header = () => {
   return (
-    <header>
-      <h1>Visa Requirements for Holders of I-131 (Refugee Travel Document)</h1>
-    </header>
+    <div className="w-full bg-zinc-900 border-b border-zinc-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Globe className="h-6 w-6 text-zinc-100" />
+            <h1 className="text-xl font-semibold text-zinc-100">
+              Visa Requirements 🛂
+            </h1>
+          </div>
+          <div className="text-sm text-zinc-400">
+            for I-131 (Refugee Travel Document)
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Header;
