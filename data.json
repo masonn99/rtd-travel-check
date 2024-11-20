@@ -109,5 +109,81 @@
     "duration": "90 days",
     "notes": "You can apply online and get a biometrics appointment at any VFS/USCIS centers"
 
+  },
+  {
+
+    "country": "China",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Must apply in person at any Chinese Embassy/Consulates in the US"
+
+  },
+  {
+
+    "country": "Hong Kong",
+    "visaRequirement": "E-Visa",
+    "duration": "N/A",
+    "notes": "E-Visa can be applied through Hong Kong Immigration Webiste or in person at Chinese Embassy or Consulate"
+
+  },
+  {
+    "country": "Philippines",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Malaysia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Taiwan",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "South Korea",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Macau",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "New Zealand",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Cambodia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Laos",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Vietnam",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Indonesia",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
   }
 ]
