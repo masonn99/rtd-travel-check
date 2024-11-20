@@ -197,5 +197,12 @@
     "visaRequirement": "Visa not required",
     "duration": "90 days",
     "notes": ""
-  }
+  },
+  {
+  "country": "Italy",
+  "visaRequirement": "Visa not required",
+  "duration": "90 days",
+  "notes": ""
+}
+  
 ]
