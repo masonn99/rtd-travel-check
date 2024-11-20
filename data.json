@@ -60,7 +60,7 @@
     "notes": "Must apply in person at Japan Embassy/Consulates in USA"
   },
   {
-    "country": "Turkey",
+    "country": "Türkiye",
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
@@ -104,7 +104,7 @@
   },
   {
 
-    "country": "United Kingdom",
+    "country": "United Kingdom of Great Britain and Northern Ireland",
     "visaRequirement": "Visa required",
     "duration": "90 days",
     "notes": "You can apply online and get a biometrics appointment at any VFS/USCIS centers"
@@ -123,7 +123,7 @@
     "country": "Hong Kong",
     "visaRequirement": "E-Visa",
     "duration": "N/A",
-    "notes": "E-Visa can be applied through Hong Kong Immigration Webiste or in person at Chinese Embassy or Consulate"
+    "notes": "E-Visa can be applied through Hong Kong Immigration Website or in person at Chinese Embassy or Consulate"
 
   },
   {
@@ -139,19 +139,19 @@
     "notes": ""
   },
   {
-    "country": "Taiwan",
+    "country": "Taiwan, Province of China",
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
   },
   {
-    "country": "South Korea",
+    "country": "Korea, Republic of",
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
   },
   {
-    "country": "Macau",
+    "country": "Macao",
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
@@ -169,13 +169,13 @@
     "notes": ""
   },
   {
-    "country": "Laos",
+    "country": "Lao People's Democratic Republic",
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
   },
   {
-    "country": "Vietnam",
+    "country": "Viet Nam",
     "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
     "duration": "N/A",
     "notes": ""
@@ -184,6 +184,18 @@
     "country": "Indonesia",
     "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
     "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "El Salvador",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Guatemala",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
     "notes": ""
   }
 ]
