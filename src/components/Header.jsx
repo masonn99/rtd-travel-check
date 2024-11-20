@@ -1,22 +1,25 @@
-import { Globe } from 'lucide-react'
+import { ExternalLink } from 'lucide-react';
 
 const Header = () => {
   return (
-    <div className="w-full bg-zinc-900 border-b border-zinc-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <header className="w-full bg-zinc-900 border-b border-zinc-800 py-4">
+      <div className="max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Globe className="h-6 w-6 text-zinc-100" />
-            <h1 className="text-xl font-semibold text-zinc-100">
-              Visa Requirements 🛂
-            </h1>
-          </div>
-          <div className="text-sm text-zinc-400">
-            for I-131 (Refugee Travel Document)
-          </div>
+          <h1 className="text-xl font-medium text-zinc-100">
+            Visa Requirements
+          </h1>
+          <a
+            href="https://www.cbp.gov/sites/default/files/assets/documents/2019-Nov/New%20USCIS%20Travel%20Document%2020191105_0.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-300 transition-colors"
+          >
+            for I-571 (Refugee Travel Document)
+            <ExternalLink className="h-4 w-4" />
+          </a>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
