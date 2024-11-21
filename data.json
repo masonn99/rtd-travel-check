@@ -152,7 +152,7 @@
   },
   {
     "country": "Macao",
-    "visaRequirement": "Visa required",
+    "visaRequirement": "Visa not required",
     "duration": "N/A",
     "notes": ""
   },
@@ -278,9 +278,9 @@
 },
 {
   "country": "Georgia",
-  "visaRequirement": "Visa required",
+  "visaRequirement": "Visa not required",
   "duration": "N/A",
-  "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
+  "notes": ""
 },
 {
   "country": "Estonia",
