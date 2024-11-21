@@ -13,7 +13,7 @@ function SearchBar() {
     { name: 'Visa Not Required', color: 'emerald' },
     { name: 'E-Visa', color: 'green' },
     { name: 'Visa Required', color: 'yellow' },
-    { name: 'Does Not Recognize RTD', color: 'red' }
+    { name: 'Does Not Recognize Refugee Travel Document', color: 'red' }
   ];
 
   useEffect(() => {
