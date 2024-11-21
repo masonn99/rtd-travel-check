@@ -241,7 +241,7 @@
   "notes": ""
 },
 {
-  "country": "Seweden",
+  "country": "Sweden",
   "visaRequirement": "Visa required",
   "duration": "N/A",
   "notes": ""
@@ -272,6 +272,36 @@
 },
 {
   "country": "Austria",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Georgia",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
+},
+{
+  "country": "Estonia",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Latvia",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Lithuania",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Czechia",
   "visaRequirement": "Visa required",
   "duration": "N/A",
   "notes": ""
