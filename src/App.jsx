@@ -7,13 +7,13 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen bg-zinc-900 text-zinc-100">
       <Analytics />
       <SpeedInsights />
-      <div className="fixed-header">
-        <Header />
+      <Header />
+      <main className="pt-1 pb-16"> {/* Add padding to account for fixed header and footer */}
         <SearchBar />
-      </div>
+      </main>
       <Footer />
     </div>
   );
