@@ -99,7 +99,7 @@
   {
     "country": "Mexico",
     "visaRequirement": "Visa required",
-    "duration": "N/A",
+    "duration": "6 months for Green Card holders",
     "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
   },
   {
@@ -305,6 +305,13 @@
   "visaRequirement": "Visa required",
   "duration": "N/A",
   "notes": ""
+},
+{
+  "country": "Jordan",
+  "visaRequirement": "Visa required",
+  "duration": "30 days",
+  "notes": ""
 }
+
   
 ]
