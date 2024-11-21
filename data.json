@@ -203,6 +203,78 @@
   "visaRequirement": "Visa not required",
   "duration": "90 days",
   "notes": ""
+},
+{
+  "country": "Brazil",
+  "visaRequirement": "Visa required",
+  "duration": "90 days",
+  "notes": ""
+},
+{
+  "country": "Morocco",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Visa application process can take up to 4 months"
+},
+{
+  "country": "Egypt",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "France",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Finland",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Norway",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Seweden",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Denmark",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Poland",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Bahamas",
+  "visaRequirement": "Visa not required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Portugal",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Austria",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
 }
   
 ]
