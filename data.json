@@ -278,9 +278,9 @@
 },
 {
   "country": "Georgia",
-  "visaRequirement": "Visa not required",
+  "visaRequirement": "Visa required",
   "duration": "N/A",
-  "notes": ""
+  "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
 },
 {
   "country": "Estonia",
