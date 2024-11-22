@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Search, Globe2, Clock, FileText } from 'lucide-react';
-import data from '/data.json';
+import { Search, Globe2, Clock, FileText, Loader2 } from 'lucide-react';
 import Flag from 'react-world-flags';
 import { getCode } from 'country-list';
+
+// Replace with your Gist URL
+const GIST_URL = 'https://gist.githubusercontent.com/masonn99/85338cfbc033fb23e716368ad3d07c0f/raw/e7df9f505e14566fe6f3aadcf4fbb40223b4b6b9/data.json';
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [countries, setCountries] = useState([]);
-  const [activeFilter, setActiveFilter] = useState(''); // Changed to single filter
+  const [allCountries, setAllCountries] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const visaTypes = [
     { name: 'Visa Not Required', color: 'emerald' },
@@ -17,8 +22,26 @@ function SearchBar() {
   ];
 
   useEffect(() => {
-    const sortedCountries = data.sort((a, b) => a.country.localeCompare(b.country));
-    setCountries(sortedCountries);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(GIST_URL);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        const sortedCountries = data.sort((a, b) => a.country.localeCompare(b.country));
+        setAllCountries(sortedCountries);
+        setCountries(sortedCountries);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleSearch = event => {
@@ -27,23 +50,20 @@ function SearchBar() {
   };
 
   const toggleFilter = (filterName) => {
-    // If clicking the active filter, clear it
     const newFilter = activeFilter === filterName ? '' : filterName;
     setActiveFilter(newFilter);
     filterCountries(searchTerm, newFilter);
   };
 
   const filterCountries = (search, filter) => {
-    let filtered = [...data];
+    let filtered = [...allCountries];
 
-    // Apply search filter
     if (search) {
       filtered = filtered.filter(country =>
         country.country.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    // Apply visa requirement filter
     if (filter) {
       filtered = filtered.filter(country => {
         const countryStatus = country.visaRequirement.toLowerCase();
@@ -57,7 +77,6 @@ function SearchBar() {
       });
     }
 
-    // Sort alphabetically
     filtered.sort((a, b) => a.country.localeCompare(b.country));
     setCountries(filtered);
   };
@@ -99,6 +118,22 @@ function SearchBar() {
     };
   };
 
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="text-center py-12">
+          <div className="text-red-400 mb-4">Error loading data: {error}</div>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-zinc-800 text-zinc-300 rounded-lg hover:bg-zinc-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
       {/* Search Bar */}
@@ -115,6 +150,7 @@ function SearchBar() {
             placeholder="Search any country... 🌍"
             value={searchTerm}
             onChange={handleSearch}
+            disabled={isLoading}
           />
         </div>
       </div>
@@ -155,60 +191,67 @@ function SearchBar() {
         Found {countries.length} countries
       </div>
 
-      {/* Country Cards */}
-      <div className="space-y-4">
-        {countries.map((country, index) => {
-          const styles = getStatusStyles(country.visaRequirement);
-          return (
-            <div
-              key={index}
-              className={`group p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 
-                         hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
-                         ${styles.card}`}
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-  {getCode(country.country) ? (
-    <div className="w-6 h-4 flex items-center justify-center overflow-hidden">
-      <Flag 
-        code={getCode(country.country)}
-        className="rounded-sm object-cover w-full h-full"
-        fallback={<Globe2 className="h-5 w-5 text-zinc-400" />}
-      />
-    </div>
-  ) : (
-    <Globe2 className="h-5 w-5 text-zinc-400" />
-  )}
-  <h2 className="text-lg font-medium text-zinc-100">{country.country}</h2>
-</div>
-                <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium
-                                transition-colors ${styles.badge}`}>
-                  {country.visaRequirement}
-                </span>
-              </div>
-              
-              <div className="mt-4 space-y-3 text-sm text-zinc-300">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-zinc-400" />
-                  <p>Maximum Stay: {country.duration || "Not specified"}</p>
-                </div>
-                {country.notes && (
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-zinc-400" />
-                    <p>{country.notes}</p>
+      {/* Loading State */}
+      {isLoading ? (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-zinc-400" />
+        </div>
+      ) : (
+        /* Country Cards */
+        <div className="space-y-4">
+          {countries.map((country, index) => {
+            const styles = getStatusStyles(country.visaRequirement);
+            return (
+              <div
+                key={index}
+                className={`group p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 
+                           hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
+                           ${styles.card}`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    {getCode(country.country) ? (
+                      <div className="w-6 h-4 flex items-center justify-center overflow-hidden">
+                        <Flag 
+                          code={getCode(country.country)}
+                          className="rounded-sm object-cover w-full h-full"
+                          fallback={<Globe2 className="h-5 w-5 text-zinc-400" />}
+                        />
+                      </div>
+                    ) : (
+                      <Globe2 className="h-5 w-5 text-zinc-400" />
+                    )}
+                    <h2 className="text-lg font-medium text-zinc-100">{country.country}</h2>
                   </div>
-                )}
+                  <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium
+                                  transition-colors ${styles.badge}`}>
+                    {country.visaRequirement}
+                  </span>
+                </div>
+                
+                <div className="mt-4 space-y-3 text-sm text-zinc-300">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-zinc-400" />
+                    <p>Maximum Stay: {country.duration || "Not specified"}</p>
+                  </div>
+                  {country.notes && (
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 text-zinc-400" />
+                      <p>{country.notes}</p>
+                    </div>
+                  )}
+                </div>
               </div>
+            );
+          })}
+          
+          {countries.length === 0 && !isLoading && (
+            <div className="text-center py-12 text-zinc-400">
+              No countries found matching your criteria 🔍
             </div>
-          );
-        })}
-        
-        {countries.length === 0 && (
-          <div className="text-center py-12 text-zinc-400">
-            No countries found matching your criteria 🔍
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
