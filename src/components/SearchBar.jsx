@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Search, Globe2, Clock, FileText, Loader2 } from 'lucide-react';
+import { Search, Globe2, Clock, FileText, ListFilter} from 'lucide-react';
 import Flag from 'react-world-flags';
+import data from '/data.json';
 import { getCode } from 'country-list';
 
 // Replace with your Gist URL
-const GIST_URL = 'https://gist.githubusercontent.com/masonn99/85338cfbc033fb23e716368ad3d07c0f/raw/e7df9f505e14566fe6f3aadcf4fbb40223b4b6b9/data.json';
+const GIST_URL = 'https://gist.github.com/masonn99/85338cfbc033fb23e716368ad3d07c0f/raw/a2203109a97ef981af3a0c49dc1ae93eb6603292/data.json';
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [countries, setCountries] = useState([]);
   const [allCountries, setAllCountries] = useState([]);
   const [activeFilter, setActiveFilter] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+   
 
   const visaTypes = [
     { name: 'Visa Not Required', color: 'emerald' },
@@ -22,27 +22,13 @@ function SearchBar() {
   ];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(GIST_URL);
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const data = await response.json();
-        const sortedCountries = data.sort((a, b) => a.country.localeCompare(b.country));
-        setAllCountries(sortedCountries);
-        setCountries(sortedCountries);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+   
+      const sortedCountries = [...data].sort((a, b) => a.country.localeCompare(b.country));
+      setCountries(sortedCountries);
+      setAllCountries(sortedCountries);  // This was missing in the original code
+      
   }, []);
+
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -118,21 +104,6 @@ function SearchBar() {
     };
   };
 
-  if (error) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="text-center py-12">
-          <div className="text-red-400 mb-4">Error loading data: {error}</div>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-zinc-800 text-zinc-300 rounded-lg hover:bg-zinc-700 transition-colors"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
@@ -150,54 +121,50 @@ function SearchBar() {
             placeholder="Search any country... 🌍"
             value={searchTerm}
             onChange={handleSearch}
-            disabled={isLoading}
+        
           />
         </div>
       </div>
 
       {/* Filters */}
-      <div className="mb-6">
-        <div className="flex flex-wrap gap-2">
-          {visaTypes.map((type) => (
-            <button
-              key={type.name}
-              onClick={() => toggleFilter(type.name)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
-                         ${activeFilter === type.name
-                           ? type.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/50' :
-                             type.color === 'green' ? 'bg-green-500/20 text-green-400 ring-1 ring-green-500/50' :
-                             type.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400 ring-1 ring-yellow-500/50' :
-                             'bg-red-500/20 text-red-400 ring-1 ring-red-500/50'
-                           : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'
-                         }`}
-            >
-              {type.name}
-            </button>
-          ))}
-          {activeFilter && (
-            <button
-              onClick={() => toggleFilter(activeFilter)}
-              className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
-                       bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300"
-            >
-              Clear Filter ✕
-            </button>
-          )}
-        </div>
-      </div>
+<div className="mb-6">
+  <div className="flex items-center gap-3">
+    <ListFilter className="h-5 w-5 text-zinc-400" />
+    <div className="flex flex-wrap gap-2">
+      {visaTypes.map((type) => (
+        <button
+          key={type.name}
+          onClick={() => toggleFilter(type.name)}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                     ${activeFilter === type.name
+                       ? type.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/50' :
+                         type.color === 'green' ? 'bg-green-500/20 text-green-400 ring-1 ring-green-500/50' :
+                         type.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400 ring-1 ring-yellow-500/50' :
+                         'bg-red-500/20 text-red-400 ring-1 ring-red-500/50'
+                       : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'
+                     }`}
+        >
+          {type.name}
+        </button>
+      ))}
+      {activeFilter && (
+        <button
+          onClick={() => toggleFilter(activeFilter)}
+          className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                   bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300"
+        >
+          Clear Filter ✕
+        </button>
+      )}
+    </div>
+  </div>
+</div>
 
       {/* Results Count */}
       <div className="mb-4 text-sm text-zinc-400">
         Found {countries.length} countries
       </div>
 
-      {/* Loading State */}
-      {isLoading ? (
-        <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-zinc-400" />
-        </div>
-      ) : (
-        /* Country Cards */
         <div className="space-y-4">
           {countries.map((country, index) => {
             const styles = getStatusStyles(country.visaRequirement);
@@ -245,13 +212,13 @@ function SearchBar() {
             );
           })}
           
-          {countries.length === 0 && !isLoading && (
+          {countries.length === 0 && (
             <div className="text-center py-12 text-zinc-400">
               No countries found matching your criteria 🔍
             </div>
           )}
         </div>
-      )}
+      
     </div>
   );
 }
