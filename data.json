@@ -311,6 +311,12 @@
   "visaRequirement": "Visa required",
   "duration": "30 days",
   "notes": ""
+},
+{
+  "country": "Panama",
+  "visaRequirement": "Visa not required",
+  "duration": "180 days",
+  "notes": ""
 }
 
   
