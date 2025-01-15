@@ -323,6 +323,18 @@
   "visaRequirement": "Visa not required",
   "duration": "N/A",
   "notes": ""
+},
+{
+  "country": "Costa Rica", 
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Visa not required for US Refugee Travel Document holders with Green Card! Travel Document must have at least 6 months validity at the time of entry"
+},
+{
+  "country": "Israel",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
 }
 
   
