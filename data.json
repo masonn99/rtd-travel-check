@@ -335,7 +335,69 @@
   "visaRequirement": "Visa required",
   "duration": "N/A",
   "notes": ""
-}
+},
+{
+  "country": "Kosovo",
+  "visaRequirement": "Visa not required",
+  "duration": "15 days",
+  "notes": ""
+},
 
+{
+  "country": "India",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Must apply in person at any Indian Embassy/Consulates in the US"
+},
+{
+  "country": "Luxembourg",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+
+{
+  "country": "Iceland",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Kuwait",
+  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Ireland",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Iran, Islamic Republic of",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Must apply through a travel agency or a host in Iran(through the Ministry of Foreign Affairs)"
+},
+{
+  "country": "Cook Islands",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Must apply throught a New Zealand Embassy/Consulate"
+},
+{
+  "country": "Luxembourg",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "French Polynesia",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Visa not required for US Refugee Travel Document holders with Green Card!"
+
+}
   
 ]
