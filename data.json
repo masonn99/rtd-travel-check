@@ -345,9 +345,9 @@
 
 {
   "country": "India",
-  "visaRequirement": "Visa required",
+  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
   "duration": "N/A",
-  "notes": "Must apply in person at any Indian Embassy/Consulates in the US"
+  "notes": ""
 },
 {
   "country": "Luxembourg",
@@ -398,6 +398,12 @@
   "duration": "N/A",
   "notes": "Visa not required for US Refugee Travel Document holders with Green Card!"
 
+},
+{
+  "country": "Bangladesh",
+  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+  "duration": "N/A",
+  "notes": ""
 }
   
 ]
