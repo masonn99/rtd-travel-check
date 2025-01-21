@@ -440,6 +440,12 @@
   "visaRequirement": "E-Visa",
   "duration": "N/A",
   "notes": ""
+},
+{
+  "country": "Myanmar",
+  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+  "duration": "N/A",
+  "notes": ""
 }
   
 ]
