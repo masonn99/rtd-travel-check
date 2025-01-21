@@ -136,7 +136,7 @@
     "country": "Malaysia",
     "visaRequirement": "Visa required",
     "duration": "N/A",
-    "notes": ""
+    "notes": "Travel Document holders are required to have a valid green card of at least 1 year validity. "
   },
   {
     "country": "Taiwan, Province of China",
@@ -396,6 +396,48 @@
 {
   "country": "Bangladesh",
   "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Nepal",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Not eligible for those born in India or Nepal"
+},
+{
+  "country": "Eswatini",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Senegal",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Qatar",
+  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+  "duration": "N/A",
+  "notes": "May transit through Doha International Airport without a visa"
+},
+{
+  "country": "Romania",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Switzerland",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Armenia",
+  "visaRequirement": "E-Visa",
   "duration": "N/A",
   "notes": ""
 }
