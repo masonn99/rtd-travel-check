@@ -446,6 +446,24 @@
   "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
   "duration": "N/A",
   "notes": ""
+},
+{
+  "country": "Sierra Leone",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Visa fee: $160"
+},
+{
+  "country": "Faroe Islands",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": ""
+},
+{
+  "country": "Saudi Arabia",
+  "visaRequirement": "Visa required",
+  "duration": "N/A",
+  "notes": "Must apply through a travel agency or a host in Saudi Arabia"
 }
   
 ]
