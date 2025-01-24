@@ -90,7 +90,6 @@
     "notes": ""
   },
   {
-
     "country": "Canada",
     "visaRequirement": "E-visa",
     "duration": "N/A",
@@ -103,28 +102,22 @@
     "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
   },
   {
-
     "country": "United Kingdom of Great Britain and Northern Ireland",
     "visaRequirement": "Visa required",
     "duration": "90 days",
     "notes": "You can apply online and get a biometrics appointment at any VFS/USCIS centers"
-
   },
   {
-
     "country": "China",
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": "Must apply in person at any Chinese Embassy/Consulates in the US"
-
   },
   {
-
     "country": "Hong Kong",
     "visaRequirement": "E-Visa",
     "duration": "N/A",
     "notes": "E-Visa can be applied through Hong Kong Immigration Website or in person at Chinese Embassy or Consulate"
-
   },
   {
     "country": "Philippines",
@@ -199,277 +192,279 @@
     "notes": ""
   },
   {
-  "country": "Italy",
-  "visaRequirement": "Visa not required",
-  "duration": "90 days",
-  "notes": ""
-},
-{
-  "country": "Brazil",
-  "visaRequirement": "Visa required",
-  "duration": "90 days",
-  "notes": ""
-},
-{
-  "country": "Morocco",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Visa application process can take up to 4 months"
-},
-{
-  "country": "Egypt",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "France",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Finland",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Norway",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Sweden",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Denmark",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Poland",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Bahamas",
-  "visaRequirement": "Visa not required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Portugal",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Austria",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Georgia",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
-},
-{
-  "country": "Estonia",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Latvia",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Lithuania",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Czechia",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Jordan",
-  "visaRequirement": "Visa required",
-  "duration": "30 days",
-  "notes": ""
-},
-{
-  "country": "Panama",
-  "visaRequirement": "Visa not required",
-  "duration": "180 days",
-  "notes": ""
-},
-{
-  "country": "Moldova, Republic of", 
-  "visaRequirement": "Visa not required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Costa Rica", 
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Visa not required for US Refugee Travel Document holders with Green Card! Travel Document must have at least 6 months validity at the time of entry"
-},
-{
-  "country": "Israel",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Kosovo",
-  "visaRequirement": "Visa not required",
-  "duration": "15 days",
-  "notes": ""
-},
-
-{
-  "country": "India",
-  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Luxembourg",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-
-{
-  "country": "Iceland",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Kuwait",
-  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Ireland",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Iran, Islamic Republic of",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Must apply through a travel agency or a host in Iran(through the Ministry of Foreign Affairs)"
-},
-{
-  "country": "Cook Islands",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Must apply throught a New Zealand Embassy/Consulate"
-},
-{
-  "country": "French Polynesia",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Visa not required for US Refugee Travel Document holders with Green Card!"
-
-},
-{
-  "country": "Bangladesh",
-  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Nepal",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Not eligible for those born in India or Nepal"
-},
-{
-  "country": "Eswatini",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Senegal",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Qatar",
-  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
-  "duration": "N/A",
-  "notes": "May transit through Doha International Airport without a visa"
-},
-{
-  "country": "Romania",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Switzerland",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Armenia",
-  "visaRequirement": "E-Visa",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Myanmar",
-  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Sierra Leone",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Visa fee: $160"
-},
-{
-  "country": "Faroe Islands",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": ""
-},
-{
-  "country": "Saudi Arabia",
-  "visaRequirement": "Visa required",
-  "duration": "N/A",
-  "notes": "Must apply through a travel agency or a host in Saudi Arabia"
-},
-{
-  "country": "Oman",
-  "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
-  "duration": "N/A",
-  "notes": ""
-}
-  
+    "country": "Italy",
+    "visaRequirement": "Visa not required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Brazil",
+    "visaRequirement": "Visa required",
+    "duration": "90 days",
+    "notes": ""
+  },
+  {
+    "country": "Morocco",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa application process can take up to 4 months"
+  },
+  {
+    "country": "Egypt",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "France",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Finland",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Norway",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Sweden",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Denmark",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Poland",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Bahamas",
+    "visaRequirement": "Visa not required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Portugal",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Austria",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Georgia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa not required for US Refugee Travel Document holders with Green Card"
+  },
+  {
+    "country": "Estonia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Latvia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Lithuania",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Czechia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Jordan",
+    "visaRequirement": "Visa required",
+    "duration": "30 days",
+    "notes": ""
+  },
+  {
+    "country": "Panama",
+    "visaRequirement": "Visa not required",
+    "duration": "180 days",
+    "notes": ""
+  },
+  {
+    "country": "Moldova, Republic of",
+    "visaRequirement": "Visa not required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Costa Rica",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa not required for US Refugee Travel Document holders with Green Card! Travel Document must have at least 6 months validity at the time of entry"
+  },
+  {
+    "country": "Israel",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Kosovo",
+    "visaRequirement": "Visa not required",
+    "duration": "15 days",
+    "notes": ""
+  },
+  {
+    "country": "India",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Luxembourg",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Iceland",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Kuwait",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Ireland",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Iran, Islamic Republic of",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Must apply through a travel agency or a host in Iran(through the Ministry of Foreign Affairs)"
+  },
+  {
+    "country": "Cook Islands",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Must apply throught a New Zealand Embassy/Consulate"
+  },
+  {
+    "country": "French Polynesia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa not required for US Refugee Travel Document holders with Green Card!"
+  },
+  {
+    "country": "Bangladesh",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Nepal",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Not eligible for those born in India or Nepal"
+  },
+  {
+    "country": "Eswatini",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Senegal",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Qatar",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": "May transit through Doha International Airport without a visa"
+  },
+  {
+    "country": "Romania",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Switzerland",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Armenia",
+    "visaRequirement": "E-Visa",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Myanmar",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Sierra Leone",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa fee: $160"
+  },
+  {
+    "country": "Faroe Islands",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Saudi Arabia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Must apply through a travel agency or a host in Saudi Arabia"
+  },
+  {
+    "country": "Oman",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Docuemnt",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Zambia",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  }
 ]
