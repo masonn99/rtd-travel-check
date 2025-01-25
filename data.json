@@ -466,5 +466,12 @@
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Visa requirement depends on the nationality of traveler"
   }
+
 ]
