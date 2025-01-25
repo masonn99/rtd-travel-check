@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 w-full bg-zinc-900 border-t border-zinc-800">
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <p className="text-sm text-center text-zinc-400">
+    <footer className="fixed bottom-0 w-full bg-zinc-900/95 backdrop-blur-sm border-t border-zinc-800">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
+        <p className="text-xs sm:text-sm text-center text-zinc-400 leading-5">
           Disclaimer: This is community-sourced data from the{" "}
           <a
             href="https://t.me/+hgENDIRxoTs0NGQx"

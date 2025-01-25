@@ -106,36 +106,35 @@ function SearchBar() {
 
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       {/* Search Bar */}
-      <div className="relative mb-6">
+      <div className="relative mb-4 sm:mb-6">
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 h-5 w-5 
+          <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 h-4 w-4 sm:h-5 sm:w-5 
                            transition-colors group-hover:text-zinc-300" />
           <input
             type="text"
-            className="w-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl py-4 pl-12 pr-4 
-                     text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 
+            className="w-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg sm:rounded-xl py-3 pl-10 pr-3 sm:py-4 sm:pl-12 sm:pr-4 
+                     text-sm sm:text-base text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 
                      focus:ring-blue-500/50 focus:border-transparent transition-all
                      hover:bg-zinc-900/70"
             placeholder="Search any country... 🌍"
             value={searchTerm}
             onChange={handleSearch}
-        
           />
         </div>
       </div>
 
       {/* Filters */}
-<div className="mb-6">
-  <div className="flex items-center gap-3">
-    <ListFilter className="h-5 w-5 text-zinc-400" />
-    <div className="flex flex-wrap gap-2">
+<div className="mb-4 sm:mb-6">
+  <div className="flex items-start sm:items-center gap-2 sm:gap-3">
+    <ListFilter className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-400 mt-1 sm:mt-0" />
+    <div className="flex flex-wrap gap-1.5 sm:gap-2">
       {visaTypes.map((type) => (
         <button
           key={type.name}
           onClick={() => toggleFilter(type.name)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 
                      ${activeFilter === type.name
                        ? type.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/50' :
                          type.color === 'green' ? 'bg-green-500/20 text-green-400 ring-1 ring-green-500/50' :
@@ -161,24 +160,24 @@ function SearchBar() {
 </div>
 
       {/* Results Count */}
-      <div className="mb-4 text-sm text-zinc-400">
+      <div className="mb-3 sm:mb-4 text-xs sm:text-sm text-zinc-400">
         Found {countries.length} countries
       </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {countries.map((country, index) => {
             const styles = getStatusStyles(country.visaRequirement);
             return (
               <div
                 key={index}
-                className={`group p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 
+                className={`group p-4 sm:p-6 rounded-lg sm:rounded-xl border backdrop-blur-sm transition-all duration-300 
                            hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
                            ${styles.card}`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     {getCode(country.country) ? (
-                      <div className="w-6 h-4 flex items-center justify-center overflow-hidden">
+                      <div className="w-5 h-3.5 sm:w-6 sm:h-4 flex items-center justify-center overflow-hidden">
                         <Flag 
                           code={getCode(country.country)}
                           className="rounded-sm object-cover w-full h-full"
@@ -188,22 +187,22 @@ function SearchBar() {
                     ) : (
                       <Globe2 className="h-5 w-5 text-zinc-400" />
                     )}
-                    <h2 className="text-lg font-medium text-zinc-100">{country.country}</h2>
+                    <h2 className="text-base sm:text-lg font-medium text-zinc-100">{country.country}</h2>
                   </div>
-                  <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium
+                  <span className={`inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium
                                   transition-colors ${styles.badge}`}>
                     {country.visaRequirement}
                   </span>
                 </div>
                 
-                <div className="mt-4 space-y-3 text-sm text-zinc-300">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-zinc-400" />
+                <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-300">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400" />
                     <p>Maximum Stay: {country.duration || "Not specified"}</p>
                   </div>
                   {country.notes && (
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-4 w-4 text-zinc-400" />
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400" />
                       <p>{country.notes}</p>
                     </div>
                   )}
