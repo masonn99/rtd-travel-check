@@ -14,6 +14,7 @@ const CountryExperience = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log('API URL:', import.meta.env.VITE_API_URL); // Add this line to debug
     fetchExperiences();
   }, [countryName]);
 
