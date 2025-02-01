@@ -3,6 +3,7 @@ import { Search, Globe2, Clock, FileText, ListFilter} from 'lucide-react';
 import Flag from 'react-world-flags';
 import data from '/data.json';
 import { getCode } from 'country-list';
+import { useNavigate } from 'react-router-dom'; // Add this import
 
 // Replace with your Gist URL
 const GIST_URL = 'https://gist.github.com/masonn99/85338cfbc033fb23e716368ad3d07c0f/raw/a2203109a97ef981af3a0c49dc1ae93eb6603292/data.json';
@@ -12,7 +13,7 @@ function SearchBar() {
   const [countries, setCountries] = useState([]);
   const [allCountries, setAllCountries] = useState([]);
   const [activeFilter, setActiveFilter] = useState('');
-   
+  const navigate = useNavigate(); // Add this line
 
   const visaTypes = [
     { name: 'Visa Not Required', color: 'emerald' },
@@ -173,7 +174,8 @@ function SearchBar() {
                 className={`group p-4 sm:p-6 rounded-lg sm:rounded-xl border backdrop-blur-sm transition-all duration-300 
                            hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
                            ${styles.card}`}
-              >
+              onClick={() => navigate(`/country/${country.country}`)} // Add this line
+            >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                   <div className="flex items-center gap-2 sm:gap-3">
                     {getCode(country.country) ? (

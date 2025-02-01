@@ -1,4 +1,6 @@
-import SearchBar from "./components/SearchBar";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SearchBar from './components/SearchBar';
+import CountryExperience from './components/CountryExperience';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "./styles/App.css";
@@ -13,7 +15,12 @@ function App() {
       <Header />
       <main className="pt-2 sm:pt-4 pb-20 sm:pb-16"> {/* Add padding to account for fixed header and footer */}
         <div className="max-w-4xl mx-auto px-3 sm:px-4">
-          <SearchBar />
+          <Router>
+            <Routes>
+              <Route path="/" element={<SearchBar />} />
+              <Route path="/country/:countryName" element={<CountryExperience />} />
+            </Routes>
+          </Router>
         </div>
       </main>
       <Footer />
