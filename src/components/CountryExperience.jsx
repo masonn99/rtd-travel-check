@@ -22,7 +22,15 @@ const CountryExperience = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/countries/${countryName}/experiences`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/countries/${countryName}/experiences`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Origin': window.location.origin
+        },
+        credentials: 'include'
+      });
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -44,7 +52,10 @@ const CountryExperience = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Origin': window.location.origin
           },
+          credentials: 'include',
           body: JSON.stringify({ name, content }),
         });
 
@@ -65,6 +76,7 @@ const CountryExperience = () => {
         }, 3000);
       } catch (error) {
         console.error('Error posting experience:', error);
+        setError('Failed to post experience. Please try again later.');
       }
     }
   };
