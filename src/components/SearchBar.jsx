@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Globe2, Clock, FileText, ListFilter} from 'lucide-react';
+import { Search, Globe2, Clock, FileText, SlidersHorizontal, X } from 'lucide-react';
 import Flag from 'react-world-flags';
 import data from '/data.json';
 import { getCode } from 'country-list';
@@ -13,6 +13,7 @@ function SearchBar() {
   const [countries, setCountries] = useState([]);
   const [allCountries, setAllCountries] = useState([]);
   const [activeFilter, setActiveFilter] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
   const navigate = useNavigate(); // Add this line
 
   const visaTypes = [
@@ -39,6 +40,7 @@ function SearchBar() {
   const toggleFilter = (filterName) => {
     const newFilter = activeFilter === filterName ? '' : filterName;
     setActiveFilter(newFilter);
+    setShowFilters(false); // Close the filter popup after selection
     filterCountries(searchTerm, newFilter);
   };
 
@@ -107,64 +109,96 @@ function SearchBar() {
 
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      {/* Search Bar */}
-      <div className="relative mb-4 sm:mb-6">
-        <div className="relative group">
-          <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 h-4 w-4 sm:h-5 sm:w-5 
-                           transition-colors group-hover:text-zinc-300" />
-          <input
-            type="text"
-            className="w-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg sm:rounded-xl py-3 pl-10 pr-3 sm:py-4 sm:pl-12 sm:pr-4 
-                     text-sm sm:text-base text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 
-                     focus:ring-blue-500/50 focus:border-transparent transition-all
-                     hover:bg-zinc-900/70"
-            placeholder="Search any country... 🌍"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
+    <div className="relative">
+      {/* Search and filter buttons */}
+      <div className="sticky top-0 z-50 bg-black pb-4">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Search countries..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full px-4 py-2 pl-10 bg-black/50 border border-zinc-800 rounded-lg 
+                      focus:outline-none focus:border-blue-500 transition-colors text-white placeholder-zinc-400"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400 h-4 w-4" />
+          </div>
+          
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`px-4 py-2 rounded-lg border transition-all duration-200 flex items-center gap-2
+                      ${showFilters 
+                        ? 'bg-blue-500 border-blue-400 text-white' 
+                        : 'bg-black/50 border-zinc-800 text-zinc-400 hover:border-zinc-700'}`}
+          >
+            {showFilters ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <SlidersHorizontal className="h-4 w-4" />
+            )}
+            <span className="hidden sm:inline">Filters</span>
+          </button>
         </div>
       </div>
 
-      {/* Filters */}
-<div className="mb-4 sm:mb-6">
-  <div className="flex items-start sm:items-center gap-2 sm:gap-3">
-    <ListFilter className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-400 mt-1 sm:mt-0" />
-    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-      {visaTypes.map((type) => (
-        <button
-          key={type.name}
-          onClick={() => toggleFilter(type.name)}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 
-                     ${activeFilter === type.name
-                       ? type.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/50' :
-                         type.color === 'green' ? 'bg-green-500/20 text-green-400 ring-1 ring-green-500/50' :
-                         type.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400 ring-1 ring-yellow-500/50' :
-                         'bg-red-500/20 text-red-400 ring-1 ring-red-500/50'
-                       : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'
-                     }`}
-        >
-          {type.name}
-        </button>
-      ))}
-      {activeFilter && (
-        <button
-          onClick={() => toggleFilter(activeFilter)}
-          className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
-                   bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300"
-        >
-          Clear Filter ✕
-        </button>
+      {/* Filter dropdown */}
+      {showFilters && (
+        <>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={() => setShowFilters(false)} />
+          <div className="fixed left-1/2 top-1/4 -translate-x-1/2 w-full max-w-2xl px-4 z-50">
+            <div className="w-full p-4 bg-black border border-zinc-800 rounded-lg shadow-xl animate-fadeIn">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  onClick={() => toggleFilter('Visa Not Required')}
+                  className={`px-3 py-2 rounded-lg text-sm transition-colors
+                            ${activeFilter === 'Visa Not Required' 
+                              ? 'bg-emerald-500 text-white' 
+                              : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800/50'}`}
+                >
+                  Visa Not Required
+                </button>
+                <button
+                  onClick={() => toggleFilter('E-Visa')}
+                  className={`px-3 py-2 rounded-lg text-sm transition-colors
+                            ${activeFilter === 'E-Visa' 
+                              ? 'bg-green-500 text-white' 
+                              : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800/50'}`}
+                >
+                  E-Visa
+                </button>
+                <button
+                  onClick={() => toggleFilter('Visa Required')}
+                  className={`px-3 py-2 rounded-lg text-sm transition-colors
+                            ${activeFilter === 'Visa Required' 
+                              ? 'bg-yellow-500 text-white' 
+                              : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800/50'}`}
+                >
+                  Visa Required
+                </button>
+                <button
+                  onClick={() => toggleFilter('Does Not Recognize Refugee Travel Document')}
+                  className={`px-3 py-2 rounded-lg text-sm transition-colors
+                            ${activeFilter === 'Does Not Recognize Refugee Travel Document' 
+                              ? 'bg-red-500 text-white' 
+                              : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800/50'}`}
+                >
+                  Does Not Recognize Refugee Travel Document
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
-    </div>
-  </div>
-</div>
 
-      {/* Results Count */}
-      <div className="mb-3 sm:mb-4 text-xs sm:text-sm text-zinc-400">
-        Found {countries.length} countries
-      </div>
+      {/* Results section with padding when filters are shown */}
+      <div className={showFilters ? 'opacity-50' : ''}>
+        {/* Results count */}
+        <div className="text-xs sm:text-sm text-zinc-400 mb-4">
+          Found {countries.length} countries
+        </div>
 
+        {/* Results list */}
         <div className="space-y-3 sm:space-y-4">
           {countries.map((country, index) => {
             const styles = getStatusStyles(country.visaRequirement);
@@ -172,10 +206,10 @@ function SearchBar() {
               <div
                 key={index}
                 className={`group p-4 sm:p-6 rounded-lg sm:rounded-xl border backdrop-blur-sm transition-all duration-300 
-                           hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
-                           ${styles.card}`}
-              onClick={() => navigate(`/country/${country.country}`)} // Add this line
-            >
+                          hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
+                          ${styles.card}`}
+                onClick={() => navigate(`/country/${country.country}`)} // Add this line
+              >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                   <div className="flex items-center gap-2 sm:gap-3">
                     {getCode(country.country) ? (
@@ -219,7 +253,7 @@ function SearchBar() {
             </div>
           )}
         </div>
-      
+      </div>
     </div>
   );
 }
