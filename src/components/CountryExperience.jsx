@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { PlusCircle, ArrowLeft } from 'lucide-react';
+import DOMPurify from 'dompurify';
 
 const CountryExperience = () => {
   const { countryName } = useParams();
@@ -44,40 +45,63 @@ const CountryExperience = () => {
     }
   };
 
+  const validateInput = (input) => {
+    // Remove HTML tags and special characters
+    const sanitized = DOMPurify.sanitize(input, { ALLOWED_TAGS: [] });
+    // Limit length
+    return sanitized.slice(0, 1000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name && content) {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/countries/${countryName}/experiences`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Origin': window.location.origin
-          },
-          credentials: 'include',
-          body: JSON.stringify({ name, content }),
-        });
 
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message || 'Failed to post experience');
-        }
+    // Validate and sanitize inputs
+    const sanitizedName = validateInput(name);
+    const sanitizedContent = validateInput(content);
 
-        const newPost = await response.json();
-        setPosts([newPost, ...posts]);
-        setName('');
-        setContent('');
-        setShowForm(false);
-        setShowConfirmation(true);
-        
-        setTimeout(() => {
-          setShowConfirmation(false);
-        }, 3000);
-      } catch (error) {
-        console.error('Error posting experience:', error);
-        setError('Failed to post experience. Please try again later.');
+    if (!sanitizedName || !sanitizedContent) {
+      setError('Please provide valid input');
+      return;
+    }
+
+    if (sanitizedName.length < 2 || sanitizedContent.length < 10) {
+      setError('Name must be at least 2 characters and content at least 10 characters');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/countries/${countryName}/experiences`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Origin': window.location.origin
+        },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          name: sanitizedName, 
+          content: sanitizedContent 
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to post experience');
       }
+
+      const newPost = await response.json();
+      setPosts([newPost, ...posts]);
+      setName('');
+      setContent('');
+      setShowForm(false);
+      setShowConfirmation(true);
+      
+      setTimeout(() => {
+        setShowConfirmation(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error posting experience:', error);
+      setError('Failed to post experience. Please try again later.');
     }
   };
 
@@ -123,17 +147,21 @@ const CountryExperience = () => {
             <form onSubmit={handleSubmit} className="mb-6 bg-zinc-800 p-4 rounded-lg">
               <input
                 type="text"
-                placeholder="Your Name"
+                placeholder="Your Name (2-50 characters)"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(validateInput(e.target.value).slice(0, 50))}
                 className="w-full mb-2 p-2 bg-zinc-800 text-white border border-gray-300 rounded-lg"
+                maxLength={50}
+                minLength={2}
                 required
               />
               <textarea
-                placeholder="Share your experience..."
+                placeholder="Share your experience... (10-10000 characters)"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={(e) => setContent(validateInput(e.target.value))}
                 className="w-full mb-2 p-2 bg-zinc-800 text-white border border-gray-300 rounded-lg"
+                maxLength={1000}
+                minLength={10}
                 required
               />
               <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition w-full sm:w-auto">
