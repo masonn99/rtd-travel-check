@@ -156,7 +156,7 @@ const CountryExperience = () => {
                 required
               />
               <textarea
-                placeholder="Share your experience... (10-1000 characters)"
+                placeholder="Share your experience... (10-10000 characters)"
                 value={content}
                 onChange={(e) => setContent(validateInput(e.target.value))}
                 className="w-full mb-2 p-2 bg-zinc-800 text-white border border-gray-300 rounded-lg"

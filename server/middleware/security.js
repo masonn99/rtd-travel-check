@@ -10,7 +10,7 @@ const createPostLimiter = rateLimit({
 // Validation middleware
 const validateExperience = [
   body('name').trim().isLength({ min: 2, max: 50 }).escape(),
-  body('content').trim().isLength({ min: 10, max: 1000 }).escape(),
+  body('content').trim().isLength({ min: 10, max: 10000 }).escape(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
