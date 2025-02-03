@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://rtd-travel-check.vercel.app/sitemap.xml
