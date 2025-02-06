@@ -15,7 +15,12 @@ const CountryExperience = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log('API URL:', import.meta.env.VITE_API_URL); // Add this line to debug
+    const cachedPosts = localStorage.getItem(`posts-${countryName}`);
+    if (cachedPosts) {
+      setPosts(JSON.parse(cachedPosts));
+      setIsLoading(false);
+    }
+
     fetchExperiences();
   }, [countryName]);
 
@@ -37,6 +42,7 @@ const CountryExperience = () => {
       }
       const data = await response.json();
       setPosts(data);
+      localStorage.setItem(`posts-${countryName}`, JSON.stringify(data));
     } catch (error) {
       console.error('Error fetching experiences:', error);
       setError('Failed to load experiences. Please try again later.');
@@ -70,6 +76,17 @@ const CountryExperience = () => {
     }
 
     try {
+      // Optimistic update
+      const optimisticPost = {
+        id: 'temp-' + Date.now(),
+        name: sanitizedName,
+        content: sanitizedContent,
+        createdAt: new Date().toISOString(),
+        isOptimistic: true
+      };
+      setPosts([optimisticPost, ...posts]);
+      setShowForm(false);
+
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/countries/${countryName}/experiences`, {
         method: 'POST',
         headers: {
@@ -90,7 +107,11 @@ const CountryExperience = () => {
       }
 
       const newPost = await response.json();
-      setPosts([newPost, ...posts]);
+      setPosts(posts => posts.map(p => 
+        p.id === optimisticPost.id ? newPost : p
+      ));
+      // Update cache
+      localStorage.setItem(`posts-${countryName}`, JSON.stringify(posts));
       setName('');
       setContent('');
       setShowForm(false);
@@ -100,6 +121,8 @@ const CountryExperience = () => {
         setShowConfirmation(false);
       }, 3000);
     } catch (error) {
+      // Rollback optimistic update
+      setPosts(posts => posts.filter(p => p.id !== optimisticPost.id));
       console.error('Error posting experience:', error);
       setError('Failed to post experience. Please try again later.');
     }
