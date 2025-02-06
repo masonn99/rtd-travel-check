@@ -272,7 +272,7 @@ const SearchBar = () => {
                   key={index}
                   className={`group p-4 sm:p-6 rounded-lg sm:rounded-xl border backdrop-blur-sm transition-all duration-300 
                             hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
-                            ${styles.card}`}
+                            ${styles.card} relative`} // Added relative positioning
                   onClick={() => navigate(`/country/${country.country}`)} // Add this line
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
@@ -296,41 +296,44 @@ const SearchBar = () => {
                     </span>
                   </div>
                   
-                  <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-300">
+                  <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-300 pb-10"> {/* Added pb-10 for space */}
                     <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400" />
+                      <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400 flex-shrink-0" />
                       <p>Maximum Stay: {country.duration || "Not specified"}</p>
                     </div>
                     {country.notes && (
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400" />
-                        <p>{country.notes}</p>
+                      <div className="flex items-start gap-1.5 sm:gap-2"> {/* Changed to items-start */}
+                        <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400 flex-shrink-0 mt-1" /> {/* Added flex-shrink-0 and mt-1 */}
+                        <p className="break-words pr-20"> {/* Added break-words and right padding */}
+                          {country.notes}
+                        </p>
                       </div>
                     )}
-                    {/* Add post count display */}
-                    <div className="absolute bottom-4 right-4 flex items-center gap-1.5">
-                      <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full 
+                  </div>
+
+                  {/* Experience count badge with absolute positioning */}
+                  <div className="absolute bottom-4 right-4">
+                    <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full 
                                     ${postCount > 0 
                                       ? 'bg-blue-500/20 text-blue-400' 
                                       : 'bg-zinc-700/20 text-zinc-400'}`}>
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
-                          className="h-3.5 w-3.5" 
-                          fill="none" 
-                          viewBox="0 0 24 24" 
-                          stroke="currentColor"
-                        >
-                          <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2} 
-                            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" 
-                          />
-                        </svg>
-                        <span className="text-xs font-medium">
-                          {postCount} {postCount === 1 ? 'Experience' : 'Experiences'}
-                        </span>
-                      </div>
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-3.5 w-3.5" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" 
+                        />
+                      </svg>
+                      <span className="text-xs font-medium whitespace-nowrap"> {/* Added whitespace-nowrap */}
+                        {postCount} {postCount === 1 ? 'Experience' : 'Experiences'}
+                      </span>
                     </div>
                   </div>
                 </div>
