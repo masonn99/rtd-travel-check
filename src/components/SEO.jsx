@@ -1,8 +1,15 @@
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 
-const SEO = ({ title, description, image }) => {
-  const { pathname } = useLocation();
+const SEO = ({ title, description, image, pathname }) => {
+  // Try to get pathname from router if not provided as prop
+  let locationPathname = pathname;
+  try {
+    const location = useLocation();
+    locationPathname = location.pathname;
+  } catch (e) {
+    console.log('Router context not available, using provided pathname');
+  }
   const siteUrl = 'https://rtd-travel-check.vercel.app';
   const canonicalUrl = `${siteUrl}${pathname}`;
   const defaultImage = `${siteUrl}/logo.png`;
