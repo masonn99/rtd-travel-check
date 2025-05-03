@@ -2,15 +2,590 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rtd-travel-check.vercel.app</loc>
-    <lastmod>2024-01-20</lastmod>
+    <lastmod>2025-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  
   <url>
-    <loc>https://rtd-travel-check.vercel.app/country/Albania</loc>
-    <lastmod>2024-01-20</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://rtd-travel-check.vercel.app/country/Australia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Add more country URLs dynamically based on your data -->
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Belgium</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Croatia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Cyprus</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Germany</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Hungary</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Netherlands</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Slovakia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Slovenia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Japan</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/T%C3%BCrkiye</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Thailand</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/United%20Arab%20Emirates</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Singapore</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Montenegro</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Canada</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Mexico</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/United%20Kingdom%20of%20Great%20Britain%20and%20Northern%20Ireland</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/China</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Hong%20Kong</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Philippines</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Malaysia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Taiwan%2C%20Province%20of%20China</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Korea%2C%20Republic%20of</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Macao</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/New%20Zealand</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Cambodia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Lao%20People's%20Democratic%20Republic</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Viet%20Nam</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Indonesia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/El%20Salvador</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Guatemala</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Italy</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Brazil</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Morocco</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Egypt</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/France</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Finland</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Norway</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Sweden</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Denmark</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Poland</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Bahamas</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Portugal</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Austria</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Georgia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Estonia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Latvia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Lithuania</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Czechia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Jordan</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Panama</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Moldova%2C%20Republic%20of</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Costa%20Rica</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Israel</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Kosovo</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/India</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Luxembourg</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Iceland</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Kuwait</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Ireland</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Iran%2C%20Islamic%20Republic%20of</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Cook%20Islands</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/French%20Polynesia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Bangladesh</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Nepal</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Eswatini</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Senegal</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Qatar</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Romania</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Switzerland</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Armenia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Myanmar</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Sierra%20Leone</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Faroe%20Islands</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Saudi%20Arabia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Oman</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Zambia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Trinidad%20and%20Tobago</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Peru</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Nigeria</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Gambia</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://rtd-travel-check.vercel.app/country/Mauritius</loc>
+    <lastmod>2025-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
 </urlset>
