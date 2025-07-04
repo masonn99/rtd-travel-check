@@ -6,6 +6,12 @@
     "notes": "E-Visa can be applied online"
   },
   {
+    "country": "Albania",
+    "visaRequirement": "Visa not required",
+    "duration": "",
+    "notes": ""
+  },
+  {
     "country": "Belgium",
     "visaRequirement": "Visa not required",
     "duration": "90 days",

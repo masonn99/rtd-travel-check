@@ -11,7 +11,7 @@ const Header = () => {
             </h1>
             <div className="flex items-center gap-4">
               <a
-                href="https://t.me/+In9zXZOpxbcwYWQ8"
+                href="https://t.me/+hgENDIRxoTs0NGQx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-xs sm:text-sm text-zinc-400 hover:text-zinc-300 transition-colors"
