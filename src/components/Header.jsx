@@ -31,7 +31,7 @@ const Header = ({ onViewChange, currentView }) => {
               </button>
             </div>
             <a
-              href="https://t.me/rtdtravel"
+              href="https://t.me/+hgENDIRxoTs0NGQx"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs text-white"
