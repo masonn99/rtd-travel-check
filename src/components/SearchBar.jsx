@@ -13,8 +13,7 @@ const SearchBar = () => {
   const [activeFilter, setActiveFilter] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const navigate = useNavigate(); // Add this line
-  const [postCounts, setPostCounts] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const visaTypes = [
     { name: 'Visa Not Required', color: 'emerald' },
@@ -24,52 +23,10 @@ const SearchBar = () => {
   ];
 
   useEffect(() => {
-    const cachedCounts = localStorage.getItem('postCounts');
-    if (cachedCounts) {
-      setPostCounts(JSON.parse(cachedCounts));
-      setIsLoading(false);
-    }
-
-    const fetchData = async () => {
-      const sortedCountries = [...data].sort((a, b) => a.country.localeCompare(b.country));
-      setCountries(sortedCountries);
-      setAllCountries(sortedCountries);
-
-      try {
-        console.log('Fetching post counts...');
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/experiences/stats`, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Origin': window.location.origin
-          },
-          credentials: 'include'
-        });
-        
-        if (response.ok) {
-          const stats = await response.json();
-          console.log('Received stats:', stats);
-          
-          // Convert the stats array into an object format
-          const counts = stats.reduce((acc, stat) => {
-            acc[stat.country] = stat._count.country;
-            return acc;
-          }, {});
-          
-          console.log('Processed post counts:', counts);
-          setPostCounts(counts);
-          localStorage.setItem('postCounts', JSON.stringify(counts));
-        } else {
-          console.error('Failed to fetch stats:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+    const sortedCountries = [...data].sort((a, b) => a.country.localeCompare(b.country));
+    setCountries(sortedCountries);
+    setAllCountries(sortedCountries);
+    setIsLoading(false);
   }, []);
 
 
@@ -264,9 +221,6 @@ const SearchBar = () => {
             )}
             {countries.map((country, index) => {
               const styles = getStatusStyles(country.visaRequirement);
-              const postCount = postCounts[country.country] || 0;
-              console.log(`Post count for ${country.country}:`, postCount); // Add this line for debugging
-              
               return (
                 <div
                   key={index}
@@ -311,31 +265,7 @@ const SearchBar = () => {
                     )}
                   </div>
 
-                  {/* Experience count badge with absolute positioning */}
-                  <div className="absolute bottom-4 right-4">
-                    <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full 
-                                    ${postCount > 0 
-                                      ? 'bg-blue-500/20 text-blue-400' 
-                                      : 'bg-zinc-700/20 text-zinc-400'}`}>
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-3.5 w-3.5" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={2} 
-                          d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" 
-                        />
-                      </svg>
-                      <span className="text-xs font-medium whitespace-nowrap"> {/* Added whitespace-nowrap */}
-                        {postCount} {postCount === 1 ? 'Experience' : 'Experiences'}
-                      </span>
-                    </div>
-                  </div>
+                  {/* Removed experience count badge */}
                 </div>
               );
             })}
