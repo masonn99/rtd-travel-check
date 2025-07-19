@@ -508,5 +508,29 @@
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "Argentina",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Greenland",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Ukraine",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Uzbekistan",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
   }
 ]
