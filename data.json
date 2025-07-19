@@ -532,5 +532,41 @@
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "United States of America",
+    "visaRequirement": "Visa not required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Kenya",
+    "visaRequirement": "E-Visa",
+    "duration": "90 days",
+    "notes": "E-Visa can be applied online"
+  },
+  {
+    "country": "Namibia",
+    "visaRequirement": "E-Visa",
+    "duration": "90 days",
+    "notes": "E-Visa can be applied online"
+  },
+  {
+    "country": "South Africa",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Chile",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Can be applied online"
+  },
+  {
+    "country": "Sri Lanka",
+    "visaRequirement": "E-Visa",
+    "duration": "90 days",
+    "notes": "E-Visa can be applied online"
   }
 ]

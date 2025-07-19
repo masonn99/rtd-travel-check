@@ -90,11 +90,14 @@ const WorldMap = () => {
                   onMouseMove={(e) => {
                     const tooltip = document.getElementById('map-tooltip');
                     if (tooltip && visaInfo) {
+                      let requirementText = visaInfo.visaRequirement;
+                      if (requirementText.includes('Does not recognize US issued Refugee Travel Document')) {
+                        requirementText = 'Does not recognize RTD';
+                      }
                       tooltip.innerHTML = `
-                        <div class="bg-white p-2 rounded shadow-lg">
-                          <h3 class="font-bold">${countryName}</h3>
-                          <p>Visa: ${visaInfo.visaRequirement}</p>
-                          ${visaInfo.notes ? `<p class="text-sm">${visaInfo.notes}</p>` : ''}
+                        <div class="p-2 transition-all duration-200">
+                          <h3 class="font-bold text-sm text-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">${countryName}</h3>
+                          <p class="text-xs text-white/90 [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">${requirementText}</p>
                         </div>
                       `;
                       tooltip.style.display = 'block';
@@ -127,7 +130,7 @@ const WorldMap = () => {
         </div>
         <div className="flex items-center">
           <div className="w-3 h-3 bg-red-500 mr-2"></div>
-          <span className="text-white">Does Not Recognize RTD</span>
+          <span className="text-white">Does not recognize RTD</span>
         </div>
         <div className="flex items-center">
           <div className="w-3 h-3 bg-gray-500 mr-2"></div>
@@ -137,7 +140,7 @@ const WorldMap = () => {
       </div>
       <div 
         id="map-tooltip"
-        className="hidden fixed bg-white p-2 rounded shadow-lg pointer-events-none"
+        className="hidden fixed pointer-events-none transition-opacity duration-200"
         style={{ zIndex: 100 }}
       ></div>
     </div>
