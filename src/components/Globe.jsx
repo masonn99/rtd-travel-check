@@ -30,6 +30,8 @@ const WorldMap = () => {
             if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
             if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
             if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
+            if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
+            if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
             
             // General matching
             return mapCountry.includes(dataCountry) || 
@@ -67,6 +69,8 @@ const WorldMap = () => {
                 if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
                 if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
                 if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
+                if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
+                if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
                 return mapCountry.includes(dataCountry) || dataCountry.includes(mapCountry);
               });
               const color = visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#6b7280';
