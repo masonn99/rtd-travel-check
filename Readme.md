@@ -4,7 +4,7 @@ This project is a web application that presents data gathered from the shared ex
 
 ### How to run
 
-1. Clone the repository: `git clone https://github.com/username/repository.git`
+1. Clone the repository: `git clone https://github.com/masonn99/rtd-travel-check.git`
 2. Navigate into the directory: `cd repository`
 3. Install the dependencies: `npm install`
 
