@@ -568,5 +568,17 @@
     "visaRequirement": "E-Visa",
     "duration": "90 days",
     "notes": "E-Visa can be applied online"
+  },
+  {
+    "country": "Tajikistan",
+    "visaRequirement": "E-Visa",
+    "duration": "90 days",
+    "notes": "E-Visa can be applied online"
+  }, 
+  {
+    "country": "Uzbekistan",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": ""
   }
 ]
