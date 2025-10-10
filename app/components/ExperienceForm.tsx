@@ -67,9 +67,8 @@ const ExperienceForm = ({ onSuccess }: ExperienceFormProps) => {
     setIsSubmitting(true)
 
     try {
-      // Get country code
-      const countryData = data.find((c: any) => c.country === formData.country)
-      const countryCode = countryData?.code || 'XX'
+      // Get country code - use first 2 letters of country name as fallback
+      const countryCode = formData.country ? formData.country.substring(0, 2).toUpperCase() : 'XX'
 
       const result = await createExperience({
         country_code: countryCode,
