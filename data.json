@@ -574,5 +574,11 @@
     "visaRequirement": "E-Visa",
     "duration": "90 days",
     "notes": "E-Visa can be applied online"
+  },
+  {
+    "country": "Dominican Republic",
+    "visaRequirement": "Visa not required",
+    "duration": "N/A",
+    "notes": ""
   }
 ]
