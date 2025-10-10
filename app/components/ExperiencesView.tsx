@@ -17,8 +17,19 @@ const ExperiencesView = () => {
   useEffect(() => {
     // Fetch stats from server
     const fetchStats = async () => {
-      const data = await getExperienceStats()
-      setStats(data)
+      try {
+        const data = await getExperienceStats()
+        setStats(data)
+      } catch (error) {
+        console.error('Failed to fetch stats:', error)
+        // Set default stats when database is unavailable
+        setStats({
+          total: 0,
+          countries: 0,
+          helpfulVotes: 0,
+          thisMonth: 0
+        })
+      }
     }
 
     fetchStats()
