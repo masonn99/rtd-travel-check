@@ -15,7 +15,7 @@ export default function Home() {
       case 'globe':
         return <WorldGlobe />
       case 'table':
-        return <TableView />
+        return <TableView onViewChange={setCurrentView} />
       case 'experiences':
         return <ExperiencesView />
       default:
@@ -27,7 +27,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950">
       <Header
         currentView={currentView}
-        onViewChange={(view) => setCurrentView(view)}
+        onViewChange={(view: string) => setCurrentView(view)}
       />
       <main className="flex-grow pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

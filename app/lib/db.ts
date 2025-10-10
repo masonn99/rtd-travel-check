@@ -1,14 +1,21 @@
 import { neon } from '@neondatabase/serverless'
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is not set')
+// Create a SQL function using Neon's serverless driver
+// This is wrapped in a function to avoid top-level database connections during build
+export function getSql() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL environment variable is not set')
+  }
+  return neon(process.env.DATABASE_URL)
 }
 
-// Create a SQL function using Neon's serverless driver
-export const sql = neon(process.env.DATABASE_URL)
+// Don't export a default sql instance to prevent top-level database connections
+// Always use getSql() in server components/actions
 
 // Helper function to initialize database tables
 export async function initializeDatabase() {
+  const sql = getSql()
+  
   try {
     // Create countries table
     await sql`

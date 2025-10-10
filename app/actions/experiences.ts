@@ -1,6 +1,6 @@
 'use server'
 
-import { sql } from '../lib/db'
+import { getSql } from '../lib/db'
 import { revalidatePath } from 'next/cache'
 
 export interface Experience {
@@ -26,6 +26,8 @@ export interface ExperienceStats {
 
 // Get all experiences
 export async function getExperiences(): Promise<Experience[]> {
+  const sql = getSql()
+  
   try {
     const result = await sql`
       SELECT * FROM experiences
@@ -41,6 +43,8 @@ export async function getExperiences(): Promise<Experience[]> {
 
 // Get experience stats
 export async function getExperienceStats(): Promise<ExperienceStats> {
+  const sql = getSql()
+  
   try {
     const [totalResult] = await sql`
       SELECT COUNT(*) as count FROM experiences
@@ -81,6 +85,8 @@ export async function createExperience(data: {
   author_name?: string
   author_email?: string
 }): Promise<{ success: boolean; error?: string }> {
+  const sql = getSql()
+  
   try {
     // Validate required fields
     if (!data.country_code || !data.country_name || !data.title || !data.description) {
@@ -120,6 +126,8 @@ export async function createExperience(data: {
 
 // Increment helpful count
 export async function incrementHelpful(experienceId: number): Promise<{ success: boolean }> {
+  const sql = getSql()
+  
   try {
     await sql`
       UPDATE experiences
@@ -139,6 +147,8 @@ export async function incrementHelpful(experienceId: number): Promise<{ success:
 
 // Delete an experience
 export async function deleteExperience(experienceId: number): Promise<{ success: boolean }> {
+  const sql = getSql()
+  
   try {
     await sql`
       DELETE FROM experiences
