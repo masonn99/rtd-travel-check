@@ -4,9 +4,9 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'RTD Travel Check - Real-Time Payments Travel Validator',
-  description: 'Check if Visa Real-Time Payments (RTP/RTD) are supported in your travel destinations',
-  keywords: 'visa, real-time payments, RTD, RTP, travel, payments, international',
+  title: 'RTD Travel Check - Visa requirements for US refugee travel document holders',
+  description: 'A platform where refugee travel document holders share their travel experience, from traveling visa-free to visa-application process',
+  keywords: 'visa, RTD, Refugee travel document, i-131, i-571, visa requirements'
 }
 
 export default function RootLayout({
