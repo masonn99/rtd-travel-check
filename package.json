@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-sitemap": "node scripts/generate-sitemap.js"
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "vercel-build": "npm run build && node scripts/vercel-init-db.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "1.0.2",
