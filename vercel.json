@@ -3,6 +3,7 @@
   "buildCommand": "npm run vercel-build",
   "outputDirectory": ".next",
   "installCommand": "npm install",
+  "framework": "nextjs",
   "headers": [
     {
       "source": "/sitemap.xml",
