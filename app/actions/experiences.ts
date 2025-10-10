@@ -2,6 +2,7 @@
 
 import { getSql } from '../lib/db'
 import { revalidatePath } from 'next/cache'
+import { validateExperienceData, sanitizeExperienceData } from '../lib/security'
 
 export interface Experience {
   id: number
@@ -88,10 +89,14 @@ export async function createExperience(data: {
   const sql = getSql()
   
   try {
-    // Validate required fields
-    if (!data.country_code || !data.country_name || !data.title || !data.description) {
-      return { success: false, error: 'Missing required fields' }
+    // Validate input data
+    const validation = validateExperienceData(data)
+    if (!validation.isValid) {
+      return { success: false, error: validation.errors.join(', ') }
     }
+
+    // Sanitize input data
+    const sanitizedData = sanitizeExperienceData(data)
 
     // Insert the experience
     await sql`
@@ -104,13 +109,13 @@ export async function createExperience(data: {
         author_name,
         author_email
       ) VALUES (
-        ${data.country_code},
-        ${data.country_name},
-        ${data.experience_type},
-        ${data.title},
-        ${data.description},
-        ${data.author_name || null},
-        ${data.author_email || null}
+        ${sanitizedData.country_code},
+        ${sanitizedData.country_name},
+        ${sanitizedData.experience_type},
+        ${sanitizedData.title},
+        ${sanitizedData.description},
+        ${sanitizedData.author_name},
+        ${sanitizedData.author_email}
       )
     `
 
