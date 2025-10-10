@@ -10,6 +10,10 @@
 /build
 /dist
 
+# Next.js
+/.next/
+/out/
+
 # Misc
 .DS_Store
 .env
@@ -27,3 +31,29 @@ yarn-error.log*
 .env.local
 .env.*.local
 server/.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# TypeScript cache
+*.tsbuildinfo

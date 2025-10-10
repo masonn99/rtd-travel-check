@@ -48,17 +48,41 @@ const WorldMap = () => {
   }, []);
 
   return (
-    <div className="relative">
-      <div className="h-[500px] w-full max-w-5xl mx-auto">
-      <ComposableMap 
-        projection="geoNaturalEarth1"
-        width={800}
-        height={450}
-        projectionConfig={{
-          scale: 150,
-          center: [10, 20]  // Shifted center down by 20 degrees
-        }}
-      >
+    <div className="relative animate-fadeIn">
+      {/* Stats Bar */}
+      <div className="mb-8">
+        <div className="bg-zinc-800/30 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-6">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <span>🌍</span>
+            Global Visa Requirements Overview
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { label: 'Visa Free', count: visaData.filter(c => c.visaRequirement.includes('not required')).length, color: 'emerald' },
+              { label: 'E-Visa', count: visaData.filter(c => c.visaRequirement.includes('E-Visa') || c.visaRequirement.includes('E-visa')).length, color: 'blue' },
+              { label: 'Visa Required', count: visaData.filter(c => c.visaRequirement.includes('Visa required')).length, color: 'amber' },
+              { label: 'Not Recognized', count: visaData.filter(c => c.visaRequirement.includes('Does not recognize')).length, color: 'red' },
+            ].map((stat) => (
+              <div key={stat.label} className={`bg-${stat.color}-500/5 border border-${stat.color}-500/20 rounded-xl p-4`}>
+                <div className={`text-2xl font-bold text-${stat.color}-400 mb-1`}>{stat.count}</div>
+                <div className="text-xs text-zinc-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-zinc-800/30 backdrop-blur-sm border border-zinc-700/50 rounded-2xl overflow-hidden">
+        <div className="h-[450px] sm:h-[500px] w-full max-w-5xl mx-auto p-4 sm:p-6">
+          <ComposableMap
+            projection="geoNaturalEarth1"
+            width={800}
+            height={450}
+            projectionConfig={{
+              scale: 150,
+              center: [10, 10]
+            }}
+          >
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map(geo => {
@@ -115,32 +139,36 @@ const WorldMap = () => {
           }
         </Geographies>
       </ComposableMap>
-      <div className="mt-4 flex flex-wrap gap-4 justify-center">
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-green-500 mr-2"></div>
-          <span className="text-white">Visa Not Required</span>
         </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-[#86efac] mr-2"></div>
-          <span className="text-white">E-Visa Available</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-yellow-500 mr-2"></div>
-          <span className="text-white">Visa Required</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-red-500 mr-2"></div>
-          <span className="text-white">Does not recognize RTD</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-gray-500 mr-2"></div>
-          <span className="text-white">No Info</span>
+
+        {/* Legend */}
+        <div className="mt-6 pt-6 border-t border-zinc-700/50 bg-zinc-800/60 backdrop-blur-sm -mx-4 sm:-mx-6 px-4 sm:px-6 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            {[
+              { color: '#10b981', label: 'Visa Not Required', icon: '✓' },
+              { color: '#86efac', label: 'E-Visa Available', icon: '⚡' },
+              { color: '#f59e0b', label: 'Visa Required', icon: '📋' },
+              { color: '#ef4444', label: 'Does not recognize RTD', icon: '✕' },
+              { color: '#6b7280', label: 'No Info', icon: '?' },
+            ].map((item) => (
+              <div key={item.label} className="flex items-center gap-2 group">
+                <div
+                  className="w-4 h-4 rounded border border-zinc-600 group-hover:scale-110 transition-transform shadow-sm"
+                  style={{ backgroundColor: item.color }}
+                ></div>
+                <span className="text-xs sm:text-sm text-zinc-300 group-hover:text-white transition-colors">
+                  <span className="mr-1">{item.icon}</span>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      </div>
-      <div 
+
+      <div
         id="map-tooltip"
-        className="hidden fixed pointer-events-none transition-opacity duration-200"
+        className="hidden fixed pointer-events-none bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg shadow-2xl"
         style={{ zIndex: 100 }}
       ></div>
     </div>
