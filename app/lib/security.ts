@@ -2,6 +2,7 @@
 
 /**
  * Sanitize user input to prevent XSS attacks
+ * Only encodes characters that could be used in XSS attacks
  */
 export function sanitizeInput(input: string): string {
   if (!input) return '';
@@ -10,8 +11,9 @@ export function sanitizeInput(input: string): string {
     .replace(/</g, '<')
     .replace(/>/g, '>')
     .replace(/"/g, '"')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;');
+    .replace(/'/g, '&#x27;');
+    // Removed forward slash encoding as it's not typically needed for XSS protection
+    // and causes issues with common text like "5/5" and "N/A"
 }
 
 /**
@@ -33,7 +35,7 @@ export function isValidCountryCode(code: string): boolean {
  * Validate experience type
  */
 export function isValidExperienceType(type: string): boolean {
-  const validTypes = ['Visa Free', 'E-Visa', 'Visa Required'];
+  const validTypes = ['Visa Free', 'E-Visa', 'Visa Required', 'Not Recognized'];
   return validTypes.includes(type);
 }
 
