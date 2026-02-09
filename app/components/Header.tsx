@@ -1,6 +1,11 @@
 import { GlobeIcon, TableIcon, TelegramIcon, ExperiencesIcon } from './Icons';
 
-const Header = ({ onViewChange, currentView }) => {
+interface HeaderProps {
+  onViewChange: (view: string) => void;
+  currentView: string;
+}
+
+const Header = ({ onViewChange, currentView }: HeaderProps) => {
   return (
     <header className="w-full bg-gradient-to-b from-zinc-900/95 via-zinc-900/90 to-transparent backdrop-blur-xl border-b border-zinc-800/50 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

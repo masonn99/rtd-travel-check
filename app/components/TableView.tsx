@@ -1,28 +1,33 @@
 import { useState } from 'react';
-import data from '/data.json';
 import Flag from 'react-world-flags';
 import { getCode } from 'country-list';
+import { CountryData } from '../actions/countries';
 
-const TableView = ({ onViewChange }) => {
+interface TableViewProps {
+  onViewChange: (view: string) => void;
+  countries: CountryData[];
+}
+
+const TableView = ({ onViewChange, countries }: TableViewProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
   // Color mapping based on visa requirements
-  const getColorForRequirement = (requirement) => {
+  const getColorForRequirement = (requirement: string) => {
     if (requirement.includes('not required')) return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
     if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
     if (requirement.includes('Does not recognize')) return 'bg-red-500/10 text-red-400 border-red-500/20';
     return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
   };
 
-  const getBadgeIcon = (requirement) => {
+  const getBadgeIcon = (requirement: string) => {
     if (requirement.includes('not required')) return '✓';
     if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return '⚡';
     if (requirement.includes('Does not recognize')) return '✕';
     return '📋';
   };
 
-  const filteredCountries = data
+  const filteredCountries = countries
     .filter(country => {
       const matchesSearch = country.country.toLowerCase().includes(searchTerm.toLowerCase());
       if (filterType === 'all') return matchesSearch;
@@ -35,11 +40,11 @@ const TableView = ({ onViewChange }) => {
     .sort((a, b) => a.country.localeCompare(b.country));
 
   const stats = {
-    total: data.length,
-    visaFree: data.filter(c => c.visaRequirement.includes('not required')).length,
-    eVisa: data.filter(c => c.visaRequirement.includes('E-Visa') || c.visaRequirement.includes('E-visa')).length,
-    visaRequired: data.filter(c => c.visaRequirement.includes('Visa required')).length,
-    notRecognized: data.filter(c => c.visaRequirement.includes('Does not recognize')).length,
+    total: countries.length,
+    visaFree: countries.filter(c => c.visaRequirement.includes('not required')).length,
+    eVisa: countries.filter(c => c.visaRequirement.includes('E-Visa') || c.visaRequirement.includes('E-visa')).length,
+    visaRequired: countries.filter(c => c.visaRequirement.includes('Visa required')).length,
+    notRecognized: countries.filter(c => c.visaRequirement.includes('Does not recognize')).length,
   };
 
   return (
@@ -124,7 +129,7 @@ const TableView = ({ onViewChange }) => {
           )}
         </div>
         <div className="mt-2 text-xs text-zinc-500">
-          Showing {filteredCountries.length} of {data.length} countries
+          Showing {filteredCountries.length} of {countries.length} countries
         </div>
       </div>
 

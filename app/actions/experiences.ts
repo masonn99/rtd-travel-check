@@ -149,22 +149,3 @@ export async function incrementHelpful(experienceId: number): Promise<{ success:
     return { success: false }
   }
 }
-
-// Delete an experience
-export async function deleteExperience(experienceId: number): Promise<{ success: boolean }> {
-  const sql = getSql()
-  
-  try {
-    await sql`
-      DELETE FROM experiences
-      WHERE id = ${experienceId}
-    `
-
-    revalidatePath('/')
-
-    return { success: true }
-  } catch (error) {
-    console.error('Error deleting experience:', error)
-    return { success: false }
-  }
-}

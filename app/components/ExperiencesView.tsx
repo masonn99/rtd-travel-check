@@ -1,41 +1,27 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { getExperienceStats } from '../actions/experiences'
+import { useState } from 'react'
+import { getExperienceStats, Experience, ExperienceStats } from '../actions/experiences'
 import ExperienceForm from './ExperienceForm'
 import ExperienceList from './ExperienceList'
 
-const ExperiencesView = () => {
+interface ExperiencesViewProps {
+  initialExperiences: Experience[]
+  initialStats: ExperienceStats
+}
+
+const ExperiencesView = ({ initialExperiences, initialStats }: ExperiencesViewProps) => {
   const [refreshKey, setRefreshKey] = useState(0)
-  const [stats, setStats] = useState({
-    total: 0,
-    countries: 0,
-    helpfulVotes: 0,
-    thisMonth: 0
-  })
+  const [stats, setStats] = useState<ExperienceStats>(initialStats)
 
-  useEffect(() => {
-    // Fetch stats from server
-    const fetchStats = async () => {
-      try {
-        const data = await getExperienceStats()
-        setStats(data)
-      } catch (error) {
-        console.error('Failed to fetch stats:', error)
-        // Set default stats when database is unavailable
-        setStats({
-          total: 0,
-          countries: 0,
-          helpfulVotes: 0,
-          thisMonth: 0
-        })
-      }
+  const handleSubmitSuccess = async () => {
+    // Refresh stats after submission
+    try {
+      const newStats = await getExperienceStats()
+      setStats(newStats)
+    } catch (error) {
+      console.error('Failed to refresh stats:', error)
     }
-
-    fetchStats()
-  }, [refreshKey])
-
-  const handleSubmitSuccess = () => {
     setRefreshKey(prev => prev + 1)
   }
 
@@ -92,7 +78,7 @@ const ExperiencesView = () => {
             Sorted by newest first
           </div>
         </div>
-        <ExperienceList key={refreshKey} />
+        <ExperienceList key={refreshKey} initialExperiences={initialExperiences} />
       </div>
     </div>
   )

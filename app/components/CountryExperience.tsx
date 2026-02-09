@@ -1,11 +1,19 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ArrowLeft, MessageSquare, User, Calendar } from 'lucide-react';
 
+interface Post {
+  id: string;
+  content: string;
+  name: string;
+  createdAt: string;
+}
+
 const CountryExperience = () => {
-  const { countryName } = useParams();
-  const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const params = useParams();
+  const countryName = params?.countryName ? decodeURIComponent(params.countryName as string) : '';
+  const router = useRouter();
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -19,7 +27,7 @@ const CountryExperience = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 text-white">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/')}
           className="flex items-center gap-2 px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all w-full sm:w-auto"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -67,7 +75,7 @@ const CountryExperience = () => {
               <div className="text-zinc-400 mb-3">No experiences found for {countryName}</div>
               <button 
                 className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium"
-                onClick={() => navigate('/')}
+                onClick={() => router.push('/')}
               >
                 Browse Countries
               </button>

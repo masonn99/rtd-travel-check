@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { Search, Globe2, Clock, FileText, SlidersHorizontal, X } from 'lucide-react';
 import Flag from 'react-world-flags';
-import data from '/data.json';
 import { getCode } from 'country-list';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import { useRouter } from 'next/navigation';
+import { CountryData } from '../actions/countries';
 
-
-const SearchBar = () => {
+const SearchBar = ({ initialCountries }: { initialCountries: CountryData[] }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [countries, setCountries] = useState([]);
-  const [allCountries, setAllCountries] = useState([]);
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [allCountries, setAllCountries] = useState<CountryData[]>([]);
   const [activeFilter, setActiveFilter] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const navigate = useNavigate(); // Add this line
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const visaTypes = [
@@ -23,26 +22,26 @@ const SearchBar = () => {
   ];
 
   useEffect(() => {
-    const sortedCountries = [...data].sort((a, b) => a.country.localeCompare(b.country));
+    const sortedCountries = [...initialCountries].sort((a, b) => a.country.localeCompare(b.country));
     setCountries(sortedCountries);
     setAllCountries(sortedCountries);
     setIsLoading(false);
-  }, []);
+  }, [initialCountries]);
 
 
-  const handleSearch = event => {
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     filterCountries(event.target.value, activeFilter);
   };
 
-  const toggleFilter = (filterName) => {
+  const toggleFilter = (filterName: string) => {
     const newFilter = activeFilter === filterName ? '' : filterName;
     setActiveFilter(newFilter);
     setShowFilters(false); // Close the filter popup after selection
     filterCountries(searchTerm, newFilter);
   };
 
-  const filterCountries = (search, filter) => {
+  const filterCountries = (search: string, filter: string) => {
     let filtered = [...allCountries];
 
     if (search) {
@@ -68,7 +67,7 @@ const SearchBar = () => {
     setCountries(filtered);
   };
 
-  const getStatusStyles = (status) => {
+  const getStatusStyles = (status: string) => {
     const lowercaseStatus = status.toLowerCase();
     
     if (lowercaseStatus === 'visa not required') {
@@ -227,7 +226,7 @@ const SearchBar = () => {
                   className={`group p-4 sm:p-6 rounded-lg sm:rounded-xl border backdrop-blur-sm transition-all duration-300 
                             hover:transform hover:translate-y-[-2px] hover:shadow-lg hover:shadow-zinc-900/20
                             ${styles.card} relative`} // Added relative positioning
-                  onClick={() => navigate(`/country/${country.country}`)} // Add this line
+                  onClick={() => router.push(`/country/${country.country}`)} // Add this line
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                     <div className="flex items-center gap-2 sm:gap-3">

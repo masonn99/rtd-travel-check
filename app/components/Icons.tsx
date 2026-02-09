@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const GlobeIcon = ({ className }) => (
+interface IconProps {
+  className?: string;
+}
+
+export const GlobeIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -18,7 +22,7 @@ export const GlobeIcon = ({ className }) => (
   </svg>
 );
 
-export const TableIcon = ({ className }) => (
+export const TableIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -35,7 +39,7 @@ export const TableIcon = ({ className }) => (
   </svg>
 );
 
-export const TelegramIcon = ({ className }) => (
+export const TelegramIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -46,7 +50,7 @@ export const TelegramIcon = ({ className }) => (
   </svg>
 );
 
-export const ExperiencesIcon = ({ className }) => (
+export const ExperiencesIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

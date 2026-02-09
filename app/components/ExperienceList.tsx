@@ -7,23 +7,28 @@ import { getCode } from 'country-list'
 
 interface ExperienceListProps {
   filterCountry?: string | null
+  initialExperiences?: Experience[]
 }
 
-const ExperienceList = ({ filterCountry = null }: ExperienceListProps) => {
-  const [experiences, setExperiences] = useState<Experience[]>([])
-  const [loading, setLoading] = useState(true)
+const ExperienceList = ({ filterCountry = null, initialExperiences = [] }: ExperienceListProps) => {
+  const [experiences, setExperiences] = useState<Experience[]>(initialExperiences)
+  const [loading, setLoading] = useState(initialExperiences.length === 0)
   const [filterVisaType, setFilterVisaType] = useState('all')
   const [votedExperiences, setVotedExperiences] = useState(new Set<number>())
 
   useEffect(() => {
-    const fetchExperiences = async () => {
-      const data = await getExperiences()
-      setExperiences(data)
-      setLoading(false)
+    // Only fetch if we didn't get initial experiences or if this is a refresh (key changed)
+    if (initialExperiences.length === 0) {
+      const fetchExperiences = async () => {
+        const data = await getExperiences()
+        setExperiences(data)
+        setLoading(false)
+      }
+      fetchExperiences()
+    } else {
+        setLoading(false)
     }
-
-    fetchExperiences()
-  }, [])
+  }, [initialExperiences])
 
   const handleVote = async (experienceId: number) => {
     if (votedExperiences.has(experienceId)) {

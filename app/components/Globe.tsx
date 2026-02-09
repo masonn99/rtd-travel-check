@@ -1,51 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-import visaData from '/data.json';
+import { CountryData } from '../actions/countries';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
-const WorldMap = () => {
-  const [data, setData] = useState([]);
+interface WorldMapProps {
+  countries: CountryData[];
+}
 
+const WorldMap = ({ countries }: WorldMapProps) => {
   // Color mapping based on visa requirements
-  const getColorForRequirement = (requirement) => {
-    if (requirement.includes('not required')) return '#10b981'; // Green
-    if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return '#86efac'; // Light Green
-    if (requirement.includes('Does not recognize')) return '#ef4444'; // Red
+  const getColorForRequirement = (requirement: string) => {
+    if (!requirement) return '#6b7280';
+    const reqLower = requirement.toLowerCase();
+    if (reqLower.includes('not required')) return '#10b981'; // Green
+    if (reqLower.includes('e-visa')) return '#86efac'; // Light Green
+    if (reqLower.includes('does not recognize')) return '#ef4444'; // Red
     return '#f59e0b'; // Yellow (for visa required)
   };
 
-  useEffect(() => {
-    fetch(geoUrl)
-      .then(res => res.json())
-      .then(geoData => {
-        const processed = geoData.objects.countries.geometries.map(geo => {
-          const countryName = geo.properties.name;
-          const visaInfo = visaData.find(item => {
-            // Handle common naming differences
-            const dataCountry = item.country.toLowerCase();
-            const mapCountry = countryName.toLowerCase();
-            
-            // Special cases
-            if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
-            if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
-            if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
-            if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
-            if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
-            
-            // General matching
-            return mapCountry.includes(dataCountry) || 
-                   dataCountry.includes(mapCountry);
-          });
-          
-          return {
-            ...geo,
-            color: visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#6b7280'
-          };
-        });
-        setData(processed);
-      });
-  }, []);
+  // Known mapping differences between TopoJSON and our DB
+  const nameAliases: { [key: string]: string } = {
+    'united states of america': 'united states',
+    'united states': 'united states of america',
+    'vietnam': 'viet nam',
+    'south korea': 'korea, republic of',
+    'north korea': "korea, democratic people's republic of",
+    'laos': "lao people's democratic republic",
+    'syria': 'syrian arab republic',
+    'moldova': 'moldova, republic of',
+    'russia': 'russian federation',
+    'bolivia': 'bolivia, plurinational state of',
+    'venezuela': 'venezuela, bolivarian republic of',
+    'iran': 'iran, islamic republic of',
+    'tanzania': 'tanzania, united republic of',
+    'congo': 'congo, republic of the',
+    'dr congo': 'congo, democratic republic of the',
+    'ivory coast': "cote d'ivoire",
+    'cape verde': 'cabo verde',
+    'swaziland': 'eswatini',
+    'turkey': 'türkiye',
+    'brunei': 'brunei darussalam',
+    'palestine': 'palestine, state of',
+    'micronesia': 'micronesia, federated states of',
+    'east timor': 'timor-leste'
+  };
 
   return (
     <div className="relative animate-fadeIn">
@@ -58,10 +57,10 @@ const WorldMap = () => {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Visa Free', count: visaData.filter(c => c.visaRequirement.includes('not required')).length, color: 'emerald' },
-              { label: 'E-Visa', count: visaData.filter(c => c.visaRequirement.includes('E-Visa') || c.visaRequirement.includes('E-visa')).length, color: 'blue' },
-              { label: 'Visa Required', count: visaData.filter(c => c.visaRequirement.includes('Visa required')).length, color: 'amber' },
-              { label: 'Not Recognized', count: visaData.filter(c => c.visaRequirement.includes('Does not recognize')).length, color: 'red' },
+              { label: 'Visa Free', count: countries.filter(c => c.visaRequirement?.includes('not required')).length, color: 'emerald' },
+              { label: 'E-Visa', count: countries.filter(c => c.visaRequirement?.includes('E-Visa') || c.visaRequirement?.includes('E-visa')).length, color: 'blue' },
+              { label: 'Visa Required', count: countries.filter(c => c.visaRequirement?.includes('Visa required')).length, color: 'amber' },
+              { label: 'Not Recognized', count: countries.filter(c => c.visaRequirement?.includes('Does not recognize')).length, color: 'red' },
             ].map((stat) => (
               <div key={stat.label} className={`bg-${stat.color}-500/5 border border-${stat.color}-500/20 rounded-xl p-4`}>
                 <div className={`text-2xl font-bold text-${stat.color}-400 mb-1`}>{stat.count}</div>
@@ -84,21 +83,39 @@ const WorldMap = () => {
             }}
           >
         <Geographies geography={geoUrl}>
-          {({ geographies }) =>
+          {({ geographies }: { geographies: any[] }) =>
             geographies.map(geo => {
               const countryName = geo.properties.name;
-              const visaInfo = visaData.find(item => {
-                const dataCountry = item.country.toLowerCase();
-                const mapCountry = countryName.toLowerCase();
-                if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
-                if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
-                if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
-                if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
-                if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
-                return mapCountry.includes(dataCountry) || dataCountry.includes(mapCountry);
-              });
-              const color = visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#6b7280';
+              const mapCountryLower = countryName.toLowerCase().trim();
               
+              const visaInfo = countries.find(item => {
+                const dataCountryLower = item.country.toLowerCase().trim();
+                
+                // 1. Exact match
+                if (mapCountryLower === dataCountryLower) return true;
+                
+                // 2. Alias match
+                if (nameAliases[mapCountryLower] === dataCountryLower) return true;
+                if (nameAliases[dataCountryLower] === mapCountryLower) return true;
+
+                // 3. Map name includes Data name (e.g., "Republic of Mali" includes "Mali")
+                // We AVOID data includes map (e.g., "Romania" includes "Oman") to prevent false positives
+                if (mapCountryLower.includes(dataCountryLower) && dataCountryLower.length > 3) return true;
+
+                return false;
+              });
+
+              if (countryName === 'Oman') {
+                 console.log('Oman Debug:', {
+                    mapName: countryName,
+                    found: !!visaInfo,
+                    matchedCountry: visaInfo?.country,
+                    requirement: visaInfo?.visaRequirement
+                 });
+              }
+
+              const color = visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#6b7280';
+
               return (
                 <Geography
                   key={geo.rsmKey}
@@ -111,7 +128,7 @@ const WorldMap = () => {
                     hover: { fill: '#3B82F6', outline: 'none' },
                     pressed: { outline: 'none' },
                   }}
-                  onMouseMove={(e) => {
+                  onMouseMove={(e: React.MouseEvent) => {
                     const tooltip = document.getElementById('map-tooltip');
                     if (tooltip && visaInfo) {
                       let requirementText = visaInfo.visaRequirement;
