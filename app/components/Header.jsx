@@ -2,90 +2,88 @@ import { GlobeIcon, TableIcon, TelegramIcon, ExperiencesIcon } from './Icons';
 
 const Header = ({ onViewChange, currentView }) => {
   return (
-    <header className="w-full bg-gradient-to-b from-zinc-900/95 via-zinc-900/90 to-transparent backdrop-blur-xl border-b border-zinc-800/50 sticky top-0 z-40">
+    <header className="w-full bg-zinc-950/50 backdrop-blur-2xl border-b border-zinc-800/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4 sm:py-5">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2 sm:p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
-              <span className="text-xl sm:text-2xl">✈️</span>
+        <div className="flex items-center justify-between h-20">
+          {/* Logo & Title */}
+          <div className="flex items-center gap-4">
+            <div className="relative group cursor-pointer" onClick={() => onViewChange('globe')}>
+               <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+               <div className="relative bg-zinc-900 ring-1 ring-zinc-800 rounded-xl p-2.5 flex items-center justify-center shadow-2xl">
+                  <span className="text-xl">✈️</span>
+               </div>
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-sm sm:text-lg md:text-xl font-bold text-white leading-tight">
-                <span className="hidden md:inline">Visa Requirements for RTD Holders</span>
-                <span className="md:hidden">RTD Visa Guide</span>
+            <div>
+              <h1 className="text-sm sm:text-base font-black text-white tracking-tight uppercase leading-none">
+                RTD <span className="text-blue-500">Travel</span> Check
               </h1>
-              <p className="text-[10px] sm:text-xs text-zinc-400 hidden sm:block">I-571 Travel Document (US)</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Centered Navigation Tabs - Desktop */}
+          <nav className="hidden md:flex items-center">
+            <div className="flex p-1 bg-zinc-900/50 backdrop-blur-md rounded-2xl border border-zinc-800/50 shadow-inner">
+              {[
+                { id: 'globe', label: 'Globe', icon: GlobeIcon },
+                { id: 'table', label: 'Directory', icon: TableIcon },
+                { id: 'experiences', label: 'Community', icon: ExperiencesIcon },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => onViewChange(tab.id)}
+                  className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                    currentView === tab.id
+                      ? 'bg-blue-600 text-white shadow-[0_0_20px_-5px_rgba(37,99,235,0.5)]'
+                      : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  <tab.icon className={`h-4 w-4 ${currentView === tab.id ? 'text-white' : 'text-zinc-500'}`} />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          {/* Social / CTA */}
+          <div className="flex items-center">
             <a
               href="https://t.me/+hgENDIRxoTs0NGQx"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-zinc-800/50 backdrop-blur-sm hover:bg-zinc-700/50 rounded-xl text-xs sm:text-sm font-medium text-white border border-zinc-700/50 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105"
+              className="group relative inline-flex items-center justify-center p-0.5 overflow-hidden rounded-xl font-bold transition-all duration-300 hover:scale-105 active:scale-95"
             >
-              <TelegramIcon className="h-4 w-4" />
-              <span className="hidden md:inline">Join Community</span>
-              <span className="md:hidden hidden sm:inline">Join</span>
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 to-cyan-500 group-hover:from-blue-500 group-hover:to-cyan-400"></span>
+              <span className="relative px-4 py-2 bg-zinc-950 rounded-[10px] transition-all duration-200 group-hover:bg-opacity-0">
+                <div className="flex items-center gap-2">
+                  <TelegramIcon className="h-3.5 w-3.4 text-white" />
+                  <span className="text-[10px] sm:text-xs font-black text-white uppercase tracking-widest">Join Community</span>
+                </div>
+              </span>
             </a>
           </div>
         </div>
 
-        <div className="pb-4 sm:pb-6 text-center">
-          <div className="inline-flex flex-col items-center gap-3 sm:gap-4 px-4 py-3 sm:py-4 rounded-2xl bg-zinc-800/30 backdrop-blur-sm border border-zinc-700/30">
-            <p className="text-xs sm:text-sm md:text-base text-zinc-300 font-medium">
-              Community-sourced visa information for US Refugee Travel Document holders
-            </p>
-            <div className="flex items-center gap-2 text-[10px] sm:text-xs text-zinc-400">
-              <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                Updated regularly
-              </span>
-              <span className="hidden sm:inline">•</span>
-              <span>Always verify with official sources</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="pb-4 sm:pb-6">
-          <div className="flex items-center justify-center overflow-x-auto">
-            <div className="inline-flex bg-zinc-900/50 backdrop-blur-sm rounded-xl p-1.5 border border-zinc-700/50 shadow-lg">
+        {/* Mobile Navigation Tabs */}
+        <div className="md:hidden flex items-center justify-center pb-4 pt-1">
+          <div className="flex w-full p-1 bg-zinc-900/50 backdrop-blur-md rounded-2xl border border-zinc-800/50 shadow-inner">
+            {[
+              { id: 'globe', label: 'Globe', icon: GlobeIcon },
+              { id: 'table', label: 'List', icon: TableIcon },
+              { id: 'experiences', label: 'Stories', icon: ExperiencesIcon },
+            ].map((tab) => (
               <button
-                onClick={() => onViewChange('globe')}
-                className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                  currentView === 'globe'
-                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
+                key={tab.id}
+                onClick={() => onViewChange(tab.id)}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
+                  currentView === tab.id
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-zinc-500'
                 }`}
               >
-                <GlobeIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Globe</span>
+                <tab.icon className="h-3.5 w-3.5" />
+                <span>{tab.label}</span>
               </button>
-              <button
-                onClick={() => onViewChange('table')}
-                className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                  currentView === 'table'
-                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
-                }`}
-              >
-                <TableIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Table</span>
-              </button>
-              <button
-                onClick={() => onViewChange('experiences')}
-                className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                  currentView === 'experiences'
-                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
-                }`}
-              >
-                <ExperiencesIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Experiences</span>
-              </button>
-            </div>
+            ))}
           </div>
         </div>
       </div>
