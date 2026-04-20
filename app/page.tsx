@@ -15,7 +15,7 @@ export default function Home() {
       case 'globe':
         return <WorldGlobe />
       case 'table':
-        return <TableView onViewChange={setCurrentView} />
+        return <TableView />
       case 'experiences':
         return <ExperiencesView />
       default:
