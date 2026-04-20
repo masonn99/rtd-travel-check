@@ -1,7 +1,7 @@
 'use server'
 
 import { getSql } from '../lib/db'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, unstable_cache } from 'next/cache'
 import { validateExperienceData, sanitizeExperienceData } from '../lib/security'
 
 export interface Experience {
@@ -25,56 +25,57 @@ export interface ExperienceStats {
   thisMonth: number
 }
 
-// Get all experiences
-export async function getExperiences(): Promise<Experience[]> {
-  const sql = getSql()
-  
-  try {
-    const result = await sql`
-      SELECT * FROM experiences
-      ORDER BY created_at DESC
-      LIMIT 100
-    `
-    return result as Experience[]
-  } catch (error) {
-    console.error('Error fetching experiences:', error)
-    return []
-  }
-}
-
-// Get experience stats
-export async function getExperienceStats(): Promise<ExperienceStats> {
-  const sql = getSql()
-  
-  try {
-    const [totalResult] = await sql`
-      SELECT COUNT(*) as count FROM experiences
-    `
-
-    const [countriesResult] = await sql`
-      SELECT COUNT(DISTINCT country_code) as count FROM experiences
-    `
-
-    const [helpfulResult] = await sql`
-      SELECT COALESCE(SUM(helpful_count), 0) as total FROM experiences
-    `
-
-    const [thisMonthResult] = await sql`
-      SELECT COUNT(*) as count FROM experiences
-      WHERE DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_TIMESTAMP)
-    `
-
-    return {
-      total: Number(totalResult.count) || 0,
-      countries: Number(countriesResult.count) || 0,
-      helpfulVotes: Number(helpfulResult.total) || 0,
-      thisMonth: Number(thisMonthResult.count) || 0,
+// Get all experiences - Cached for 1 hour, but revalidated on change
+export const getExperiences = unstable_cache(
+  async (): Promise<Experience[]> => {
+    const sql = getSql()
+    
+    try {
+      const result = await sql`
+        SELECT * FROM experiences
+        ORDER BY created_at DESC
+        LIMIT 100
+      `
+      return result as Experience[]
+    } catch (error) {
+      console.error('Error fetching experiences:', error)
+      return []
     }
-  } catch (error) {
-    console.error('Error fetching stats:', error)
-    return { total: 0, countries: 0, helpfulVotes: 0, thisMonth: 0 }
-  }
-}
+  },
+  ['experiences-list'],
+  { revalidate: 3600, tags: ['experiences'] }
+)
+
+// Get experience stats - Optimized single query + Cached
+export const getExperienceStats = unstable_cache(
+  async (): Promise<ExperienceStats> => {
+    const sql = getSql()
+    
+    try {
+      // Execute all counts in a single query to reduce round-trips
+      const [result] = await sql`
+        SELECT 
+          COUNT(*) as total,
+          COUNT(DISTINCT country_code) as countries,
+          COALESCE(SUM(helpful_count), 0) as helpful_votes,
+          COUNT(*) FILTER (WHERE DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_TIMESTAMP)) as this_month
+        FROM experiences
+      `
+
+      return {
+        total: Number(result.total) || 0,
+        countries: Number(result.countries) || 0,
+        helpfulVotes: Number(result.helpful_votes) || 0,
+        thisMonth: Number(result.this_month) || 0,
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error)
+      return { total: 0, countries: 0, helpfulVotes: 0, thisMonth: 0 }
+    }
+  },
+  ['experience-stats'],
+  { revalidate: 3600, tags: ['experiences'] }
+)
 
 // Create a new experience
 export async function createExperience(data: {
