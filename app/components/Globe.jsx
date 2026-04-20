@@ -7,6 +7,33 @@ const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 const WorldMap = () => {
   const [data, setData] = useState([]);
 
+  // Common matching logic to avoid false positives and handle naming differences
+  const findVisaInfo = (countryName) => {
+    return visaData.find(item => {
+      const dataCountry = item.country.toLowerCase();
+      const mapCountry = countryName.toLowerCase();
+      
+      // Special cases
+      if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
+      if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
+      if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
+      if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
+      if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
+      
+      // Priority 1: Exact match
+      if (mapCountry === dataCountry) return true;
+      
+      // Priority 2: Word-boundary matching for longer names
+      if (dataCountry.length > 3 && mapCountry.length > 3) {
+          const dataRegex = new RegExp(`\\b${dataCountry}\\b`, 'i');
+          const mapRegex = new RegExp(`\\b${mapCountry}\\b`, 'i');
+          return dataRegex.test(mapCountry) || mapRegex.test(dataCountry);
+      }
+
+      return false;
+    });
+  };
+
   // Color mapping based on visa requirements
   const getColorForRequirement = (requirement) => {
     if (requirement.includes('not required')) return '#10b981'; // Green
@@ -21,22 +48,7 @@ const WorldMap = () => {
       .then(geoData => {
         const processed = geoData.objects.countries.geometries.map(geo => {
           const countryName = geo.properties.name;
-          const visaInfo = visaData.find(item => {
-            // Handle common naming differences
-            const dataCountry = item.country.toLowerCase();
-            const mapCountry = countryName.toLowerCase();
-            
-            // Special cases
-            if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
-            if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
-            if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
-            if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
-            if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
-            
-            // General matching
-            return mapCountry.includes(dataCountry) || 
-                   dataCountry.includes(mapCountry);
-          });
+          const visaInfo = findVisaInfo(countryName);
           
           return {
             ...geo,
@@ -87,16 +99,7 @@ const WorldMap = () => {
           {({ geographies }) =>
             geographies.map(geo => {
               const countryName = geo.properties.name;
-              const visaInfo = visaData.find(item => {
-                const dataCountry = item.country.toLowerCase();
-                const mapCountry = countryName.toLowerCase();
-                if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
-                if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
-                if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
-                if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
-                if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
-                return mapCountry.includes(dataCountry) || dataCountry.includes(mapCountry);
-              });
+              const visaInfo = findVisaInfo(countryName);
               const color = visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#6b7280';
               
               return (
