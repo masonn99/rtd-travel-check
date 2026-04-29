@@ -4,7 +4,7 @@ import visaData from '/data.json';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
-const WorldMap = () => {
+const WorldMap = ({ onViewChange }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,7 +64,7 @@ const WorldMap = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto py-8 text-white animate-fadeIn">
+    <div className="py-8 text-white animate-fadeIn">
       {/* Bento Stats Header */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-3xl p-6 flex flex-col justify-between group transition-all hover:bg-emerald-500/20">
@@ -117,6 +117,19 @@ const WorldMap = () => {
                 </div>
               ))}
            </div>
+        </div>
+
+        {/* Mobile: View List CTA */}
+        <div className="md:hidden absolute top-6 left-0 right-0 z-10 flex justify-center px-6">
+           <button 
+             onClick={() => onViewChange && onViewChange('table')}
+             className="bg-blue-600/90 backdrop-blur-md text-white px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest shadow-xl flex items-center gap-2 active:scale-95 transition-all"
+           >
+             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+             </svg>
+             Open Visa Directory
+           </button>
         </div>
 
         <div className="h-[500px] sm:h-[600px] w-full flex items-center justify-center p-4">
@@ -188,6 +201,13 @@ const WorldMap = () => {
                 {label}
              </span>
            ))}
+        </div>
+
+        {/* Mobile Interaction Hint */}
+        <div className="md:hidden absolute bottom-16 left-0 right-0 flex justify-center pointer-events-none">
+           <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest animate-pulse bg-zinc-900/40 px-3 py-1 rounded-full">
+             Drag to explore globe
+           </span>
         </div>
       </div>
 

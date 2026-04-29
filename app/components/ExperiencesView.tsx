@@ -36,10 +36,10 @@ const ExperiencesView = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
+    <div className="py-8 text-white animate-fadeIn">
       {/* Modern Bento Header */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="md:col-span-2 bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 backdrop-blur-md border border-zinc-700/50 rounded-3xl p-8 flex flex-col justify-center animate-fadeIn">
+        <div className="md:col-span-2 bg-gradient-to-br from-zinc-800/40 to-zinc-900/40 backdrop-blur-md border border-zinc-800/50 rounded-3xl p-8 flex flex-col justify-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
             Community <span className="text-blue-500">Experiences</span>
           </h1>
@@ -48,7 +48,7 @@ const ExperiencesView = () => {
           </p>
         </div>
         
-        <div className="bg-blue-600 rounded-3xl p-8 flex flex-col justify-between items-start overflow-hidden relative group animate-fadeIn transition-transform hover:scale-[1.02] duration-300">
+        <div className="bg-blue-600 rounded-3xl p-8 flex flex-col justify-between items-start overflow-hidden relative group transition-transform hover:scale-[1.02] duration-300 shadow-xl shadow-blue-600/20">
           <div className="absolute -right-8 -bottom-8 text-blue-500/20 group-hover:scale-110 transition-transform duration-500">
              <svg width="160" height="160" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
@@ -77,7 +77,7 @@ const ExperiencesView = () => {
         ].map((stat, i) => (
           <div 
             key={stat.label} 
-            className="bg-zinc-800/30 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-5 hover:bg-zinc-800/50 transition-all duration-300 animate-slideUp"
+            className="bg-zinc-800/30 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-5 hover:bg-zinc-800/50 transition-all duration-300 animate-slideUp"
             style={{ animationDelay: `${i * 100}ms` }}
           >
             <div className="flex items-center justify-between mb-3">
@@ -106,17 +106,18 @@ const ExperiencesView = () => {
 
         {/* Right Column: Form Sticky */}
         <div className="lg:col-span-4 order-1 lg:order-2">
-          <div id="experience-form" className="lg:sticky lg:top-24">
-            <div className="bg-zinc-800/30 backdrop-blur-md border border-zinc-700/50 rounded-3xl overflow-hidden">
-              <div className="bg-zinc-800/50 px-6 py-4 border-b border-zinc-700/50">
+          <div id="experience-form" className="lg:sticky lg:top-24 space-y-6">
+            <div className="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/50 rounded-[2rem] overflow-hidden shadow-2xl">
+              <div className="bg-zinc-800/50 px-6 py-5 border-b border-zinc-800/50 flex items-center justify-between">
                 <h3 className="font-bold text-lg">Share Experience</h3>
+                <span className="text-blue-500 text-xs font-black uppercase tracking-widest">v2.0</span>
               </div>
               <div className="p-6">
-                <ExperienceForm onSuccess={handleSubmitSuccess} />
+                <ExperienceForm onSuccess={handleSubmitSuccess} embedded={true} />
               </div>
             </div>
             
-            <div className="mt-6 p-6 bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 rounded-3xl">
+            <div className="p-6 bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 rounded-[2rem]">
               <h4 className="text-amber-400 font-bold text-sm mb-2 flex items-center gap-2">
                 <span>💡</span> Pro Tip
               </h4>
