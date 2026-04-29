@@ -6,9 +6,11 @@ import data from '../../data.json'
 
 interface ExperienceFormProps {
   onSuccess?: () => void
+  embedded?: boolean
 }
 
-const ExperienceForm = ({ onSuccess }: ExperienceFormProps) => {
+const ExperienceForm = ({ onSuccess, embedded = false }: ExperienceFormProps) => {
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     country: '',
     travelDate: '',
@@ -22,7 +24,6 @@ const ExperienceForm = ({ onSuccess }: ExperienceFormProps) => {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showForm, setShowForm] = useState(false)
 
   const countries = data.map((c: any) => c.country).sort()
 
@@ -33,6 +34,20 @@ const ExperienceForm = ({ onSuccess }: ExperienceFormProps) => {
     'Visa on Arrival',
     'Not Recognized'
   ]
+
+  const handleNext = () => {
+    if (step === 1) {
+      if (!formData.country || !formData.travelDate || !formData.visaType) {
+        alert('Please fill in all required fields.')
+        return
+      }
+    }
+    setStep(step + 1)
+  }
+
+  const handleBack = () => {
+    setStep(step - 1)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -105,7 +120,7 @@ ${formData.tips ? `Tips & Advice:\n${formData.tips}` : ''}`,
           authorName: '',
         })
 
-        setShowForm(false)
+        setStep(1)
         if (onSuccess) onSuccess()
 
         alert('Experience submitted successfully! Thank you for contributing to the community.')
@@ -120,230 +135,249 @@ ${formData.tips ? `Tips & Advice:\n${formData.tips}` : ''}`,
     }
   }
 
-  if (!showForm) {
-    return (
-      <div className="text-center py-8">
-        <button
-          onClick={() => setShowForm(true)}
-          className="px-6 py-3 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 hover:shadow-xl hover:scale-105 transition-all duration-200"
-        >
-          + Share Your Travel Experience
-        </button>
-      </div>
-    )
-  }
+  const containerClasses = embedded 
+    ? "w-full" 
+    : "max-w-3xl mx-auto bg-zinc-900/40 backdrop-blur-md border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fadeIn"
 
   return (
-    <div className="max-w-3xl mx-auto bg-zinc-800/40 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-6 sm:p-8 animate-fadeIn">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-white">Share Your Experience</h2>
-        <button
-          onClick={() => setShowForm(false)}
-          className="text-zinc-400 hover:text-white transition-colors"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Country */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
-            Country Visited *
-          </label>
-          <select
-            required
-            value={formData.country}
-            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-            className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          >
-            <option value="">Select a country</option>
-            {countries.map((country: string) => (
-              <option key={country} value={country}>{country}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Travel Date & Visa Type */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className={containerClasses}>
+      {!embedded && (
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              When did you travel? *
-            </label>
-            <div className="grid grid-cols-2 gap-2">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Share Your Experience</h2>
+            <p className="text-zinc-400 text-sm mt-1">Help others travel with confidence</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className={`h-1.5 w-8 rounded-full transition-colors duration-300 ${step >= 1 ? 'bg-blue-500' : 'bg-zinc-700'}`} />
+            <div className={`h-1.5 w-8 rounded-full transition-colors duration-300 ${step >= 2 ? 'bg-blue-500' : 'bg-zinc-700'}`} />
+          </div>
+        </div>
+      )}
+
+      {embedded && (
+        <div className="flex items-center gap-2 mb-6">
+          <div className="flex-1 h-1 rounded-full bg-zinc-800 overflow-hidden">
+            <div 
+              className="h-full bg-blue-500 transition-all duration-500 ease-out"
+              style={{ width: `${(step / 2) * 100}%` }}
+            />
+          </div>
+          <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+            Step {step} of 2
+          </span>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {step === 1 && (
+          <div className="space-y-5 animate-slideInRight">
+            {/* Country */}
+            <div>
+              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                Destination *
+              </label>
               <select
                 required
-                value={formData.travelDate.split('-')[1] || ''}
-                onChange={(e) => {
-                  const year = formData.travelDate.split('-')[0] || new Date().getFullYear()
-                  setFormData({ ...formData, travelDate: `${year}-${e.target.value}` })
-                }}
-                className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
               >
-                <option value="">Month</option>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
-              <select
-                required
-                value={formData.travelDate.split('-')[0] || ''}
-                onChange={(e) => {
-                  const month = formData.travelDate.split('-')[1] || ''
-                  setFormData({ ...formData, travelDate: `${e.target.value}-${month}` })
-                }}
-                className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              >
-                <option value="">Year</option>
-                {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                  <option key={year} value={year}>{year}</option>
+                <option value="">Select country</option>
+                {countries.map((country: string) => (
+                  <option key={country} value={country}>{country}</option>
                 ))}
               </select>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">
-              Visa Type *
-            </label>
-            <select
-              required
-              value={formData.visaType}
-              onChange={(e) => setFormData({ ...formData, visaType: e.target.value })}
-              className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            {/* Visa Type & Date */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                  Visa Type *
+                </label>
+                <select
+                  required
+                  value={formData.visaType}
+                  onChange={(e) => setFormData({ ...formData, visaType: e.target.value })}
+                  className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                >
+                  <option value="">Select type</option>
+                  {visaTypes.map(type => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                  Travel Date *
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <select
+                    required
+                    value={formData.travelDate.split('-')[1] || ''}
+                    onChange={(e) => {
+                      const year = formData.travelDate.split('-')[0] || new Date().getFullYear()
+                      setFormData({ ...formData, travelDate: `${year}-${e.target.value}` })
+                    }}
+                    className="w-full px-3 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  >
+                    <option value="">Month</option>
+                    {['01','02','03','04','05','06','07','08','09','10','11','12'].map(m => (
+                      <option key={m} value={m}>{new Date(2000, parseInt(m)-1).toLocaleString('default', { month: 'short' })}</option>
+                    ))}
+                  </select>
+                  <select
+                    required
+                    value={formData.travelDate.split('-')[0] || ''}
+                    onChange={(e) => {
+                      const month = formData.travelDate.split('-')[1] || ''
+                      setFormData({ ...formData, travelDate: `${e.target.value}-${month}` })
+                    }}
+                    className="w-full px-3 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  >
+                    <option value="">Year</option>
+                    {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Difficulty Rating */}
+            <div>
+              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">
+                How difficult was the process?
+              </label>
+              <div className="flex justify-between items-center bg-zinc-950/30 p-4 rounded-2xl border border-zinc-800/50">
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, difficulty: num })}
+                    className={`w-10 h-10 rounded-xl font-bold transition-all duration-200 ${
+                      formData.difficulty === num
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 scale-110'
+                        : 'bg-zinc-800 text-zinc-500 hover:bg-zinc-700'
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+              <div className="flex justify-between text-[10px] text-zinc-600 mt-2 px-1 uppercase font-bold tracking-tighter">
+                <span>Very Easy</span>
+                <span>Neutral</span>
+                <span>Very Hard</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 group"
             >
-              <option value="">Select visa type</option>
-              {visaTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
+              Continue to Details
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
-        </div>
+        )}
 
-        {/* Processing Time */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
-            Processing Time (if applicable)
-          </label>
-          <input
-            type="text"
-            value={formData.processingTime}
-            onChange={(e) => setFormData({ ...formData, processingTime: e.target.value })}
-            placeholder="e.g., 2 weeks, 3 days"
-            className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          />
-        </div>
+        {step === 2 && (
+          <div className="space-y-5 animate-slideInRight">
+            {/* Entry Experience */}
+            <div>
+              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                Your Story *
+              </label>
+              <textarea
+                required
+                value={formData.entryExperience}
+                onChange={(e) => setFormData({ ...formData, entryExperience: e.target.value })}
+                placeholder="Documents asked, interview questions, arrival experience..."
+                rows={4}
+                className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none transition-all"
+              />
+              <p className="text-[10px] text-zinc-600 mt-1 italic">Minimum 20 characters</p>
+            </div>
 
-        {/* Difficulty Rating */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
-            Process Difficulty (1 = Very Easy, 5 = Very Hard) *
-          </label>
-          <div className="flex items-center gap-4">
-            <input
-              type="range"
-              min="1"
-              max="5"
-              value={formData.difficulty}
-              onChange={(e) => setFormData({ ...formData, difficulty: parseInt(e.target.value) })}
-              className="flex-1"
-            />
-            <span className="text-2xl font-bold text-blue-400 w-8 text-center">
-              {formData.difficulty}
-            </span>
+            {/* Tips */}
+            <div>
+              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                Any Pro-Tips?
+              </label>
+              <textarea
+                value={formData.tips}
+                onChange={(e) => setFormData({ ...formData, tips: e.target.value })}
+                placeholder="Optional: things you wish you knew before"
+                rows={2}
+                className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none transition-all"
+              />
+            </div>
+
+            {/* Optional Fields Toggle */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                  Processing Time
+                </label>
+                <input
+                  type="text"
+                  value={formData.processingTime}
+                  onChange={(e) => setFormData({ ...formData, processingTime: e.target.value })}
+                  placeholder="e.g. 2 weeks"
+                  className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+                  Display Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.authorName}
+                  onChange={(e) => setFormData({ ...formData, authorName: e.target.value })}
+                  placeholder="Anonymous"
+                  className="w-full px-4 py-3 bg-zinc-950/50 border border-zinc-800 rounded-2xl text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="flex items-center gap-3 cursor-pointer group/check">
+                <input
+                  type="checkbox"
+                  checked={formData.hasGreenCard}
+                  onChange={(e) => setFormData({ ...formData, hasGreenCard: e.target.checked })}
+                  className="w-5 h-5 rounded-lg border-zinc-800 bg-zinc-950/50 text-blue-600 focus:ring-blue-500/50 focus:ring-offset-zinc-900 transition-all"
+                />
+                <span className="text-sm font-medium text-zinc-400 group-hover/check:text-zinc-200 transition-colors">
+                  I have a US Green Card
+                </span>
+              </label>
+            </div>
+
+            <div className="flex items-center gap-4 pt-2">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="px-6 py-4 bg-zinc-800 hover:bg-zinc-700 text-white rounded-2xl font-bold transition-all"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-bold shadow-lg shadow-blue-600/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Posting...' : 'Post Experience'}
+              </button>
+            </div>
           </div>
-          <div className="flex justify-between text-xs text-zinc-500 mt-1">
-            <span>Very Easy</span>
-            <span>Very Hard</span>
-          </div>
-        </div>
-
-        {/* Green Card */}
-        <div>
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={formData.hasGreenCard}
-              onChange={(e) => setFormData({ ...formData, hasGreenCard: e.target.checked })}
-              className="w-5 h-5 rounded border-zinc-700 text-blue-600 focus:ring-blue-500 focus:ring-offset-zinc-900"
-            />
-            <span className="text-sm font-medium text-zinc-300">
-              I have a US Green Card
-            </span>
-          </label>
-        </div>
-
-        {/* Entry Experience */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
-            Entry/Exit Experience *
-          </label>
-          <textarea
-            required
-            value={formData.entryExperience}
-            onChange={(e) => setFormData({ ...formData, entryExperience: e.target.value })}
-            placeholder="Describe your experience at immigration, any issues, documents required, etc."
-            rows={4}
-            className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
-          />
-        </div>
-
-        {/* Tips */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
-            Tips & Advice
-          </label>
-          <textarea
-            value={formData.tips}
-            onChange={(e) => setFormData({ ...formData, tips: e.target.value })}
-            placeholder="Any tips or advice for other RTD holders traveling to this country?"
-            rows={3}
-            className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
-          />
-        </div>
-
-        {/* Author Name */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
-            Your Name (optional)
-          </label>
-          <input
-            type="text"
-            value={formData.authorName}
-            onChange={(e) => setFormData({ ...formData, authorName: e.target.value })}
-            placeholder="Anonymous"
-            className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          />
-        </div>
-
-        {/* Submit */}
-        <div className="flex gap-4 pt-4">
-          <button
-            type="button"
-            onClick={() => setShowForm(false)}
-            className="flex-1 px-6 py-3 bg-zinc-800/50 text-white rounded-xl font-medium border border-zinc-700/50 hover:bg-zinc-700/50 transition-all duration-200"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-1 px-6 py-3 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 hover:shadow-xl hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit Experience'}
-          </button>
-        </div>
+        )}
       </form>
     </div>
   )

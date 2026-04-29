@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import WorldGlobe from './components/Globe'
@@ -10,16 +10,23 @@ import ExperiencesView from './components/ExperiencesView'
 export default function Home() {
   const [currentView, setCurrentView] = useState('globe')
 
+  // Set default view based on screen width on initial mount
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setCurrentView('table')
+    }
+  }, [])
+
   const renderView = () => {
     switch (currentView) {
       case 'globe':
-        return <WorldGlobe />
+        return <WorldGlobe onViewChange={setCurrentView} />
       case 'table':
         return <TableView />
       case 'experiences':
         return <ExperiencesView />
       default:
-        return <WorldGlobe />
+        return <WorldGlobe onViewChange={setCurrentView} />
     }
   }
 
