@@ -13,14 +13,19 @@ const InteractiveGlobe = ({ data = [] }) => {
     let phi = 0;
     let width = 0;
 
-    const onResize = () => {
+    const updateSize = () => {
       if (canvasRef.current) {
         width = canvasRef.current.offsetWidth;
       }
     };
 
-    window.addEventListener("resize", onResize);
-    onResize();
+    updateSize();
+    // If width is still 0, try to get it from the parent or use a fallback
+    if (width === 0 && canvasRef.current) {
+      width = canvasRef.current.parentElement.offsetWidth || 300;
+    }
+
+    window.addEventListener("resize", updateSize);
 
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
@@ -57,7 +62,7 @@ const InteractiveGlobe = ({ data = [] }) => {
 
     return () => {
       globe.destroy();
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", updateSize);
     };
   }, []);
 
@@ -77,7 +82,7 @@ const InteractiveGlobe = ({ data = [] }) => {
           pointerInteracting.current = null;
           canvasRef.current.style.cursor = "grab";
         }}
-        onMouseMove={(e) => {
+        onPointerMove={(e) => {
           if (pointerInteracting.current !== null) {
             const delta = e.clientX - pointerInteracting.current;
             pointerInteractionPos.current = delta;
@@ -91,6 +96,7 @@ const InteractiveGlobe = ({ data = [] }) => {
           contain: "layout paint size",
           opacity: 0,
           transition: "opacity 1s ease",
+          touchAction: "none",
         }}
       />
     </div>
