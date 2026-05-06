@@ -1,12 +1,23 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-import visaData from '/data.json';
+import visaData from '../../data.json';
+import InteractiveGlobe from './InteractiveGlobe';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
 const WorldMap = ({ onViewChange }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Common matching logic to avoid false positives and handle naming differences
   const findVisaInfo = (countryName) => {
@@ -101,114 +112,107 @@ const WorldMap = ({ onViewChange }) => {
       </div>
 
       {/* Map Container */}
-      <div className="relative bg-zinc-900/40 backdrop-blur-md border border-zinc-700/50 rounded-[2.5rem] overflow-hidden shadow-2xl">
-        {/* Floating Legend */}
-        <div className="absolute top-6 left-6 z-10 hidden md:block">
-           <div className="bg-zinc-900/80 backdrop-blur-md border border-zinc-700/50 rounded-2xl p-4 flex flex-col gap-3">
-              {[
-                { color: '#10b981', label: 'Visa Free', icon: '✓' },
-                { color: '#3b82f6', label: 'E-Visa', icon: '⚡' },
-                { color: '#f59e0b', label: 'Required', icon: '📋' },
-                { color: '#ef4444', label: 'Restricted', icon: '✕' },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3 group">
-                   <div className="w-3 h-3 rounded-full shadow-lg transition-transform group-hover:scale-125" style={{ backgroundColor: item.color }}></div>
-                   <span className="text-[10px] font-black uppercase tracking-tighter text-zinc-400 group-hover:text-white transition-colors">{item.label}</span>
-                </div>
-              ))}
-           </div>
-        </div>
-
-        {/* Mobile: View List CTA */}
-        <div className="md:hidden absolute top-6 left-0 right-0 z-10 flex justify-center px-6">
-           <button 
-             onClick={() => onViewChange && onViewChange('table')}
-             className="bg-blue-600/90 backdrop-blur-md text-white px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest shadow-xl flex items-center gap-2 active:scale-95 transition-all"
-           >
-             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="relative bg-zinc-900/40 backdrop-blur-md border border-zinc-700/50 rounded-[2.5rem] overflow-hidden shadow-2xl min-h-[400px] flex flex-col items-center justify-center">
+        {isMobile ? (
+          <div className="w-full flex flex-col items-center py-10 px-6">
+            <div className="text-center mb-8">
+              <h2 className="text-xl font-black text-white uppercase tracking-tight mb-2">Interactive Globe</h2>
+              <p className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Touch to spin & explore</p>
+            </div>
+            
+            <InteractiveGlobe data={visaData} />
+            
+            <button 
+              onClick={() => onViewChange && onViewChange('table')}
+              className="mt-10 bg-blue-600/90 backdrop-blur-md text-white px-8 py-4 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl flex items-center gap-3 active:scale-95 transition-all w-full justify-center"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-             </svg>
-             Open Visa Directory
-           </button>
-        </div>
+              </svg>
+              Browse Full Directory
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Floating Legend */}
+            <div className="absolute top-6 left-6 z-10 hidden md:block">
+               <div className="bg-zinc-900/80 backdrop-blur-md border border-zinc-700/50 rounded-2xl p-4 flex flex-col gap-3">
+                  {[
+                    { color: '#10b981', label: 'Visa Free', icon: '✓' },
+                    { color: '#3b82f6', label: 'E-Visa', icon: '⚡' },
+                    { color: '#f59e0b', label: 'Required', icon: '📋' },
+                    { color: '#ef4444', label: 'Restricted', icon: '✕' },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center gap-3 group">
+                       <div className="w-3 h-3 rounded-full shadow-lg transition-transform group-hover:scale-125" style={{ backgroundColor: item.color }}></div>
+                       <span className="text-[10px] font-black uppercase tracking-tighter text-zinc-400 group-hover:text-white transition-colors">{item.label}</span>
+                    </div>
+                  ))}
+               </div>
+            </div>
 
-        <div className="h-[500px] sm:h-[600px] w-full flex items-center justify-center p-4">
-          <ComposableMap
-            projection="geoNaturalEarth1"
-            width={800}
-            height={450}
-            projectionConfig={{
-              scale: 170,
-              center: [10, 0]
-            }}
-            className="w-full h-full cursor-grab active:cursor-grabbing"
-          >
-            <Geographies geography={geoUrl}>
-              {({ geographies }) =>
-                geographies.map(geo => {
-                  const countryName = geo.properties.name;
-                  const visaInfo = findVisaInfo(countryName);
-                  const color = visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#3f3f46'; // zinc-700
-                  
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      fill={color}
-                      stroke="#71717a" // zinc-500
-                      strokeWidth={0.5}
-                      style={{
-                        default: { outline: 'none', transition: 'all 250ms' },
-                        hover: { fill: '#60a5fa', outline: 'none', cursor: 'pointer' },
-                        pressed: { outline: 'none' },
-                      }}
-                      onMouseMove={(e) => {
-                        const tooltip = document.getElementById('map-tooltip');
-                        if (tooltip && visaInfo) {
-                          let requirementText = visaInfo.visaRequirement;
-                          if (requirementText.includes('Does not recognize US issued Refugee Travel Document')) {
-                            requirementText = 'RTD NOT RECOGNIZED';
-                          }
-                          tooltip.innerHTML = `
-                            <div class="p-3 transition-all duration-200">
-                              <h3 class="font-black text-[10px] text-zinc-500 uppercase tracking-widest mb-1">${countryName}</h3>
-                              <p class="text-sm font-black text-white uppercase">${requirementText}</p>
-                              ${visaInfo.notes ? `<p class="text-[9px] text-zinc-400 mt-2 max-w-[200px] leading-tight italic">"${visaInfo.notes}"</p>` : ''}
-                            </div>
-                          `;
-                          tooltip.style.display = 'block';
-                          tooltip.style.left = `${e.clientX + 20}px`;
-                          tooltip.style.top = `${e.clientY + 20}px`;
-                        }
-                      }}
-                      onMouseLeave={() => {
-                        const tooltip = document.getElementById('map-tooltip');
-                        if (tooltip) tooltip.style.display = 'none';
-                      }}
-                    />
-                  );
-                })
-              }
-            </Geographies>
-          </ComposableMap>
-        </div>
-
-        {/* Mobile Legend Overlay */}
-        <div className="md:hidden absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto px-4 w-full justify-center no-scrollbar">
-           {['Free', 'E-Visa', 'Needed', 'Locked'].map((label, i) => (
-             <span key={label} className="bg-zinc-900/80 backdrop-blur-md px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest border border-zinc-700/50 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'][i] }}></span>
-                {label}
-             </span>
-           ))}
-        </div>
-
-        {/* Mobile Interaction Hint */}
-        <div className="md:hidden absolute bottom-16 left-0 right-0 flex justify-center pointer-events-none">
-           <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest animate-pulse bg-zinc-900/40 px-3 py-1 rounded-full">
-             Drag to explore globe
-           </span>
-        </div>
+            <div className="h-[600px] w-full flex items-center justify-center p-4">
+              <ComposableMap
+                projection="geoNaturalEarth1"
+                width={800}
+                height={450}
+                projectionConfig={{
+                  scale: 170,
+                  center: [10, 0]
+                }}
+                className="w-full h-full cursor-grab active:cursor-grabbing"
+              >
+                <Geographies geography={geoUrl}>
+                  {({ geographies }) =>
+                    geographies.map(geo => {
+                      const countryName = geo.properties.name;
+                      const visaInfo = findVisaInfo(countryName);
+                      const color = visaInfo ? getColorForRequirement(visaInfo.visaRequirement) : '#3f3f46'; // zinc-700
+                      
+                      return (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          fill={color}
+                          stroke="#71717a" // zinc-500
+                          strokeWidth={0.5}
+                          style={{
+                            default: { outline: 'none', transition: 'all 250ms' },
+                            hover: { fill: '#60a5fa', outline: 'none', cursor: 'pointer' },
+                            pressed: { outline: 'none' },
+                          }}
+                          onMouseMove={(e) => {
+                            const tooltip = document.getElementById('map-tooltip');
+                            if (tooltip && visaInfo) {
+                              let requirementText = visaInfo.visaRequirement;
+                              if (requirementText.includes('Does not recognize US issued Refugee Travel Document')) {
+                                requirementText = 'RTD NOT RECOGNIZED';
+                              }
+                              tooltip.innerHTML = `
+                                <div class="p-3 transition-all duration-200">
+                                  <h3 class="font-black text-[10px] text-zinc-500 uppercase tracking-widest mb-1">${countryName}</h3>
+                                  <p class="text-sm font-black text-white uppercase">${requirementText}</p>
+                                  ${visaInfo.notes ? `<p class="text-[9px] text-zinc-400 mt-2 max-w-[200px] leading-tight italic">"${visaInfo.notes}"</p>` : ''}
+                                </div>
+                              `;
+                              tooltip.style.display = 'block';
+                              tooltip.style.left = `${e.clientX + 20}px`;
+                              tooltip.style.top = `${e.clientY + 20}px`;
+                            }
+                          }}
+                          onMouseLeave={() => {
+                            const tooltip = document.getElementById('map-tooltip');
+                            if (tooltip) tooltip.style.display = 'none';
+                          }}
+                        />
+                      );
+                    })
+                  }
+                </Geographies>
+              </ComposableMap>
+            </div>
+          </>
+        )}
       </div>
 
       <div

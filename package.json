@@ -20,6 +20,7 @@
     "@types/node": "24.7.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.1.0",
+    "cobe": "^2.0.1",
     "compromise": "^14.15.0",
     "country-list": "^2.3.0",
     "dotenv": "^17.2.3",
