@@ -1,4 +1,4 @@
-import { GlobeIcon, TableIcon, TelegramIcon, ExperiencesIcon } from './Icons';
+import { TelegramIcon, ExperiencesIcon } from './Icons';
 
 const Header = ({ onViewChange, currentView }) => {
   return (
@@ -24,8 +24,8 @@ const Header = ({ onViewChange, currentView }) => {
           <nav className="hidden md:flex items-center">
             <div className="flex p-1 bg-zinc-900/50 backdrop-blur-md rounded-2xl border border-zinc-800/50 shadow-inner">
               {[
-                { id: 'globe', label: 'Globe', icon: GlobeIcon },
-                { id: 'table', label: 'Directory', icon: TableIcon },
+                { id: 'globe', label: 'Globe', emoji: '🗺️' },
+                { id: 'table', label: 'Directory', emoji: '📋' },
                 { id: 'experiences', label: 'Community', icon: ExperiencesIcon },
               ].map((tab) => (
                 <button
@@ -37,7 +37,11 @@ const Header = ({ onViewChange, currentView }) => {
                       : 'text-zinc-500 hover:text-zinc-300'
                   }`}
                 >
-                  <tab.icon className={`h-4 w-4 ${currentView === tab.id ? 'text-white' : 'text-zinc-500'}`} />
+                  {tab.emoji ? (
+                    <span className="text-sm">{tab.emoji}</span>
+                  ) : (
+                    <tab.icon className={`h-4 w-4 ${currentView === tab.id ? 'text-white' : 'text-zinc-500'}`} />
+                  )}
                   {tab.label}
                 </button>
               ))}
@@ -67,8 +71,8 @@ const Header = ({ onViewChange, currentView }) => {
         <div className="md:hidden flex items-center justify-center pb-4 pt-1">
           <div className="flex w-full p-1 bg-zinc-900/50 backdrop-blur-md rounded-2xl border border-zinc-800/50 shadow-inner">
             {[
-              { id: 'globe', label: 'Globe', icon: GlobeIcon },
-              { id: 'table', label: 'List', icon: TableIcon },
+              { id: 'globe', label: 'Globe', emoji: '🗺️' },
+              { id: 'table', label: 'List', emoji: '📋' },
               { id: 'experiences', label: 'Stories', icon: ExperiencesIcon },
             ].map((tab) => (
               <button
@@ -80,7 +84,11 @@ const Header = ({ onViewChange, currentView }) => {
                     : 'text-zinc-500'
                 }`}
               >
-                <tab.icon className="h-3.5 w-3.5" />
+                {tab.emoji ? (
+                  <span className="text-sm">{tab.emoji}</span>
+                ) : (
+                  <tab.icon className="h-3.5 w-3.5" />
+                )}
                 <span>{tab.label}</span>
               </button>
             ))}
