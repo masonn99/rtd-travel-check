@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import createGlobe from "cobe";
 
-const InteractiveGlobe = ({ data = [], onCountrySelect }) => {
+const InteractiveGlobe = ({ data = [] }) => {
   const canvasRef = useRef();
   const pointerInteracting = useRef(null);
-  const pointerInteractionPos = useRef(null);
-  const [rotation, setRotation] = useState(0);
+  const pointerInteractionPos = useRef(0);
+  const r = useRef(0);
 
   useEffect(() => {
     let phi = 0;
@@ -21,15 +21,6 @@ const InteractiveGlobe = ({ data = [], onCountrySelect }) => {
 
     window.addEventListener("resize", onResize);
     onResize();
-
-    // Map countries to markers
-    // For performance, we'll only show a subset or just use the globe as a visual anchor
-    // In this case, let's create markers for a few key regions or all if not too many
-    const markers = data.map(country => {
-        // We'd need lat/long for each country. 
-        // For now, let's use a few representative markers or keep it clean
-        return null;
-    }).filter(Boolean);
 
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
@@ -52,7 +43,7 @@ const InteractiveGlobe = ({ data = [], onCountrySelect }) => {
         if (!pointerInteracting.current) {
           phi += 0.005;
         }
-        state.phi = phi + rotation;
+        state.phi = phi + r.current;
         state.width = width * 2;
         state.height = width * 2;
       },
@@ -68,15 +59,14 @@ const InteractiveGlobe = ({ data = [], onCountrySelect }) => {
       globe.destroy();
       window.removeEventListener("resize", onResize);
     };
-  }, [data, rotation]);
+  }, []);
 
   return (
-    <div className="w-full aspect-square max-w-[500px] mx-auto relative">
+    <div className="w-full aspect-square max-w-[500px] mx-auto relative overflow-hidden">
       <canvas
         ref={canvasRef}
         onPointerDown={(e) => {
-          pointerInteracting.current =
-            e.clientX - pointerInteractionPos.current;
+          pointerInteracting.current = e.clientX - pointerInteractionPos.current;
           canvasRef.current.style.cursor = "grabbing";
         }}
         onPointerUp={() => {
@@ -91,7 +81,7 @@ const InteractiveGlobe = ({ data = [], onCountrySelect }) => {
           if (pointerInteracting.current !== null) {
             const delta = e.clientX - pointerInteracting.current;
             pointerInteractionPos.current = delta;
-            setRotation(delta / 200);
+            r.current = delta / 200;
           }
         }}
         style={{
