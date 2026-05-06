@@ -1,7 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import visaData from '../../data.json';
-import InteractiveGlobe from './InteractiveGlobe';
+
+const InteractiveGlobe = dynamic(() => import('./InteractiveGlobe'), { 
+  ssr: false,
+  loading: () => <div className="w-full aspect-square max-w-[400px] bg-zinc-800/20 animate-pulse rounded-full" />
+});
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
