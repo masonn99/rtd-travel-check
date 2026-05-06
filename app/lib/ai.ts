@@ -88,7 +88,7 @@ export async function extractTravelExperience(text: string) {
       messages: [
         {
           role: "system",
-          content: "Extract visa info. Return JSON {isReport: boolean, country_name: string, experience_type: string, title: string, description: string}"
+          content: "Extract visa info. Return ONLY a valid JSON object. No markdown, no extra text. Schema: {isReport: boolean, country_name: string, experience_type: string, title: string, description: string}. Ensure all newlines in strings are escaped as \\n."
         },
         {
           role: "user",
@@ -99,8 +99,21 @@ export async function extractTravelExperience(text: string) {
       response_format: { type: "json_object" }
     });
 
-    const content = chatCompletion.choices[0]?.message?.content;
-    return JSON.parse(content || '{"isReport": false}');
+    let content = chatCompletion.choices[0]?.message?.content || '{"isReport": false}';
+    
+    // Clean potential markdown blocks
+    if (content.includes('```')) {
+      content = content.replace(/```json|```/g, '').trim();
+    }
+
+    try {
+      return JSON.parse(content);
+    } catch (parseError) {
+      console.error("JSON Parse Error. Raw Content:", content);
+      // Fallback: try to fix common control character issues
+      const cleanedContent = content.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
+      return JSON.parse(cleanedContent);
+    }
   } catch (error) {
     console.error("Groq Extraction Error:", error);
     return { isReport: false };

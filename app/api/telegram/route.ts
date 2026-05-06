@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { extractTravelExperience } from '../../../lib/ai';
-import { createExperience } from '../../../actions/experiences';
-import { sendTelegramMessage } from '../../../lib/telegram';
-import { analyzeMessageLocally } from '../../../lib/nlp';
+import { extractTravelExperience } from '../../lib/ai';
+import { createExperience } from '../../actions/experiences';
+import { sendTelegramMessage } from '../../lib/telegram';
+import { analyzeMessageLocally } from '../../lib/nlp';
 import { getCode } from 'country-list';
 
 export async function POST(req: NextRequest) {
@@ -50,13 +50,11 @@ export async function POST(req: NextRequest) {
     
     // Only proceed to LLM if it looks like a real travel report
     if (!localAnalysis.isPotentialReport) {
-      // Debug: Log why it was ignored if you want to monitor it
       console.log(`[NLP] Ignored message: "${messageText.substring(0, 50)}..." Reason: ${localAnalysis.reason}`);
       return NextResponse.json({ ok: true });
     }
 
     // 2. LAYER 2: AI Extraction (PAID/LIMITED)
-    // We only call this for the ~10% of messages that pass Layer 1
     const extraction = await extractTravelExperience(messageText);
 
     if (extraction.isReport && extraction.country_name) {
@@ -74,7 +72,6 @@ export async function POST(req: NextRequest) {
 Should I add this to the website?
       `;
 
-      // We pack basic data into callback (limit 64 chars)
       const callbackData = `approve_|${countryCode}|${extraction.country_name.substring(0, 15)}|${extraction.experience_type}`;
 
       await sendTelegramMessage(adminId, adminMessage, {
