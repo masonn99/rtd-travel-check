@@ -1,11 +1,13 @@
 import { useState, useMemo } from 'react';
-import data from '/data.json';
+import data from '../../data.json';
 import Flag from 'react-world-flags';
 import { getCode } from 'country-list';
+import ExperienceList from './ExperienceList';
 
 const TableView = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [expandedCountry, setExpandedCountry] = useState(null);
 
   // Color mapping based on visa requirements
   const getColorForRequirement = (requirement) => {
@@ -205,14 +207,40 @@ const TableView = () => {
                   <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Max Stay</p>
                   <p className="text-sm font-black text-white">{country.duration || 'N/A'}</p>
                 </div>
-                <div className="bg-zinc-900/50 rounded-2xl p-4 border border-zinc-700/30 flex items-center justify-center">
-                   <div className="text-[10px] font-black text-blue-500 uppercase tracking-tighter">Details →</div>
-                </div>
+                <button 
+                  onClick={() => setExpandedCountry(expandedCountry === country.country ? null : country.country)}
+                  className={`rounded-2xl p-4 border transition-all duration-300 flex items-center justify-center ${
+                    expandedCountry === country.country 
+                      ? 'bg-blue-600 border-blue-500 shadow-lg shadow-blue-600/20' 
+                      : 'bg-zinc-900/50 border-zinc-700/30 hover:bg-zinc-800'
+                  }`}
+                >
+                   <div className={`text-[10px] font-black uppercase tracking-tighter ${expandedCountry === country.country ? 'text-white' : 'text-blue-500'}`}>
+                     {expandedCountry === country.country ? 'Hide Info' : 'Details →'}
+                   </div>
+                </button>
               </div>
 
-              {country.notes && (
+              {expandedCountry === country.country && (
+                <div className="space-y-6 animate-fadeIn">
+                  {country.notes && (
+                    <div className="p-4 bg-zinc-900/30 rounded-2xl border-l-2 border-zinc-600">
+                      <p className="text-xs text-zinc-400 leading-relaxed italic text-wrap">
+                        "{country.notes}"
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="pt-4 border-t border-zinc-700/50">
+                    <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-4">Traveler Stories</h4>
+                    <ExperienceList filterCountry={country.country} />
+                  </div>
+                </div>
+              )}
+
+              {!expandedCountry && country.notes && (
                 <div className="p-4 bg-zinc-900/30 rounded-2xl border-l-2 border-zinc-600">
-                  <p className="text-xs text-zinc-400 leading-relaxed italic text-wrap">
+                  <p className="text-xs text-zinc-400 leading-relaxed italic text-wrap line-clamp-2">
                     "{country.notes}"
                   </p>
                 </div>
