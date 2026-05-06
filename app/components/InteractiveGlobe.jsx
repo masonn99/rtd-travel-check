@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import createGlobe from "cobe";
 
-const InteractiveGlobe = ({ data = [] }) => {
+const InteractiveGlobe = () => {
   const canvasRef = useRef();
   const pointerInteracting = useRef(null);
   const pointerInteractionPos = useRef(0);
@@ -11,63 +11,43 @@ const InteractiveGlobe = ({ data = [] }) => {
 
   useEffect(() => {
     let phi = 0;
-    let width = 0;
 
-    const updateSize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth;
-      }
-    };
-
-    updateSize();
-    // If width is still 0, try to get it from the parent or use a fallback
-    if (width === 0 && canvasRef.current) {
-      width = canvasRef.current.parentElement.offsetWidth || 300;
-    }
-
-    window.addEventListener("resize", updateSize);
-
+    // We use a fixed internal resolution for WebGL to avoid 0-width errors
+    // CSS will handle the actual responsive scaling
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      width: 1000,
+      height: 1000,
       phi: 0,
       theta: 0,
       dark: 1,
       diffuse: 1.2,
       mapSamples: 16000,
       mapBrightness: 6,
-      baseColor: [0.3, 0.3, 0.3],
+      baseColor: [0.2, 0.2, 0.2],
       markerColor: [0.1, 0.8, 1],
       glowColor: [0.1, 0.1, 0.1],
       markers: [
         { location: [37.7595, -122.4367], size: 0.03 },
         { location: [40.7128, -74.006], size: 0.1 },
+        { location: [52.5200, 13.4050], size: 0.03 }, // Berlin
+        { location: [35.6762, 139.6503], size: 0.03 }, // Tokyo
       ],
       onRender: (state) => {
         if (!pointerInteracting.current) {
           phi += 0.005;
         }
         state.phi = phi + r.current;
-        state.width = width * 2;
-        state.height = width * 2;
       },
-    });
-
-    setTimeout(() => {
-      if (canvasRef.current) {
-        canvasRef.current.style.opacity = "1";
-      }
     });
 
     return () => {
       globe.destroy();
-      window.removeEventListener("resize", updateSize);
     };
   }, []);
 
   return (
-    <div className="w-full aspect-square max-w-[500px] mx-auto relative overflow-hidden">
+    <div className="w-full aspect-square max-w-[400px] mx-auto relative flex items-center justify-center">
       <canvas
         ref={canvasRef}
         onPointerDown={(e) => {
@@ -89,13 +69,11 @@ const InteractiveGlobe = ({ data = [] }) => {
             r.current = delta / 200;
           }
         }}
+        className="w-full h-full cursor-grab opacity-100 transition-opacity duration-500"
         style={{
-          width: "100%",
-          height: "100%",
-          cursor: "grab",
+          maxWidth: "100%",
+          maxHeight: "100%",
           contain: "layout paint size",
-          opacity: 0,
-          transition: "opacity 1s ease",
           touchAction: "none",
         }}
       />
