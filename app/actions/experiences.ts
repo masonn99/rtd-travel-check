@@ -46,6 +46,45 @@ export const getExperiences = unstable_cache(
   { revalidate: 3600, tags: ['experiences'] }
 )
 
+// Combined fetch — runs both queries in parallel in a single server action call.
+// Use this in ExperiencesView to avoid two separate round-trips.
+export const getExperiencesWithStats = unstable_cache(
+  async (): Promise<{ experiences: Experience[]; stats: ExperienceStats }> => {
+    const sql = getSql()
+    try {
+      const [experiences, statsRows] = await Promise.all([
+        sql`SELECT * FROM experiences ORDER BY created_at DESC LIMIT 100`,
+        sql`
+          SELECT
+            COUNT(*) as total,
+            COUNT(DISTINCT country_code) as countries,
+            COALESCE(SUM(helpful_count), 0) as helpful_votes,
+            COUNT(*) FILTER (WHERE DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_TIMESTAMP)) as this_month
+          FROM experiences
+        `,
+      ])
+      const row = (statsRows as Record<string, unknown>[])[0]
+      return {
+        experiences: experiences as Experience[],
+        stats: {
+          total: Number(row.total) || 0,
+          countries: Number(row.countries) || 0,
+          helpfulVotes: Number(row.helpful_votes) || 0,
+          thisMonth: Number(row.this_month) || 0,
+        },
+      }
+    } catch (error) {
+      console.error('Error fetching experiences with stats:', error)
+      return {
+        experiences: [],
+        stats: { total: 0, countries: 0, helpfulVotes: 0, thisMonth: 0 },
+      }
+    }
+  },
+  ['experiences-with-stats'],
+  { revalidate: 3600, tags: ['experiences'] }
+)
+
 // Get experience stats - Optimized single query + Cached
 export const getExperienceStats = unstable_cache(
   async (): Promise<ExperienceStats> => {
@@ -53,14 +92,15 @@ export const getExperienceStats = unstable_cache(
     
     try {
       // Execute all counts in a single query to reduce round-trips
-      const [result] = await sql`
-        SELECT 
+      const rows = await sql`
+        SELECT
           COUNT(*) as total,
           COUNT(DISTINCT country_code) as countries,
           COALESCE(SUM(helpful_count), 0) as helpful_votes,
           COUNT(*) FILTER (WHERE DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_TIMESTAMP)) as this_month
         FROM experiences
       `
+      const result = (rows as Record<string, unknown>[])[0]
 
       return {
         total: Number(result.total) || 0,

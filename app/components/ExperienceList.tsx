@@ -7,16 +7,20 @@ import { getCode } from 'country-list'
 
 interface ExperienceListProps {
   filterCountry?: string | null
+  // When provided by a parent that already fetched, skip the redundant fetch
+  initialExperiences?: Experience[] | null
 }
 
-const ExperienceList = ({ filterCountry = null }: ExperienceListProps) => {
-  const [experiences, setExperiences] = useState<Experience[]>([])
-  const [loading, setLoading] = useState(true)
+const ExperienceList = ({ filterCountry = null, initialExperiences = null }: ExperienceListProps) => {
+  const [experiences, setExperiences] = useState<Experience[]>(initialExperiences ?? [])
+  const [loading, setLoading] = useState(initialExperiences === null)
   const [filterVisaType, setFilterVisaType] = useState('all')
   const [votedExperiences, setVotedExperiences] = useState(new Set<number>())
   const [expandedId, setExpandedId] = useState<number | null>(null)
 
   useEffect(() => {
+    // Skip fetch if parent already supplied data
+    if (initialExperiences !== null) return
     const fetchExperiences = async () => {
       setLoading(true)
       const data = await getExperiences()
