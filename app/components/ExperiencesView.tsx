@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getExperiencesWithStats, type Experience } from '../actions/experiences'
+import { cachedFetch, invalidateCache } from '../lib/client-cache'
 import ExperienceForm from './ExperienceForm'
 import ExperienceList from './ExperienceList'
 
@@ -20,8 +21,8 @@ const ExperiencesView = () => {
     const fetchAll = async () => {
       setLoading(true)
       try {
-        // Single round-trip: stats + experiences fetched in parallel on the server
-        const data = await getExperiencesWithStats()
+        // Served from memory cache after first load; revalidates in background
+        const data = await cachedFetch('experiences-with-stats', getExperiencesWithStats)
         setStats(data.stats)
         setExperiences(data.experiences)
       } catch (error) {
@@ -34,6 +35,7 @@ const ExperiencesView = () => {
   }, [refreshKey])
 
   const handleSubmitSuccess = () => {
+    invalidateCache('experiences-with-stats')
     setRefreshKey(prev => prev + 1)
   }
 
