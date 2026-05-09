@@ -1,12 +1,17 @@
 import { neon } from '@neondatabase/serverless'
 
-// Create a SQL function using Neon's serverless driver
-// This is wrapped in a function to avoid top-level database connections during build
+// Cache the client so the same neon() instance is reused across calls in a
+// single serverless function invocation — avoids recreating it on every query.
+let _sql: ReturnType<typeof neon> | null = null
+
 export function getSql() {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL environment variable is not set')
   }
-  return neon(process.env.DATABASE_URL)
+  if (!_sql) {
+    _sql = neon(process.env.DATABASE_URL)
+  }
+  return _sql
 }
 
 // Don't export a default sql instance to prevent top-level database connections

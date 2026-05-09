@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getExperienceStats } from '../actions/experiences'
+import { getExperiencesWithStats, type Experience } from '../actions/experiences'
 import ExperienceForm from './ExperienceForm'
 import ExperienceList from './ExperienceList'
 
 const ExperiencesView = () => {
   const [refreshKey, setRefreshKey] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [experiences, setExperiences] = useState<Experience[]>([])
   const [stats, setStats] = useState({
     total: 0,
     countries: 0,
@@ -16,18 +17,20 @@ const ExperiencesView = () => {
   })
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchAll = async () => {
       setLoading(true)
       try {
-        const data = await getExperienceStats()
-        setStats(data)
+        // Single round-trip: stats + experiences fetched in parallel on the server
+        const data = await getExperiencesWithStats()
+        setStats(data.stats)
+        setExperiences(data.experiences)
       } catch (error) {
-        console.error('Failed to fetch stats:', error)
+        console.error('Failed to fetch experiences:', error)
       } finally {
         setLoading(false)
       }
     }
-    fetchStats()
+    fetchAll()
   }, [refreshKey])
 
   const handleSubmitSuccess = () => {
@@ -81,7 +84,7 @@ const ExperiencesView = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Story list */}
+        {/* Story list — receives experiences as props, no second fetch needed */}
         <div className="lg:col-span-8 order-2 lg:order-1">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-base font-semibold text-white flex items-center gap-2">
@@ -89,7 +92,10 @@ const ExperiencesView = () => {
               <span className="text-[11px] text-zinc-500 font-normal bg-zinc-800/60 px-2 py-0.5 rounded-md">Newest first</span>
             </h2>
           </div>
-          <ExperienceList key={refreshKey} />
+          <ExperienceList
+            key={refreshKey}
+            initialExperiences={loading ? null : experiences}
+          />
         </div>
 
         {/* Share form */}
