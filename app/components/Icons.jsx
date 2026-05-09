@@ -12,11 +12,18 @@ export const GlobeIcon = ({ className }) => (
     className={className}
   >
     <circle cx="12" cy="12" r="10" />
-    <line x1="2" y1="12" x2="22" y2="12" />
-    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    {/* Equator */}
+    <path d="M2 12h20" />
+    {/* Left and right longitude curves */}
+    <path d="M12 2c-3.5 4.5-3.5 15.5 0 20" />
+    <path d="M12 2c3.5 4.5 3.5 15.5 0 20" />
+    {/* Upper and lower latitude arcs */}
+    <path d="M4.3 7.5C6.7 9 9.3 9.8 12 9.8s5.3-.8 7.7-2.3" />
+    <path d="M4.3 16.5C6.7 15 9.3 14.2 12 14.2s5.3.8 7.7 2.3" />
   </svg>
 );
 
+/* Stacked rows — modern "list/directory" pattern used in Linear, Notion etc */
 export const TableIcon = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -28,10 +35,9 @@ export const TableIcon = ({ className }) => (
     strokeLinejoin="round"
     className={className}
   >
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-    <line x1="3" y1="9" x2="21" y2="9" />
-    <line x1="3" y1="15" x2="21" y2="15" />
-    <line x1="9" y1="3" x2="9" y2="21" />
+    <rect x="3" y="4"  width="18" height="4" rx="1.5" />
+    <rect x="3" y="10" width="18" height="4" rx="1.5" />
+    <rect x="3" y="16" width="18" height="4" rx="1.5" />
   </svg>
 );
 

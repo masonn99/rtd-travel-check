@@ -4,25 +4,24 @@ import Flag from 'react-world-flags';
 import { getCode } from 'country-list';
 import ExperienceList from './ExperienceList';
 
+const getVisaStyle = (requirement) => {
+  if (requirement.includes('not required')) return { bg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', dot: 'bg-emerald-400' };
+  if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return { bg: 'bg-blue-500/10 text-blue-400 border-blue-500/20', dot: 'bg-blue-400' };
+  if (requirement.includes('Does not recognize')) return { bg: 'bg-red-500/10 text-red-400 border-red-500/20', dot: 'bg-red-400' };
+  return { bg: 'bg-amber-500/10 text-amber-400 border-amber-500/20', dot: 'bg-amber-400' };
+};
+
+const getVisaLabel = (requirement) => {
+  if (requirement.includes('not required')) return 'Visa Free';
+  if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return 'E-Visa';
+  if (requirement.includes('Does not recognize')) return 'Not Recognized';
+  return 'Visa Required';
+};
+
 const TableView = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [expandedCountry, setExpandedCountry] = useState(null);
-
-  // Color mapping based on visa requirements
-  const getColorForRequirement = (requirement) => {
-    if (requirement.includes('not required')) return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-    if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
-    if (requirement.includes('Does not recognize')) return 'bg-red-500/10 text-red-400 border-red-500/20';
-    return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-  };
-
-  const getBadgeIcon = (requirement) => {
-    if (requirement.includes('not required')) return '✓';
-    if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return '⚡';
-    if (requirement.includes('Does not recognize')) return '✕';
-    return '📋';
-  };
 
   const filteredCountries = useMemo(() => {
     return data
@@ -46,223 +45,208 @@ const TableView = () => {
     notRecognized: data.filter(c => c.visaRequirement.includes('Does not recognize')).length,
   }), []);
 
-  return (
-    <div className="py-8 text-white">
-      {/* Modern Bento Header */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
-        <div className="md:col-span-2 bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 backdrop-blur-md border border-zinc-700/50 rounded-3xl p-6 flex flex-col justify-center animate-fadeIn">
-          <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">
-            Visa <span className="text-blue-500">Directory</span>
-          </h1>
-          <p className="text-zinc-400 text-[10px] leading-relaxed max-w-md uppercase font-bold tracking-widest">
-            Database for RTD Holders
-          </p>
-        </div>
+  const filterOptions = [
+    { id: 'all', label: 'All', value: stats.total, color: 'text-zinc-300' },
+    { id: 'visa-free', label: 'Visa Free', value: stats.visaFree, color: 'text-emerald-400' },
+    { id: 'e-visa', label: 'E-Visa', value: stats.eVisa, color: 'text-blue-400' },
+    { id: 'visa-required', label: 'Visa Required', value: stats.visaRequired, color: 'text-amber-400' },
+    { id: 'not-recognized', label: 'Not Recognized', value: stats.notRecognized, color: 'text-red-400' },
+  ];
 
-        {[
-          { id: 'visa-free', label: 'Visa Free', value: stats.visaFree, color: 'emerald', icon: '✓' },
-          { id: 'e-visa', label: 'E-Visa', value: stats.eVisa, color: 'blue', icon: '⚡' },
-          { id: 'visa-required', label: 'Visa Required', value: stats.visaRequired, color: 'amber', icon: '📋' },
-          { id: 'not-recognized', label: 'Not Recognized', value: stats.notRecognized, color: 'red', icon: '✕' },
-        ].map((item) => (
-          <div 
-            key={item.id}
-            onClick={() => setFilterType(item.id)}
-            className={`bg-${item.color}-500/10 border border-${item.color}-500/20 rounded-3xl p-4 flex flex-col justify-between hover:bg-${item.color}-500/20 transition-all cursor-pointer group animate-fadeIn ${filterType === item.id ? 'ring-2 ring-' + item.color + '-500/50' : ''}`}
+  return (
+    <div className="py-6 text-white">
+      {/* Page header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white tracking-tight">
+          Visa <span className="text-blue-400">Directory</span>
+        </h1>
+        <p className="text-zinc-500 text-sm mt-1">
+          {stats.total} countries tracked for RTD holders
+        </p>
+      </div>
+
+      {/* Stat filter chips — horizontal scroll on mobile */}
+      <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 mb-5">
+        {filterOptions.map(opt => (
+          <button
+            key={opt.id}
+            onClick={() => setFilterType(opt.id)}
+            className={`flex-shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs font-semibold transition-all duration-200 ${
+              filterType === opt.id
+                ? 'bg-blue-600 border-blue-500 text-white shadow-sm shadow-blue-600/30'
+                : 'bg-zinc-800/40 border-zinc-700/50 text-zinc-400 hover:border-zinc-600 hover:text-zinc-200'
+            }`}
           >
-            <div className="flex justify-between items-start mb-2">
-              <span className="text-lg">{item.icon}</span>
-              <span className={`text-[8px] font-black uppercase tracking-widest text-${item.color}-500/50 group-hover:text-${item.color}-500 transition-colors`}>{item.label}</span>
-            </div>
-            <div className={`text-2xl font-black text-${item.color}-400`}>{item.value}</div>
-          </div>
+            <span className={filterType === opt.id ? 'text-white' : opt.color}>{opt.value}</span>
+            <span>{opt.label}</span>
+          </button>
         ))}
       </div>
 
-      <div className="mb-8">
-        <div 
-          onClick={() => setFilterType('all')}
-          className="bg-zinc-800/30 border border-zinc-700/50 rounded-2xl p-4 hover:bg-zinc-800/50 transition-all cursor-pointer group animate-slideUp"
-        >
-          <div className="flex justify-between items-center max-w-xs mx-auto">
-             <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Total Monitored Countries</div>
-             <div className="text-2xl font-black text-white">{stats.total}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Modern Filter & Search Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 animate-slideUp">
-        <div className="relative flex-1">
-          <input
-            type="text"
-            placeholder="Search destination country..."
-            className="w-full px-6 py-4 bg-zinc-800/40 backdrop-blur-md border border-zinc-700/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white placeholder-zinc-500 transition-all shadow-inner"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            {searchTerm && (
-              <button onClick={() => setSearchTerm('')} className="p-1 text-zinc-500 hover:text-white transition-colors">
-                ✕
-              </button>
-            )}
-            <div className="h-6 w-px bg-zinc-700 mx-1"></div>
-            <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      {/* Search */}
+      <div className="relative mb-5">
+        <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          placeholder="Search country..."
+          className="w-full pl-10 pr-10 py-2.5 bg-zinc-800/40 border border-zinc-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 text-white placeholder-zinc-500 text-sm transition-all"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {searchTerm && (
+          <button
+            onClick={() => setSearchTerm('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
+          </button>
+        )}
+      </div>
+
+      {/* Results count */}
+      <p className="text-xs text-zinc-600 mb-3 font-medium">
+        {filteredCountries.length} {filteredCountries.length === 1 ? 'result' : 'results'}
+      </p>
+
+      {/* Desktop list */}
+      <div className="hidden md:block">
+        <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-2xl overflow-hidden">
+          {/* Table header */}
+          <div className="grid grid-cols-[auto_1fr_180px_120px_1fr] gap-4 px-5 py-3 border-b border-zinc-800/60 bg-zinc-900/60">
+            <div className="w-12" />
+            <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Country</span>
+            <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Visa Status</span>
+            <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Max Stay</span>
+            <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Notes</span>
           </div>
-        </div>
-        
-        <div className="flex p-1 bg-zinc-800/40 backdrop-blur-md border border-zinc-700/50 rounded-2xl overflow-x-auto no-scrollbar">
-          {[
-            { id: 'all', label: 'All' },
-            { id: 'visa-free', label: 'Visa Free' },
-            { id: 'e-visa', label: 'E-Visa' },
-            { id: 'not-recognized', label: 'Not Recognized' },
-          ].map((filter) => (
-            <button
-              key={filter.id}
-              onClick={() => setFilterType(filter.id)}
-              className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-tighter whitespace-nowrap transition-all duration-300 ${
-                filterType === filter.id
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'text-zinc-500 hover:text-white'
-              }`}
-            >
-              {filter.label}
-            </button>
-          ))}
+
+          {filteredCountries.length === 0 ? (
+            <div className="py-16 text-center">
+              <div className="text-4xl mb-3 opacity-20">🛂</div>
+              <p className="text-zinc-500 text-sm">No results for "{searchTerm}"</p>
+              <button
+                onClick={() => { setSearchTerm(''); setFilterType('all'); }}
+                className="mt-3 text-blue-400 text-xs font-semibold hover:text-blue-300 transition-colors"
+              >
+                Clear filters
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-zinc-800/40">
+              {filteredCountries.map((country) => {
+                const style = getVisaStyle(country.visaRequirement);
+                const label = getVisaLabel(country.visaRequirement);
+                return (
+                  <div
+                    key={country.country}
+                    className="grid grid-cols-[auto_1fr_180px_120px_1fr] gap-4 px-5 py-3.5 items-center hover:bg-zinc-800/20 transition-colors group"
+                  >
+                    <div className="w-12 h-8 flex-shrink-0">
+                      {getCode(country.country) ? (
+                        <Flag code={getCode(country.country)} className="w-full h-full object-cover rounded-md shadow-sm" />
+                      ) : (
+                        <div className="w-full h-full bg-zinc-800 rounded-md flex items-center justify-center text-[8px] text-zinc-600">N/A</div>
+                      )}
+                    </div>
+                    <span className="font-semibold text-white text-sm group-hover:text-blue-300 transition-colors truncate">
+                      {country.country}
+                    </span>
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold border w-fit ${style.bg}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                      {label}
+                    </span>
+                    <span className="text-sm text-zinc-300 font-medium">{country.duration || '—'}</span>
+                    <span className="text-xs text-zinc-500 leading-relaxed line-clamp-2 italic">
+                      {country.notes || '—'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="animate-slideUp">
-        {/* Desktop View: Modern List */}
-        <div className="hidden md:block space-y-2">
-          {filteredCountries.map((country, index) => (
-            <div
-              key={country.country}
-              className="group bg-zinc-800/20 hover:bg-zinc-800/50 border border-zinc-700/30 hover:border-zinc-600/50 rounded-2xl p-4 transition-all duration-300 flex items-center gap-6"
-              style={{ animationDelay: `${index * 10}ms` }}
+      {/* Mobile list — compact rows */}
+      <div className="md:hidden space-y-1.5">
+        {filteredCountries.length === 0 ? (
+          <div className="py-16 text-center bg-zinc-800/20 rounded-2xl border border-zinc-700/40 border-dashed">
+            <div className="text-4xl mb-3 opacity-20">🛂</div>
+            <p className="text-zinc-500 text-sm mb-3">No results found</p>
+            <button
+              onClick={() => { setSearchTerm(''); setFilterType('all'); }}
+              className="text-blue-400 text-xs font-semibold hover:text-blue-300 transition-colors"
             >
-              <div className="w-12 h-8 flex-shrink-0">
-                {getCode(country.country) ? (
-                  <Flag code={getCode(country.country)} className="w-full h-full object-cover rounded shadow-md group-hover:scale-110 transition-transform" />
-                ) : (
-                  <div className="w-full h-full bg-zinc-700 rounded flex items-center justify-center text-[8px]">NO FLAG</div>
-                )}
-              </div>
-              
-              <div className="w-48 flex-shrink-0">
-                <h3 className="font-bold text-white group-hover:text-blue-400 transition-colors truncate uppercase tracking-tight">{country.country}</h3>
-              </div>
+              Reset filters
+            </button>
+          </div>
+        ) : (
+          filteredCountries.map((country) => {
+            const style = getVisaStyle(country.visaRequirement);
+            const label = getVisaLabel(country.visaRequirement);
+            const isExpanded = expandedCountry === country.country;
 
-              <div className="w-48 flex-shrink-0">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border ${getColorForRequirement(country.visaRequirement)} shadow-sm`}>
-                  <span>{getBadgeIcon(country.visaRequirement)}</span>
-                  {country.visaRequirement.includes('Refugee Travel Document') ? 'NOT RECOGNIZED' : country.visaRequirement}
-                </span>
-              </div>
-
-              <div className="w-32 flex-shrink-0">
-                <p className="text-sm font-medium text-zinc-300">{country.duration || 'N/A'}</p>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-zinc-400 leading-relaxed font-medium italic">
-                    {country.notes || '-'}
-                </p>
-                <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-0.5">Notes</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile View: Enhanced Cards */}
-        <div className="md:hidden space-y-4">
-          {filteredCountries.map((country, index) => (
-            <div
-              key={country.country}
-              className="bg-zinc-800/40 backdrop-blur-md rounded-[2rem] p-6 border border-zinc-700/50 animate-fadeIn shadow-xl"
-              style={{ animationDelay: `${index * 20}ms` }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-10 flex-shrink-0">
-                  {getCode(country.country) ? (
-                    <Flag code={getCode(country.country)} className="w-full h-full object-cover rounded-xl shadow-lg" />
-                  ) : (
-                    <div className="w-full h-full bg-zinc-700 rounded-xl" />
-                  )}
-                </div>
-                <div>
-                  <h3 className="font-black text-white text-lg tracking-tight uppercase leading-none mb-1">{country.country}</h3>
-                  <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getColorForRequirement(country.visaRequirement)}`}>
-                    {getBadgeIcon(country.visaRequirement)} {country.visaRequirement.includes('Refugee Travel Document') ? 'NOT RECOGNIZED' : country.visaRequirement}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-zinc-900/50 rounded-2xl p-4 border border-zinc-700/30">
-                  <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Max Stay</p>
-                  <p className="text-sm font-black text-white">{country.duration || 'N/A'}</p>
-                </div>
-                <button 
-                  onClick={() => setExpandedCountry(expandedCountry === country.country ? null : country.country)}
-                  className={`rounded-2xl p-4 border transition-all duration-300 flex items-center justify-center ${
-                    expandedCountry === country.country 
-                      ? 'bg-blue-600 border-blue-500 shadow-lg shadow-blue-600/20' 
-                      : 'bg-zinc-900/50 border-zinc-700/30 hover:bg-zinc-800'
-                  }`}
+            return (
+              <div
+                key={country.country}
+                className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl overflow-hidden animate-fadeIn"
+              >
+                {/* Row */}
+                <button
+                  className="w-full flex items-center gap-3 p-3.5 text-left hover:bg-zinc-800/30 transition-colors"
+                  onClick={() => setExpandedCountry(isExpanded ? null : country.country)}
                 >
-                   <div className={`text-[10px] font-black uppercase tracking-tighter ${expandedCountry === country.country ? 'text-white' : 'text-blue-500'}`}>
-                     {expandedCountry === country.country ? 'Hide Info' : 'Details →'}
-                   </div>
-                </button>
-              </div>
+                  <div className="w-9 h-6 flex-shrink-0">
+                    {getCode(country.country) ? (
+                      <Flag code={getCode(country.country)} className="w-full h-full object-cover rounded-[4px] shadow-sm" />
+                    ) : (
+                      <div className="w-full h-full bg-zinc-800 rounded-[4px]" />
+                    )}
+                  </div>
 
-              {expandedCountry === country.country && (
-                <div className="space-y-6 animate-fadeIn">
-                  {country.notes && (
-                    <div className="p-4 bg-zinc-900/30 rounded-2xl border-l-2 border-zinc-600">
-                      <p className="text-xs text-zinc-400 leading-relaxed italic text-wrap">
+                  <div className="flex-1 min-w-0">
+                    <span className="font-semibold text-white text-sm block truncate">{country.country}</span>
+                    {country.duration && (
+                      <span className="text-[11px] text-zinc-500">{country.duration}</span>
+                    )}
+                  </div>
+
+                  <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${style.bg}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                    {label}
+                  </span>
+
+                  <svg
+                    className={`w-4 h-4 text-zinc-600 flex-shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Expanded panel */}
+                {isExpanded && (
+                  <div className="px-4 pb-4 border-t border-zinc-800/60 animate-fadeIn">
+                    {country.notes && (
+                      <p className="text-xs text-zinc-400 leading-relaxed italic mt-3 mb-4">
                         "{country.notes}"
                       </p>
+                    )}
+                    <div className="pt-3 border-t border-zinc-800/40">
+                      <p className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-3">Traveler Stories</p>
+                      <ExperienceList filterCountry={country.country} />
                     </div>
-                  )}
-                  
-                  <div className="pt-4 border-t border-zinc-700/50">
-                    <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-4">Traveler Stories</h4>
-                    <ExperienceList filterCountry={country.country} />
                   </div>
-                </div>
-              )}
-
-              {!expandedCountry && country.notes && (
-                <div className="p-4 bg-zinc-900/30 rounded-2xl border-l-2 border-zinc-600">
-                  <p className="text-xs text-zinc-400 leading-relaxed italic text-wrap line-clamp-2">
-                    "{country.notes}"
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {filteredCountries.length === 0 && (
-          <div className="text-center py-24 bg-zinc-800/20 rounded-[3rem] border border-zinc-700/50 border-dashed">
-            <div className="text-7xl mb-6 grayscale opacity-30">🛂</div>
-            <h3 className="text-2xl font-black text-white mb-2 uppercase tracking-tighter">No Results Found</h3>
-            <p className="text-zinc-500 text-sm max-w-xs mx-auto">
-              We couldn't find any information matching your search criteria.
-            </p>
-            <button 
-              onClick={() => {setSearchTerm(''); setFilterType('all');}}
-              className="mt-6 text-blue-500 font-bold uppercase text-xs tracking-widest hover:text-blue-400 transition-colors"
-            >
-              Reset Filters
-            </button>
-          </div>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
     </div>
