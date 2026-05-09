@@ -12,7 +12,8 @@
     "start": "next start",
     "lint": "next lint",
     "generate-sitemap": "node scripts/generate-sitemap.js",
-    "vercel-build": "npm run build && node scripts/vercel-init-db.js"
+    "vercel-build": "npm run build",
+    "init-db": "node scripts/vercel-init-db.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
