@@ -27,7 +27,6 @@ const ExperiencesView = () => {
         setLoading(false)
       }
     }
-
     fetchStats()
   }, [refreshKey])
 
@@ -36,93 +35,81 @@ const ExperiencesView = () => {
   }
 
   return (
-    <div className="py-8 text-white animate-fadeIn">
-      {/* Modern Bento Header */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="md:col-span-2 bg-gradient-to-br from-zinc-800/40 to-zinc-900/40 backdrop-blur-md border border-zinc-800/50 rounded-3xl p-8 flex flex-col justify-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-            Community <span className="text-blue-500">Experiences</span>
+    <div className="py-6 text-white animate-fadeIn">
+      {/* Page header */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-white tracking-tight">
+            Community <span className="text-blue-400">Stories</span>
           </h1>
-          <p className="text-base sm:text-lg text-zinc-400 max-w-xl leading-relaxed">
-            Real stories from RTD holders worldwide. Discover travel tips, visa hurdles, and success stories shared by the community.
+          <p className="text-zinc-500 text-sm mt-1">
+            Real experiences from RTD holders worldwide
           </p>
         </div>
-        
-        <div className="bg-blue-600 rounded-3xl p-8 flex flex-col justify-between items-start overflow-hidden relative group transition-transform hover:scale-[1.02] duration-300 shadow-xl shadow-blue-600/20">
-          <div className="absolute -right-8 -bottom-8 text-blue-500/20 group-hover:scale-110 transition-transform duration-500">
-             <svg width="160" height="160" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-             </svg>
-          </div>
-          <div>
-            <h3 className="text-blue-100 font-medium mb-1 uppercase tracking-wider text-xs">Join the Community</h3>
-            <p className="text-white text-xl font-bold leading-tight">Share your journey to help fellow travelers.</p>
-          </div>
-          <button 
-            onClick={() => document.getElementById('experience-form')?.scrollIntoView({ behavior: 'smooth' })}
-            className="mt-6 bg-white text-blue-600 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-50 transition-colors shadow-xl"
-          >
-            Submit Story
-          </button>
-        </div>
+        <button
+          onClick={() => document.getElementById('experience-form')?.scrollIntoView({ behavior: 'smooth' })}
+          className="flex-shrink-0 self-start sm:self-auto flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-semibold transition-all shadow-sm shadow-blue-600/30"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Share Story
+        </button>
       </div>
 
-      {/* Bento Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      {/* Stats row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {[
-          { label: 'Total Stories', value: stats.total, color: 'blue', icon: '📝' },
-          { label: 'Countries', value: stats.countries, color: 'emerald', icon: '🌍' },
-          { label: 'Helpful Votes', value: stats.helpfulVotes, color: 'purple', icon: '✨' },
-          { label: 'New This Month', value: stats.thisMonth, color: 'amber', icon: '📈' },
+          { label: 'Stories', value: stats.total, icon: '📝' },
+          { label: 'Countries', value: stats.countries, icon: '🌍' },
+          { label: 'Helpful Votes', value: stats.helpfulVotes, icon: '👍' },
+          { label: 'This Month', value: stats.thisMonth, icon: '📈' },
         ].map((stat, i) => (
-          <div 
-            key={stat.label} 
-            className="bg-zinc-800/30 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-5 hover:bg-zinc-800/50 transition-all duration-300 animate-slideUp"
-            style={{ animationDelay: `${i * 100}ms` }}
+          <div
+            key={stat.label}
+            className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-4 animate-slideUp"
+            style={{ animationDelay: `${i * 60}ms` }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xl">{stat.icon}</span>
-              {loading && <div className="h-4 w-4 rounded-full border-2 border-zinc-700 border-t-blue-500 animate-spin"></div>}
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-lg">{stat.icon}</span>
+              {loading && <div className="h-3 w-3 rounded-full border-2 border-zinc-700 border-t-blue-500 animate-spin" />}
             </div>
-            <div className={`text-2xl sm:text-3xl font-black text-white mb-1`}>
-              {loading ? '...' : stat.value}
-            </div>
-            <div className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">{stat.label}</div>
+            <div className="text-2xl font-bold text-white">{loading ? '—' : stat.value}</div>
+            <div className="text-[11px] text-zinc-500 font-medium mt-0.5">{stat.label}</div>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: List */}
+        {/* Story list */}
         <div className="lg:col-span-8 order-2 lg:order-1">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-base font-semibold text-white flex items-center gap-2">
               Recent Stories
-              <span className="bg-zinc-800 text-zinc-400 text-xs px-2 py-1 rounded-md font-normal">Newest first</span>
+              <span className="text-[11px] text-zinc-500 font-normal bg-zinc-800/60 px-2 py-0.5 rounded-md">Newest first</span>
             </h2>
           </div>
           <ExperienceList key={refreshKey} />
         </div>
 
-        {/* Right Column: Form Sticky */}
+        {/* Share form */}
         <div className="lg:col-span-4 order-1 lg:order-2">
-          <div id="experience-form" className="lg:sticky lg:top-24 space-y-6">
-            <div className="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/50 rounded-[2rem] overflow-hidden shadow-2xl">
-              <div className="bg-zinc-800/50 px-6 py-5 border-b border-zinc-800/50 flex items-center justify-between">
-                <h3 className="font-bold text-lg">Share Experience</h3>
-                <span className="text-blue-500 text-xs font-black uppercase tracking-widest">v2.0</span>
+          <div id="experience-form" className="lg:sticky lg:top-20 space-y-4">
+            <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-2xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-zinc-800/60 flex items-center justify-between bg-zinc-900/60">
+                <h3 className="font-semibold text-white">Share Your Experience</h3>
               </div>
-              <div className="p-6">
+              <div className="p-5">
                 <ExperienceForm onSuccess={handleSubmitSuccess} embedded={true} />
               </div>
             </div>
-            
-            <div className="p-6 bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 rounded-[2rem]">
-              <h4 className="text-amber-400 font-bold text-sm mb-2 flex items-center gap-2">
+
+            <div className="p-4 bg-amber-500/5 border border-amber-500/15 rounded-xl">
+              <p className="text-amber-400 font-semibold text-xs mb-1.5 flex items-center gap-1.5">
                 <span>💡</span> Pro Tip
-              </h4>
+              </p>
               <p className="text-zinc-400 text-xs leading-relaxed">
-                Be specific about which Embassy you applied at and the exact date of travel. This helps others identify current trends!
+                Be specific about which Embassy you applied at and the exact date. This helps identify current trends.
               </p>
             </div>
           </div>
