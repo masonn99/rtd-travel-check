@@ -1,0 +1,146 @@
+[
+  {
+    "country": "Thailand",
+    "embassy_name": "Royal Thai Embassy, Washington D.C.",
+    "website": "https://thaiembdc.org/",
+    "phone": "+1-202-944-3600",
+    "address": "1024 Wisconsin Ave NW, Washington, D.C. 20007",
+    "note": ""
+  },
+  {
+    "country": "China",
+    "embassy_name": "Embassy of the People's Republic of China, Washington D.C.",
+    "website": "http://www.china-embassy.org/",
+    "phone": "+1-202-495-2266",
+    "address": "3505 International Place NW, Washington, D.C. 20008",
+    "note": ""
+  },
+  {
+    "country": "Portugal",
+    "embassy_name": "Embassy of Portugal, Washington D.C.",
+    "website": "https://washington.embaixadaportugal.mfa.pt/",
+    "phone": "+1-202-350-5400",
+    "address": "2012 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": ""
+  },
+  {
+    "country": "Georgia",
+    "embassy_name": "Embassy of Georgia, Washington D.C.",
+    "website": "https://usa.mfa.gov.ge/",
+    "phone": "+1-202-387-2390",
+    "address": "1824 R St NW, Washington, D.C. 20009",
+    "note": ""
+  },
+  {
+    "country": "Czechia",
+    "embassy_name": "Embassy of the Czech Republic, Washington D.C.",
+    "website": "https://www.mzv.cz/washington",
+    "phone": "+1-202-274-9100",
+    "address": "3900 Spring of Freedom St NW, Washington, D.C. 20008",
+    "note": ""
+  },
+  {
+    "country": "Luxembourg",
+    "embassy_name": "Embassy of Luxembourg, Washington D.C.",
+    "website": "https://washington.mae.lu/",
+    "phone": "+1-202-265-4171",
+    "address": "2200 Massachusetts Ave NW, Washington, D.C. 20008",
+    "note": ""
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "embassy_name": "Embassy of Trinidad and Tobago, Washington D.C.",
+    "website": "https://www.ttembassy.org/",
+    "phone": "+1-202-467-6490",
+    "address": "1708 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": ""
+  },
+  {
+    "country": "Peru",
+    "embassy_name": "Embassy of Peru, Washington D.C.",
+    "website": "https://embassyofperu.org/",
+    "phone": "+1-202-833-9860",
+    "address": "1700 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": ""
+  },
+  {
+    "country": "Mauritius",
+    "embassy_name": "Embassy of Mauritius, Washington D.C.",
+    "website": "https://mauritiusembassyus.com/",
+    "phone": "+1-202-244-1491",
+    "address": "1709 N St NW, Washington, D.C. 20036",
+    "note": ""
+  },
+  {
+    "country": "Senegal",
+    "embassy_name": "Embassy of Senegal, Washington D.C.",
+    "website": "https://www.ambasenegal-us.org/",
+    "phone": "+1-202-234-0540",
+    "address": "2215 M St NW, Washington, D.C. 20037",
+    "note": ""
+  },
+  {
+    "country": "Taiwan, Province of China",
+    "embassy_name": "Taipei Economic and Cultural Representative Office (TECRO)",
+    "website": "https://www.roc-taiwan.org/us/index.html",
+    "phone": "+1-202-895-1800",
+    "address": "4201 Wisconsin Ave NW, Washington, D.C. 20016",
+    "note": "Taiwan is not formally recognised by the US; TECRO acts as the de facto embassy."
+  },
+  {
+    "country": "Hong Kong",
+    "embassy_name": "China Consulate-General (handles Hong Kong affairs)",
+    "website": "http://www.china-embassy.org/",
+    "phone": "+1-202-495-2266",
+    "address": "3505 International Place NW, Washington, D.C. 20008",
+    "note": "Hong Kong SAR does not maintain a separate embassy; consular affairs handled by the Chinese Embassy."
+  },
+  {
+    "country": "Macao",
+    "embassy_name": "China Consulate-General (handles Macao affairs)",
+    "website": "http://www.china-embassy.org/",
+    "phone": "+1-202-495-2266",
+    "address": "3505 International Place NW, Washington, D.C. 20008",
+    "note": "Macao SAR does not maintain a separate embassy; consular affairs handled by the Chinese Embassy."
+  },
+  {
+    "country": "Cook Islands",
+    "embassy_name": "New Zealand Embassy (represents Cook Islands)",
+    "website": "https://www.nzembassy.com/usa",
+    "phone": "+1-202-328-4800",
+    "address": "37 Observatory Circle NW, Washington, D.C. 20008",
+    "note": "Cook Islands is in free association with New Zealand; New Zealand handles its consular affairs in the US."
+  },
+  {
+    "country": "French Polynesia",
+    "embassy_name": "Embassy of France (represents French Polynesia)",
+    "website": "https://fr.franceintheus.org/",
+    "phone": "+1-202-944-6000",
+    "address": "4101 Reservoir Rd NW, Washington, D.C. 20007",
+    "note": "French Polynesia is an overseas collectivity of France; consular affairs handled by the French Embassy."
+  },
+  {
+    "country": "Faroe Islands",
+    "embassy_name": "Royal Danish Embassy (represents Faroe Islands)",
+    "website": "https://usa.um.dk/",
+    "phone": "+1-202-234-4300",
+    "address": "3200 Whitehaven St NW, Washington, D.C. 20008",
+    "note": "The Faroe Islands is an autonomous territory of Denmark; consular affairs handled by the Danish Embassy."
+  },
+  {
+    "country": "Greenland",
+    "embassy_name": "Royal Danish Embassy (represents Greenland)",
+    "website": "https://usa.um.dk/",
+    "phone": "+1-202-234-4300",
+    "address": "3200 Whitehaven St NW, Washington, D.C. 20008",
+    "note": "Greenland is an autonomous territory of Denmark; consular affairs handled by the Danish Embassy."
+  },
+  {
+    "country": "United States of America",
+    "embassy_name": "N/A — Home country",
+    "website": "https://travel.state.gov/",
+    "phone": "",
+    "address": "",
+    "note": "RTD holders are US-based; no embassy contact needed for the home country."
+  }
+]

@@ -1,7 +1,8 @@
-import { neon } from '@neondatabase/serverless'
+import { neon, neonConfig } from '@neondatabase/serverless'
 
-// Cache the client so the same neon() instance is reused across calls in a
-// single serverless function invocation — avoids recreating it on every query.
+// Reuse HTTP connections across queries in the same invocation
+neonConfig.fetchConnectionCache = true
+
 let _sql: ReturnType<typeof neon> | null = null
 
 export function getSql() {
