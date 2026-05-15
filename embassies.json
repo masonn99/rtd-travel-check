@@ -1,0 +1,1185 @@
+[
+  {
+    "country": "Australia",
+    "embassy_name": "Embassy of Australia, Washington, D.C.",
+    "website": "https://usa.embassy.gov.au/",
+    "phone": "",
+    "address": "1601 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "Albania",
+    "embassy_name": "Embassy of Albania, Washington, D.C.",
+    "website": "https://ambasadat.gov.al/usa/",
+    "phone": "+1-202-223-4942",
+    "address": "2100 S St NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Belgium",
+    "embassy_name": "Embassy of Belgium, Washington, D.C.",
+    "website": "https://unitedstates.diplomatie.belgium.be",
+    "phone": "+1 202-333-69-00",
+    "address": "1430 K Street NW, Suite 101, Washington, D.C. 20005",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Croatia",
+    "embassy_name": "Embassy of Croatia, Washington, D.C.",
+    "website": "http://www.croatiaemb.org/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Cyprus",
+    "embassy_name": "Embassy of Cyprus in Washington, D.C.",
+    "website": "https://www.cyprusembassy.net/",
+    "phone": "",
+    "address": "2211 R St NW, Washington, DC 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Germany",
+    "embassy_name": "Embassy of Germany, Washington",
+    "website": "https://www.germany.info/",
+    "phone": "+1-202-298-4000",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Hungary",
+    "embassy_name": "Embassy of Hungary, Washington, D.C.",
+    "website": "https://washington.mfa.gov.hu/",
+    "phone": "+1-202-362-6730",
+    "address": "3910 Shoemaker St NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Netherlands",
+    "embassy_name": "Embassy of the Netherlands, Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "4200 Linnean Ave NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Slovakia",
+    "embassy_name": "Embassy of Slovakia, Washington, D.C.",
+    "website": "https://www.mzv.sk/web/washington/",
+    "phone": "",
+    "address": "3523 International Court",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Slovenia",
+    "embassy_name": "Embassy of Slovenia, Washington, D.C.",
+    "website": "http://washington.veleposlanistvo.si/",
+    "phone": "",
+    "address": "2410 California Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Japan",
+    "embassy_name": "Embassy of Japan, Washington, D.C.",
+    "website": "https://www.us.emb-japan.go.jp",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Türkiye",
+    "embassy_name": "Embassy of Turkey, Washington, D.C.",
+    "website": "https://washington-emb.mfa.gov.tr",
+    "phone": "",
+    "address": "2525 Massachusetts Ave NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Thailand",
+    "embassy_name": "Embassy of Thailand in Washington, D.C.",
+    "website": "https://thaiembdc.org/",
+    "phone": "+1-202-944-3600",
+    "address": "1024 Wisconsin Ave NW, Washington, D.C. 20007",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "E-visa"
+  },
+  {
+    "country": "United Arab Emirates",
+    "embassy_name": "Consulate General of the United Arab Emirates, New York",
+    "website": "https://www.mofaic.gov.ae/missions/UAE-Missions-Abroad/UAE-Missions-Abroad-Details?countryId=100429f6-3c58-4674-8f88-ae439f94408a",
+    "phone": "+1-212-419-7670",
+    "address": "535 Fifth Avenue, 32nd Floor. New York , NY 10017",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Singapore",
+    "embassy_name": "Embassy of Singapore, Washington, D.C.",
+    "website": "https://www.mfa.gov.sg/washington/",
+    "phone": "",
+    "address": "3501 International Court",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Montenegro",
+    "embassy_name": "Embassy of Montenegro in Washington, D.C.",
+    "website": "http://www.embassyofmontenegrous.info/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Canada",
+    "embassy_name": "Embassy of Canada, Washington, D.C.",
+    "website": "https://www.international.gc.ca/country-pays/us-eu/washington.aspx",
+    "phone": "+1-202-682-1740",
+    "address": "501 Pennsylvania Ave NW, Washington, DC 20001",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-visa"
+  },
+  {
+    "country": "Mexico",
+    "embassy_name": "Embassy of Mexico, Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "1911 Pennsylvania Ave NW, Washington, DC 20006",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "United Kingdom of Great Britain and Northern Ireland",
+    "embassy_name": "Embassy of the United Kingdom, Washington, D.C.",
+    "website": "https://www.gov.uk/world/organisations/british-embassy-washington",
+    "phone": "",
+    "address": "3100 Massachusetts Ave NW, Washington, DC 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "China",
+    "embassy_name": "Embassy of the People's Republic of China, Washington D.C.",
+    "website": "http://www.china-embassy.org/",
+    "phone": "+1-202-495-2266",
+    "address": "3505 International Place NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Hong Kong",
+    "embassy_name": "China Consulate-General (handles Hong Kong affairs)",
+    "website": "http://www.china-embassy.org/",
+    "phone": "+1-202-495-2266",
+    "address": "3505 International Place NW, Washington, D.C. 20008",
+    "note": "Hong Kong SAR does not maintain a separate embassy; consular affairs handled by the Chinese Embassy.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "Philippines",
+    "embassy_name": "Embassy of the Philippines, Washington, D.C.",
+    "website": "https://philippineembassy-dc.org/",
+    "phone": "",
+    "address": "1600 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Malaysia",
+    "embassy_name": "Embassy of Malaysia, Washington",
+    "website": "",
+    "phone": "",
+    "address": "3516 International Drive",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Taiwan, Province of China",
+    "embassy_name": "Taipei Economic and Cultural Representative Office (TECRO)",
+    "website": "https://www.roc-taiwan.org/us/index.html",
+    "phone": "+1-202-895-1800",
+    "address": "4201 Wisconsin Ave NW, Washington, D.C. 20016",
+    "note": "Taiwan is not formally recognised by the US; TECRO acts as the de facto embassy.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Korea, Republic of",
+    "embassy_name": "Embassy of South Korea, Washington, D.C.",
+    "website": "https://overseas.mofa.go.kr/us-en/index.do",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Macao",
+    "embassy_name": "China Consulate-General (handles Macao affairs)",
+    "website": "http://www.china-embassy.org/",
+    "phone": "+1-202-495-2266",
+    "address": "3505 International Place NW, Washington, D.C. 20008",
+    "note": "Macao SAR does not maintain a separate embassy; consular affairs handled by the Chinese Embassy.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "New Zealand",
+    "embassy_name": "Embassy of New Zealand, Washington, D.C.",
+    "website": "https://www.mfat.govt.nz/en/countries-and-regions/north-america/united-states-of-america/new-zealand-embassy-washington/",
+    "phone": "+1-202-328-4800",
+    "address": "37 Observatory Cir NW",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Cambodia",
+    "embassy_name": "Embassy of Cambodia, Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "4530 16th St NW, Washington, D.C. 20011",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Lao People's Democratic Republic",
+    "embassy_name": "Embassy of Laos in Washington, D.C.",
+    "website": "http://www.laoembassy.com/",
+    "phone": "",
+    "address": "2222 S Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Viet Nam",
+    "embassy_name": "Embassy of Vietnam, Washington, D.C.",
+    "website": "http://vietnamembassy-usa.org/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Indonesia",
+    "embassy_name": "embassy of Indonesia, Washington, D.C.",
+    "website": "https://www.kemlu.go.id/washington/",
+    "phone": "+12027755200",
+    "address": "2020 Massachusetts Avenue NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "El Salvador",
+    "embassy_name": "Embassy of El Salvador in Washington, D.C.",
+    "website": "http://www.elsalvador.org/",
+    "phone": "",
+    "address": "1400 16th Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Guatemala",
+    "embassy_name": "Embassy of Guatemala in Washington, D.C.",
+    "website": "https://estadosunidos.minex.gob.gt/",
+    "phone": "",
+    "address": "2220 R Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Italy",
+    "embassy_name": "Embassy of Italy, Washington, D.C.",
+    "website": "https://ambwashingtondc.esteri.it",
+    "phone": "",
+    "address": "3000 Whitehaven Street, N.W.",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Brazil",
+    "embassy_name": "Embassy of Brazil, Washington, D.C.",
+    "website": "http://washington.itamaraty.gov.br/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Morocco",
+    "embassy_name": "Embassy of Morocco in Washington, D.C.",
+    "website": "http://www.embassyofmorocco.us/",
+    "phone": "",
+    "address": "3508 International Drive",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Egypt",
+    "embassy_name": "Embassy of Egypt, Washington, D.C.",
+    "website": "http://www.egyptembassy.net/",
+    "phone": "",
+    "address": "3521 International Court, NW, Washington DC 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "France",
+    "embassy_name": "Embassy of France, Washington, D.C.",
+    "website": "https://fr.franceintheus.org/",
+    "phone": "+1-202-944-6000",
+    "address": "4101 Reservoir Rd NW, Washington, D.C. 20007",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Finland",
+    "embassy_name": "Embassy of Finland, Washington, D.C.",
+    "website": "https://finlandabroad.fi/web/usa",
+    "phone": "",
+    "address": "3301 Massachusetts Ave NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Norway",
+    "embassy_name": "Embassy of Norway, Washington, D.C.",
+    "website": "https://www.norway.no/en/usa/",
+    "phone": "",
+    "address": "2720 34th Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Sweden",
+    "embassy_name": "Embassy of Sweden, Washington, D.C.",
+    "website": "https://www.swedenabroad.se/sv/utlandsmyndigheter/usa-washington/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Denmark",
+    "embassy_name": "Embassy of Denmark, Washington, D.C.",
+    "website": "http://usa.um.dk/",
+    "phone": "",
+    "address": "3200 Whitehaven St.",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Poland",
+    "embassy_name": "Embassy of Poland, Washington, D.C.",
+    "website": "https://www.gov.pl/web/usa",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Bahamas",
+    "embassy_name": "Embassy of the Bahamas in Washington, D.C.",
+    "website": "http://www.bahamasembdc.org/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Portugal",
+    "embassy_name": "Embassy of Portugal, Washington, D.C.",
+    "website": "https://washington.embaixadaportugal.mfa.pt/",
+    "phone": "+1-202-350-5400",
+    "address": "2012 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Austria",
+    "embassy_name": "Embassy of Austria, Washington, D.C.",
+    "website": "https://www.austria.org/",
+    "phone": "",
+    "address": "3524 International Court",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Georgia",
+    "embassy_name": "Embassy of Georgia in Washington, D.C.",
+    "website": "https://usa.mfa.gov.ge/",
+    "phone": "+1-202-387-2390",
+    "address": "1824 R St NW, Washington, D.C. 20009",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Estonia",
+    "embassy_name": "Embassy of Estonia in Washington, D.C.",
+    "website": "https://washington.mfa.ee/",
+    "phone": "",
+    "address": "2131 Massachusetts Avenue NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Latvia",
+    "embassy_name": "Embassy of Latvia in Washington, D.C.",
+    "website": "https://www2.mfa.gov.lv/usa",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Lithuania",
+    "embassy_name": "Embassy of Lithuania, Washington, D.C.",
+    "website": "http://usa.mfa.lt/",
+    "phone": "",
+    "address": "2622 16th Street NW",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Czechia",
+    "embassy_name": "Embassy of the Czech Republic, Washington D.C.",
+    "website": "https://www.mzv.cz/washington",
+    "phone": "+1-202-274-9100",
+    "address": "3900 Spring of Freedom St NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Jordan",
+    "embassy_name": "Embassy of Jordan, Washington, D.C.",
+    "website": "http://jordanembassyus.org/",
+    "phone": "",
+    "address": "3504 International Drive",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Panama",
+    "embassy_name": "embassy of Panama in the United States",
+    "website": "https://www.embassyofpanama.org",
+    "phone": "",
+    "address": "2862 McGill Terrace NW",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Moldova, Republic of",
+    "embassy_name": "Embassy of Moldova, Washington, D.C.",
+    "website": "https://sua.mfa.gov.md",
+    "phone": "",
+    "address": "2101 S Street, N.W. Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Costa Rica",
+    "embassy_name": "Embassy of Costa Rica in Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "2114 S Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Israel",
+    "embassy_name": "Embassy of Israel, Washington, D.C.",
+    "website": "http://embassies.gov.il/washington/",
+    "phone": "",
+    "address": "3514 International Drive",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Kosovo",
+    "embassy_name": "Embassy of Kosovo, Washington, D.C.",
+    "website": "https://ambasadat.net/shba/",
+    "phone": "+1 202 450 2130",
+    "address": "3612 Massachusetts Ave NW",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "India",
+    "embassy_name": "Embassy of India, Washington, D.C.",
+    "website": "https://www.indianembassyusa.gov.in/",
+    "phone": "",
+    "address": "2107 Massachusetts Avenue, N.W.",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Luxembourg",
+    "embassy_name": "Embassy of Luxembourg, Washington, D.C.",
+    "website": "https://washington.mae.lu/",
+    "phone": "+1-202-265-4171",
+    "address": "2200 Massachusetts Ave NW, Washington, D.C. 20008",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Iceland",
+    "embassy_name": "Embassy of Iceland in the United States",
+    "website": "https://www.stjornarradid.is/sendiskrifstofur/sendirad-islands-i-washington-d.c/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Kuwait",
+    "embassy_name": "Embassy of Kuwait, Washington, D.C.",
+    "website": "https://washington.mofa.gov.kw/",
+    "phone": "",
+    "address": "2940 Tilden Street Northwest",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Ireland",
+    "embassy_name": "Embassy of Ireland, Washington, D.C.",
+    "website": "https://www.ireland.ie/en/usa/washington/",
+    "phone": "+1-202-462-3939",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Iran, Islamic Republic of",
+    "embassy_name": "Consulate of Iran, San Francisco",
+    "website": "",
+    "phone": "",
+    "address": "3400 Washington Street, San Francisco, California 94118",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Cook Islands",
+    "embassy_name": "New Zealand Embassy (represents Cook Islands)",
+    "website": "https://www.nzembassy.com/usa",
+    "phone": "+1-202-328-4800",
+    "address": "37 Observatory Circle NW, Washington, D.C. 20008",
+    "note": "Cook Islands is in free association with New Zealand; New Zealand handles its consular affairs in the US.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "French Polynesia",
+    "embassy_name": "Embassy of France (represents French Polynesia)",
+    "website": "https://fr.franceintheus.org/",
+    "phone": "+1-202-944-6000",
+    "address": "4101 Reservoir Rd NW, Washington, D.C. 20007",
+    "note": "French Polynesia is an overseas collectivity of France; consular affairs handled by the French Embassy.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Bangladesh",
+    "embassy_name": "Embassy of Bangladesh in Washington, D.C.",
+    "website": "https://washington.mofa.gov.bd/",
+    "phone": "",
+    "address": "3510 International Drive NW, Washington, DC 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Nepal",
+    "embassy_name": "Embassy of Nepal in Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "2131 Leroy Place",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Eswatini",
+    "embassy_name": "Embassy of Eswatini, Washington, D.C.",
+    "website": "",
+    "phone": "+1-202-234-5002",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Senegal",
+    "embassy_name": "Embassy of Senegal, Washington, D.C.",
+    "website": "https://www.ambasenegal-us.org/",
+    "phone": "+1-202-234-0540",
+    "address": "2215 M St NW, Washington, D.C. 20037",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Qatar",
+    "embassy_name": "Embassy of Qatar, Washington, D.C.",
+    "website": "https://washington.embassy.qa/en/home",
+    "phone": "",
+    "address": "2555 M Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Romania",
+    "embassy_name": "Embassy of Romania, Washington, D.C.",
+    "website": "http://washington.mae.ro/",
+    "phone": "+1-202-332-2392",
+    "address": "1607 23rd Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Switzerland",
+    "embassy_name": "Embassy of Switzerland, Washington, D.C.",
+    "website": "https://www.eda.admin.ch/washington",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Armenia",
+    "embassy_name": "Embassy of Armenia, Washington, D.C.",
+    "website": "https://usa.mfa.am/hy/",
+    "phone": "",
+    "address": "2225 R St NW, Washington, DC 20008",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "Myanmar",
+    "embassy_name": "Embassy of Myanmar in Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "2300 S Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Sierra Leone",
+    "embassy_name": "Embassy of Sierra Leone in Washington, D.C.",
+    "website": "https://embassyofsierraleone.net/",
+    "phone": "",
+    "address": "1701 19th Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Faroe Islands",
+    "embassy_name": "Royal Danish Embassy (represents Faroe Islands)",
+    "website": "https://usa.um.dk/",
+    "phone": "+1-202-234-4300",
+    "address": "3200 Whitehaven St NW, Washington, D.C. 20008",
+    "note": "The Faroe Islands is an autonomous territory of Denmark; consular affairs handled by the Danish Embassy.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Saudi Arabia",
+    "embassy_name": "Embassy of Saudi Arabia in Washington, D.C.",
+    "website": "https://us.saudiembassy.sa/en/Pages/default.aspx",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Oman",
+    "embassy_name": "Embassy of Oman in Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "2535 Belmont Road",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Does not recognize US issued Refugee Travel Document"
+  },
+  {
+    "country": "Zambia",
+    "embassy_name": "Embassy of Zambia, Washington, D.C.",
+    "website": "http://www.zambiaembassy.org/",
+    "phone": "",
+    "address": "2200 R Street, NW",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "embassy_name": "Embassy of Trinidad and Tobago, Washington, D.C.",
+    "website": "https://www.ttembassy.org/",
+    "phone": "+1-202-467-6490",
+    "address": "1708 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Peru",
+    "embassy_name": "Embassy of Peru in Washington, D.C.",
+    "website": "https://embassyofperu.org/",
+    "phone": "+1-202-833-9860",
+    "address": "1700 Massachusetts Ave NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "wikidata",
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Nigeria",
+    "embassy_name": "Embassy of Nigeria, Washington, D.C.",
+    "website": "https://nigeriaembassyusa.org/",
+    "phone": "",
+    "address": "3519 International Drive",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Gambia",
+    "embassy_name": "embassy of the Gambia in the United States",
+    "website": "https://gambiaembassydc.us",
+    "phone": "",
+    "address": "5630 16th Street NW",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Mauritius",
+    "embassy_name": "Embassy of Mauritius, Washington D.C.",
+    "website": "https://mauritiusembassyus.com/",
+    "phone": "+1-202-244-1491",
+    "address": "1709 N St NW, Washington, D.C. 20036",
+    "note": "",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Spain",
+    "embassy_name": "Embassy of Spain, Washington, D.C.",
+    "website": "http://www.exteriores.gob.es/Embajadas/WASHINGTON/es/Paginas/inicio.aspx",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Argentina",
+    "embassy_name": "Embassy of Argentina, Washington, D.C.",
+    "website": "https://eeeuu.cancilleria.gob.ar/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Greenland",
+    "embassy_name": "Royal Danish Embassy (represents Greenland)",
+    "website": "https://usa.um.dk/",
+    "phone": "+1-202-234-4300",
+    "address": "3200 Whitehaven St NW, Washington, D.C. 20008",
+    "note": "Greenland is an autonomous territory of Denmark; consular affairs handled by the Danish Embassy.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Ukraine",
+    "embassy_name": "Embassy of Ukraine, Washington, D.C.",
+    "website": "http://usa.mfa.gov.ua/",
+    "phone": "+1-202-349-2963",
+    "address": "3350 M Street N.W., Washington D.C.",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Uzbekistan",
+    "embassy_name": "Embassy of Uzbekistan, Washington, D.C.",
+    "website": "https://uzbekistan.org/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "United States of America",
+    "embassy_name": "N/A — Home country",
+    "website": "https://travel.state.gov/",
+    "phone": "",
+    "address": "",
+    "note": "RTD holders are US-based; no embassy contact needed for the home country.",
+    "sources": [
+      "manual"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Kenya",
+    "embassy_name": "Embassy of Kenya in Washington, D.C.",
+    "website": "https://kenyaembassydc.org/",
+    "phone": "",
+    "address": "2249 R Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "Namibia",
+    "embassy_name": "Embassy of Namibia in Washington, D.C.",
+    "website": "https://www.namibiaembassyusa.org/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "South Africa",
+    "embassy_name": "Embassy of South Africa, Washington, D.C.",
+    "website": "http://www.saembassy.org",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Chile",
+    "embassy_name": "Embassy of Chile in Washington, D.C.",
+    "website": "https://www.chile.gob.cl/estados-unidos/en",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa required"
+  },
+  {
+    "country": "Sri Lanka",
+    "embassy_name": "Embassy of Sri Lanka in Washington, D.C.",
+    "website": "https://slembassyusa.org",
+    "phone": "",
+    "address": "3025 Whitehaven Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "Tajikistan",
+    "embassy_name": "Embassy of Tajikistan, Washington, D.C.",
+    "website": "http://www.tajemb.us",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "E-Visa"
+  },
+  {
+    "country": "Dominican Republic",
+    "embassy_name": "Embassy of the Dominican Republic in Washington, D.C.",
+    "website": "",
+    "phone": "",
+    "address": "1715 22nd Street",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  },
+  {
+    "country": "Colombia",
+    "embassy_name": "Embassy of Colombia, Washington",
+    "website": "http://estadosunidos.embajada.gov.co/",
+    "phone": "",
+    "address": "",
+    "note": "",
+    "sources": [
+      "wikidata"
+    ],
+    "visa_required": "Visa not required"
+  }
+]
