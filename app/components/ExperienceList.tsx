@@ -2,13 +2,30 @@
 
 import { useState, useEffect } from 'react'
 import { getExperiences, incrementHelpful, type Experience } from '../actions/experiences'
-import Flag from 'react-world-flags'
 import { getCode } from 'country-list'
+import { flagEmoji } from '../lib/flagEmoji'
 
 interface ExperienceListProps {
   filterCountry?: string | null
   // When provided by a parent that already fetched, skip the redundant fetch
   initialExperiences?: Experience[] | null
+}
+
+const LS_KEY = 'rtd_voted_experiences'
+
+function loadVotedSet(): Set<number> {
+  try {
+    const raw = localStorage.getItem(LS_KEY)
+    return raw ? new Set(JSON.parse(raw) as number[]) : new Set()
+  } catch {
+    return new Set()
+  }
+}
+
+function saveVotedSet(set: Set<number>) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify([...set]))
+  } catch { /* storage full or unavailable — ignore */ }
 }
 
 const ExperienceList = ({ filterCountry = null, initialExperiences = null }: ExperienceListProps) => {
@@ -17,6 +34,11 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
   const [filterVisaType, setFilterVisaType] = useState('all')
   const [votedExperiences, setVotedExperiences] = useState(new Set<number>())
   const [expandedId, setExpandedId] = useState<number | null>(null)
+
+  // Hydrate voted set from localStorage once on mount (client only)
+  useEffect(() => {
+    setVotedExperiences(loadVotedSet())
+  }, [])
 
   useEffect(() => {
     // Skip fetch if parent already supplied data
@@ -32,12 +54,28 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
 
   const handleVote = async (experienceId: number) => {
     if (votedExperiences.has(experienceId)) return
+
+    // Optimistic UI update
+    const next = new Set([...votedExperiences, experienceId])
+    setVotedExperiences(next)
+    setExperiences(prev => prev.map(exp =>
+      exp.id === experienceId ? { ...exp, helpful_count: exp.helpful_count + 1 } : exp
+    ))
+
     try {
       const result = await incrementHelpful(experienceId)
       if (result.success) {
-        setVotedExperiences(new Set([...votedExperiences, experienceId]))
+        // Persist to localStorage so the vote survives page reloads
+        saveVotedSet(next)
+      } else if (result.alreadyVoted) {
+        // Server says already voted (different device/session) — keep button greyed
+        saveVotedSet(next)
+      } else {
+        // Unexpected failure — roll back optimistic update
+        const rolled = new Set(votedExperiences)
+        setVotedExperiences(rolled)
         setExperiences(prev => prev.map(exp =>
-          exp.id === experienceId ? { ...exp, helpful_count: exp.helpful_count + 1 } : exp
+          exp.id === experienceId ? { ...exp, helpful_count: exp.helpful_count - 1 } : exp
         ))
       }
     } catch (error) {
@@ -141,12 +179,8 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
                   className="w-full flex items-center gap-3 p-4 text-left hover:bg-zinc-800/20 transition-colors"
                   onClick={() => setExpandedId(isExpanded ? null : exp.id)}
                 >
-                  <div className="flex-shrink-0">
-                    {getCode(exp.country_name) ? (
-                      <Flag code={getCode(exp.country_name)} className="h-6 w-9 rounded-[4px] shadow-sm object-cover" />
-                    ) : (
-                      <div className="h-6 w-9 bg-zinc-800 rounded-[4px]" />
-                    )}
+                  <div className="flex-shrink-0 text-xl leading-none">
+                    {flagEmoji(getCode(exp.country_name))}
                   </div>
 
                   <div className="flex-1 min-w-0">

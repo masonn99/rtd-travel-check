@@ -1,5 +1,7 @@
 'use server'
 
+import { createHash } from 'crypto'
+import { headers } from 'next/headers'
 import { getSql } from '../lib/db'
 import { revalidatePath, unstable_cache } from 'next/cache'
 import { validateExperienceData, sanitizeExperienceData } from '../lib/security'
@@ -25,11 +27,27 @@ export interface ExperienceStats {
   thisMonth: number
 }
 
-// Get all experiences - Cached for 1 hour, but revalidated on change
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Hash an IP address with SHA-256 for privacy — we never store raw IPs. */
+function hashIp(ip: string): string {
+  return createHash('sha256').update(ip).digest('hex')
+}
+
+/** Extract the real client IP from request headers. */
+async function getClientIp(): Promise<string> {
+  const h = await headers()
+  // x-forwarded-for can be a comma-separated list; take the first (original client)
+  const forwarded = h.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0].trim()
+  return h.get('x-real-ip') ?? '127.0.0.1'
+}
+
+// ─── Read actions (cached) ─────────────────────────────────────────────────────
+
 export const getExperiences = unstable_cache(
   async (): Promise<Experience[]> => {
     const sql = getSql()
-    
     try {
       const result = await sql`
         SELECT * FROM experiences
@@ -47,7 +65,6 @@ export const getExperiences = unstable_cache(
 )
 
 // Combined fetch — runs both queries in parallel in a single server action call.
-// Use this in ExperiencesView to avoid two separate round-trips.
 export const getExperiencesWithStats = unstable_cache(
   async (): Promise<{ experiences: Experience[]; stats: ExperienceStats }> => {
     const sql = getSql()
@@ -85,13 +102,10 @@ export const getExperiencesWithStats = unstable_cache(
   { revalidate: 3600, tags: ['experiences'] }
 )
 
-// Get experience stats - Optimized single query + Cached
 export const getExperienceStats = unstable_cache(
   async (): Promise<ExperienceStats> => {
     const sql = getSql()
-    
     try {
-      // Execute all counts in a single query to reduce round-trips
       const rows = await sql`
         SELECT
           COUNT(*) as total,
@@ -101,7 +115,6 @@ export const getExperienceStats = unstable_cache(
         FROM experiences
       `
       const result = (rows as Record<string, unknown>[])[0]
-
       return {
         total: Number(result.total) || 0,
         countries: Number(result.countries) || 0,
@@ -117,7 +130,11 @@ export const getExperienceStats = unstable_cache(
   { revalidate: 3600, tags: ['experiences'] }
 )
 
-// Create a new experience
+// ─── Write actions ─────────────────────────────────────────────────────────────
+
+const RATE_LIMIT_MAX = 5       // max submissions per IP
+const RATE_LIMIT_WINDOW_H = 24 // rolling window in hours
+
 export async function createExperience(data: {
   country_code: string
   country_name: string
@@ -128,27 +145,39 @@ export async function createExperience(data: {
   author_email?: string
 }): Promise<{ success: boolean; error?: string }> {
   const sql = getSql()
-  
+
   try {
-    // Validate input data
+    // Validate first (cheap, no DB hit)
     const validation = validateExperienceData(data)
     if (!validation.isValid) {
       return { success: false, error: validation.errors.join(', ') }
     }
 
-    // Sanitize input data
-    const sanitizedData = sanitizeExperienceData(data)
+    // Rate limit — count this IP's submissions in the rolling window
+    const ip = await getClientIp()
+    const ipHash = hashIp(ip)
 
-    // Insert the experience
+    const countRows = await sql`
+      SELECT COUNT(*) as cnt
+      FROM experiences
+      WHERE ip_hash = ${ipHash}
+        AND created_at > NOW() - INTERVAL '${RATE_LIMIT_WINDOW_H} hours'
+    `
+    const recentCount = Number((countRows as Record<string, unknown>[])[0].cnt)
+
+    if (recentCount >= RATE_LIMIT_MAX) {
+      return {
+        success: false,
+        error: `You can submit up to ${RATE_LIMIT_MAX} stories per day. Please try again later.`,
+      }
+    }
+
+    // Insert
+    const sanitizedData = sanitizeExperienceData(data)
     await sql`
       INSERT INTO experiences (
-        country_code,
-        country_name,
-        experience_type,
-        title,
-        description,
-        author_name,
-        author_email
+        country_code, country_name, experience_type,
+        title, description, author_name, author_email, ip_hash
       ) VALUES (
         ${sanitizedData.country_code},
         ${sanitizedData.country_name},
@@ -156,13 +185,12 @@ export async function createExperience(data: {
         ${sanitizedData.title},
         ${sanitizedData.description},
         ${sanitizedData.author_name},
-        ${sanitizedData.author_email}
+        ${sanitizedData.author_email},
+        ${ipHash}
       )
     `
 
-    // Revalidate the page to show new data
     revalidatePath('/')
-
     return { success: true }
   } catch (error) {
     console.error('Error creating experience:', error)
@@ -170,11 +198,34 @@ export async function createExperience(data: {
   }
 }
 
-// Increment helpful count
-export async function incrementHelpful(experienceId: number): Promise<{ success: boolean }> {
+/**
+ * Increment the helpful count for a story.
+ * Each IP can only vote once per story — enforced by a UNIQUE constraint
+ * on (experience_id, ip_hash) in the helpful_votes table.
+ */
+export async function incrementHelpful(
+  experienceId: number
+): Promise<{ success: boolean; alreadyVoted?: boolean }> {
   const sql = getSql()
-  
+
   try {
+    const ip = await getClientIp()
+    const ipHash = hashIp(ip)
+
+    // Try to record the vote — fails silently if already voted (ON CONFLICT DO NOTHING)
+    const result = await sql`
+      INSERT INTO helpful_votes (experience_id, ip_hash)
+      VALUES (${experienceId}, ${ipHash})
+      ON CONFLICT (experience_id, ip_hash) DO NOTHING
+      RETURNING id
+    `
+
+    // If nothing was inserted, this IP already voted
+    if ((result as unknown[]).length === 0) {
+      return { success: false, alreadyVoted: true }
+    }
+
+    // Vote recorded — now bump the counter
     await sql`
       UPDATE experiences
       SET helpful_count = helpful_count + 1,
@@ -183,7 +234,6 @@ export async function incrementHelpful(experienceId: number): Promise<{ success:
     `
 
     revalidatePath('/')
-
     return { success: true }
   } catch (error) {
     console.error('Error incrementing helpful count:', error)
@@ -191,18 +241,11 @@ export async function incrementHelpful(experienceId: number): Promise<{ success:
   }
 }
 
-// Delete an experience
 export async function deleteExperience(experienceId: number): Promise<{ success: boolean }> {
   const sql = getSql()
-  
   try {
-    await sql`
-      DELETE FROM experiences
-      WHERE id = ${experienceId}
-    `
-
+    await sql`DELETE FROM experiences WHERE id = ${experienceId}`
     revalidatePath('/')
-
     return { success: true }
   } catch (error) {
     console.error('Error deleting experience:', error)

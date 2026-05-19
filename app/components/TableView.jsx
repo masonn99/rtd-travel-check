@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import data from '../../data.json';
 import embassyData from '../../embassies.json';
-import Flag from 'react-world-flags';
 import { getCode } from 'country-list';
+import { flagEmoji } from '../lib/flagEmoji';
 import ExperienceList from './ExperienceList';
 
 // ─── Lookup ────────────────────────────────────────────────────────────────
@@ -218,12 +218,8 @@ const TableView = () => {
                         isExpanded ? 'bg-zinc-800/30' : 'hover:bg-zinc-800/20'
                       }`}
                     >
-                      <div className="w-12 h-8 flex-shrink-0">
-                        {getCode(country.country) ? (
-                          <Flag code={getCode(country.country)} className="w-full h-full object-cover rounded-md shadow-sm" />
-                        ) : (
-                          <div className="w-full h-full bg-zinc-800 rounded-md flex items-center justify-center text-[8px] text-zinc-600">N/A</div>
-                        )}
+                      <div className="w-12 h-8 flex-shrink-0 flex items-center justify-center text-2xl leading-none">
+                        {flagEmoji(getCode(country.country))}
                       </div>
                       <span className={`font-semibold text-sm transition-colors truncate ${isExpanded ? 'text-blue-400' : 'text-white group-hover:text-blue-300'}`}>
                         {country.country}
@@ -296,12 +292,8 @@ const TableView = () => {
                   className="w-full flex items-center gap-3 p-3.5 text-left hover:bg-zinc-800/30 transition-colors"
                   onClick={() => toggle(country.country)}
                 >
-                  <div className="w-9 h-6 flex-shrink-0">
-                    {getCode(country.country) ? (
-                      <Flag code={getCode(country.country)} className="w-full h-full object-cover rounded-[4px] shadow-sm" />
-                    ) : (
-                      <div className="w-full h-full bg-zinc-800 rounded-[4px]" />
-                    )}
+                  <div className="w-9 h-6 flex-shrink-0 flex items-center justify-center text-xl leading-none">
+                    {flagEmoji(getCode(country.country))}
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="font-semibold text-white text-sm block truncate">{country.country}</span>
