@@ -1,0 +1,1 @@
+export const EXPERIENCES_PAGE_SIZE = 20

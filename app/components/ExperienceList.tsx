@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getExperiences, incrementHelpful, type Experience } from '../actions/experiences'
+import { getExperiences, loadMoreExperiences, incrementHelpful, type Experience } from '../actions/experiences'
+import { EXPERIENCES_PAGE_SIZE as PAGE_SIZE } from '../lib/constants'
 import { getCode } from 'country-list'
 import { flagEmoji } from '../lib/flagEmoji'
 
@@ -34,6 +35,8 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
   const [filterVisaType, setFilterVisaType] = useState('all')
   const [votedExperiences, setVotedExperiences] = useState(new Set<number>())
   const [expandedId, setExpandedId] = useState<number | null>(null)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState((initialExperiences?.length ?? 0) >= PAGE_SIZE)
 
   // Hydrate voted set from localStorage once on mount (client only)
   useEffect(() => {
@@ -47,10 +50,21 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
       setLoading(true)
       const data = await getExperiences()
       setExperiences(data)
+      setHasMore(data.length >= PAGE_SIZE)
       setLoading(false)
     }
     fetchExperiences()
   }, [])
+
+  const handleLoadMore = async () => {
+    if (loadingMore || experiences.length === 0) return
+    setLoadingMore(true)
+    const oldest = experiences[experiences.length - 1]
+    const more = await loadMoreExperiences(oldest.id)
+    setExperiences(prev => [...prev, ...more])
+    setHasMore(more.length >= PAGE_SIZE)
+    setLoadingMore(false)
+  }
 
   const handleVote = async (experienceId: number) => {
     if (votedExperiences.has(experienceId)) return
@@ -275,6 +289,31 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Load more — only shown when not filtering by country and more pages exist */}
+      {!filterCountry && hasMore && (
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800/60 hover:bg-zinc-700/60 border border-zinc-700/50 text-zinc-300 text-sm font-semibold rounded-xl transition-all disabled:opacity-50"
+          >
+            {loadingMore ? (
+              <>
+                <div className="h-3.5 w-3.5 rounded-full border-2 border-zinc-600 border-t-blue-400 animate-spin" />
+                Loading…
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+                Load more stories
+              </>
+            )}
+          </button>
         </div>
       )}
     </div>
