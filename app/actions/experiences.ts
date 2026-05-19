@@ -3,7 +3,8 @@
 import { createHash } from 'crypto'
 import { headers } from 'next/headers'
 import { getSql } from '../lib/db'
-import { revalidatePath, unstable_cache } from 'next/cache'
+import { EXPERIENCES_PAGE_SIZE as PAGE_SIZE } from '../lib/constants'
+import { revalidateTag, unstable_cache } from 'next/cache'
 import { validateExperienceData, sanitizeExperienceData } from '../lib/security'
 
 export interface Experience {
@@ -52,7 +53,7 @@ export const getExperiences = unstable_cache(
       const result = await sql`
         SELECT * FROM experiences
         ORDER BY created_at DESC
-        LIMIT 100
+        LIMIT ${PAGE_SIZE}
       `
       return result as Experience[]
     } catch (error) {
@@ -64,13 +65,33 @@ export const getExperiences = unstable_cache(
   { revalidate: 3600, tags: ['experiences'] }
 )
 
+/**
+ * Load the next page of experiences after a given ID (cursor-based).
+ * Not cached — always fetches fresh so new stories appear immediately.
+ */
+export async function loadMoreExperiences(afterId: number): Promise<Experience[]> {
+  const sql = getSql()
+  try {
+    const result = await sql`
+      SELECT * FROM experiences
+      WHERE id < ${afterId}
+      ORDER BY created_at DESC
+      LIMIT ${PAGE_SIZE}
+    `
+    return result as Experience[]
+  } catch (error) {
+    console.error('Error loading more experiences:', error)
+    return []
+  }
+}
+
 // Combined fetch — runs both queries in parallel in a single server action call.
 export const getExperiencesWithStats = unstable_cache(
   async (): Promise<{ experiences: Experience[]; stats: ExperienceStats }> => {
     const sql = getSql()
     try {
       const [experiences, statsRows] = await Promise.all([
-        sql`SELECT * FROM experiences ORDER BY created_at DESC LIMIT 100`,
+        sql`SELECT * FROM experiences ORDER BY created_at DESC LIMIT ${PAGE_SIZE}`,
         sql`
           SELECT
             COUNT(*) as total,
@@ -190,7 +211,7 @@ export async function createExperience(data: {
       )
     `
 
-    revalidatePath('/')
+    revalidateTag('experiences')
     return { success: true }
   } catch (error) {
     console.error('Error creating experience:', error)
@@ -233,7 +254,7 @@ export async function incrementHelpful(
       WHERE id = ${experienceId}
     `
 
-    revalidatePath('/')
+    revalidateTag('experiences')
     return { success: true }
   } catch (error) {
     console.error('Error incrementing helpful count:', error)
@@ -245,7 +266,7 @@ export async function deleteExperience(experienceId: number): Promise<{ success:
   const sql = getSql()
   try {
     await sql`DELETE FROM experiences WHERE id = ${experienceId}`
-    revalidatePath('/')
+    revalidateTag('experiences')
     return { success: true }
   } catch (error) {
     console.error('Error deleting experience:', error)

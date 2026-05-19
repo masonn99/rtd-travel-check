@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { getExperiencesWithStats, type Experience } from '../actions/experiences'
-import { cachedFetch, invalidateCache } from '../lib/client-cache'
 import ExperienceForm from './ExperienceForm'
 import ExperienceList from './ExperienceList'
 
@@ -21,8 +20,9 @@ const ExperiencesView = () => {
     const fetchAll = async () => {
       setLoading(true)
       try {
-        // Served from memory cache after first load; revalidates in background
-        const data = await cachedFetch('experiences-with-stats', getExperiencesWithStats)
+        // getExperiencesWithStats is wrapped in unstable_cache on the server (1hr TTL).
+        // No extra client-side cache needed — the server handles it.
+        const data = await getExperiencesWithStats()
         setStats(data.stats)
         setExperiences(data.experiences)
       } catch (error) {
@@ -35,7 +35,7 @@ const ExperiencesView = () => {
   }, [refreshKey])
 
   const handleSubmitSuccess = () => {
-    invalidateCache('experiences-with-stats')
+    // Bump key to re-fetch; the server cache is busted via revalidateTag in the action
     setRefreshKey(prev => prev + 1)
   }
 
