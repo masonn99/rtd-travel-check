@@ -1,12 +1,33 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import BottomNav from './components/BottomNav'
-import WorldGlobe from './components/Globe'
-import TableView from './components/TableView'
-import ExperiencesView from './components/ExperiencesView'
+
+// Lazy-load each view — they are only downloaded when the user navigates to that tab.
+// This keeps the initial bundle small (the map library alone is ~1 MB).
+const WorldGlobe = dynamic(() => import('./components/Globe'), {
+  ssr: false,
+  loading: () => <ViewLoader />,
+})
+const TableView = dynamic(() => import('./components/TableView'), {
+  ssr: false,
+  loading: () => <ViewLoader />,
+})
+const ExperiencesView = dynamic(() => import('./components/ExperiencesView'), {
+  ssr: false,
+  loading: () => <ViewLoader />,
+})
+
+function ViewLoader() {
+  return (
+    <div className="flex items-center justify-center py-32">
+      <div className="h-6 w-6 rounded-full border-2 border-zinc-700 border-t-blue-500 animate-spin" />
+    </div>
+  )
+}
 
 export default function Home() {
   const [currentView, setCurrentView] = useState('globe')

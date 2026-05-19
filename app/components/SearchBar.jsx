@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, Globe2, Clock, FileText, SlidersHorizontal, X } from 'lucide-react';
-import Flag from 'react-world-flags';
+import { flagEmoji } from '../lib/flagEmoji';
 import data from '/data.json';
 import { getCode } from 'country-list';
 import { useNavigate } from 'react-router-dom'; // Add this import
@@ -231,17 +231,9 @@ const SearchBar = () => {
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                     <div className="flex items-center gap-2 sm:gap-3">
-                      {getCode(country.country) ? (
-                        <div className="w-5 h-3.5 sm:w-6 sm:h-4 flex items-center justify-center overflow-hidden">
-                          <Flag 
-                            code={getCode(country.country)}
-                            className="rounded-sm object-cover w-full h-full"
-                            fallback={<Globe2 className="h-5 w-5 text-zinc-400" />}
-                          />
-                        </div>
-                      ) : (
-                        <Globe2 className="h-5 w-5 text-zinc-400" />
-                      )}
+                      <span className="text-lg leading-none">
+                        {flagEmoji(getCode(country.country))}
+                      </span>
                       <h2 className="text-base sm:text-lg font-medium text-zinc-100">{country.country}</h2>
                     </div>
                     <span className={`inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium
