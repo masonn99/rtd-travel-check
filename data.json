@@ -586,5 +586,11 @@
     "visaRequirement": "Visa not required",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "Uganda",
+    "visaRequirement": "E-Visa",
+    "duration": "N/A",
+    "notes": ""
   }
 ]
