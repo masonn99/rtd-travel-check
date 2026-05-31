@@ -1,4 +1,11 @@
-import { GlobeIcon, TableIcon, TelegramIcon, ExperiencesIcon } from './Icons';
+import { TelegramIcon } from './Icons';
+
+const TABS = [
+  { id: 'globe',       label: 'Globe',      emoji: '🌍' },
+  { id: 'table',       label: 'Directory',  emoji: '🗂️' },
+  { id: 'experiences', label: 'Community',  emoji: '💬' },
+  { id: 'chat',        label: 'AI Chat',    emoji: '✨' },
+];
 
 const Header = ({ onViewChange, currentView }) => {
   return (
@@ -23,21 +30,17 @@ const Header = ({ onViewChange, currentView }) => {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center">
             <div className="flex p-1 bg-zinc-900/60 border border-zinc-800/60 rounded-xl gap-0.5">
-              {[
-                { id: 'globe', label: 'Globe', icon: GlobeIcon },
-                { id: 'table', label: 'Directory', icon: TableIcon },
-                { id: 'experiences', label: 'Community', icon: ExperiencesIcon },
-              ].map((tab) => (
+              {TABS.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => onViewChange(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                     currentView === tab.id
                       ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/30'
                       : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
                   }`}
                 >
-                  <tab.icon className="h-3.5 w-3.5" />
+                  <span className="text-sm leading-none">{tab.emoji}</span>
                   {tab.label}
                 </button>
               ))}

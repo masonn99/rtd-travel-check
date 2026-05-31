@@ -21,6 +21,10 @@ const ExperiencesView = dynamic(() => import('./components/ExperiencesView'), {
   ssr: false,
   loading: () => <ViewLoader />,
 })
+const ChatView = dynamic(() => import('./components/ChatView'), {
+  ssr: false,
+  loading: () => <ViewLoader />,
+})
 
 function ViewLoader() {
   return (
@@ -82,6 +86,8 @@ export default function Home() {
             onRefresh={fetchExperienceData}
           />
         )
+      case 'chat':
+        return <ChatView />
       default:
         return <WorldGlobe onViewChange={setCurrentView} />
     }

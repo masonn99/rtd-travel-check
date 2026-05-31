@@ -1,11 +1,10 @@
 'use client'
 
-import { GlobeIcon, TableIcon, ExperiencesIcon } from './Icons';
-
 const tabs = [
-  { id: 'globe', label: 'Globe', icon: GlobeIcon },
-  { id: 'table', label: 'Directory', icon: TableIcon },
-  { id: 'experiences', label: 'Stories', icon: ExperiencesIcon },
+  { id: 'globe',       label: 'Globe',     emoji: '🌍' },
+  { id: 'table',       label: 'Directory', emoji: '🗂️' },
+  { id: 'experiences', label: 'Stories',   emoji: '💬' },
+  { id: 'chat',        label: 'AI Chat',   emoji: '✨' },
 ];
 
 const BottomNav = ({ currentView, onViewChange }) => {
@@ -24,7 +23,9 @@ const BottomNav = ({ currentView, onViewChange }) => {
               className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-200"
             >
               <div className={`flex items-center justify-center w-10 h-7 rounded-lg transition-all duration-200 ${active ? 'bg-blue-600/20' : ''}`}>
-                <tab.icon className={`h-5 w-5 transition-colors duration-200 ${active ? 'text-blue-400' : 'text-zinc-500'}`} />
+                <span className={`text-xl leading-none transition-all duration-200 ${active ? 'scale-110' : 'opacity-50'}`}>
+                  {tab.emoji}
+                </span>
               </div>
               <span className={`text-[10px] font-semibold tracking-wide transition-colors duration-200 ${active ? 'text-blue-400' : 'text-zinc-600'}`}>
                 {tab.label}
