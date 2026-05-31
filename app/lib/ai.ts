@@ -38,10 +38,13 @@ Schema:
   "country_name": "full English country name",
   "experience_type": "Visa Free" | "E-Visa" | "Visa Required" | "Not Recognized",
   "title": "short one-line summary (max 80 chars)",
-  "description": "what happened at the border / embassy, in the author's words"
+  "description": "copy the most relevant part of the original message verbatim — NEVER leave this empty"
 }
 
-If the message is NOT a first-hand travel experience (questions, off-topic, RTD application talk), return {"isReport": false}.`
+RULES:
+- If the message IS a first-hand travel experience, set isReport=true and fill ALL fields.
+- description must always contain actual text. If unsure what to write, copy the full original message.
+- If the message is NOT a first-hand travel experience (questions, off-topic, RTD application talk), return {"isReport": false}.`
 
 /**
  * Extract a structured story from a raw Telegram message.

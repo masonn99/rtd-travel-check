@@ -83,7 +83,10 @@ export async function POST(req: NextRequest) {
     const countryCode = getCode(extraction.country_name) ?? 'XX'
     const experienceType = extraction.experience_type ?? 'Visa Required'
     const title = extraction.title ?? `Report for ${extraction.country_name}`
-    const description = extraction.description ?? messageText
+    // Always fall back to raw message text if AI returns empty description
+    const description = (extraction.description && extraction.description.trim().length > 5)
+      ? extraction.description
+      : messageText
 
     const insert = await insertTelegramExperience({
       country_code: countryCode,
