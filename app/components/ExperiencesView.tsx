@@ -1,42 +1,25 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { getExperiencesWithStats, type Experience } from '../actions/experiences'
+import { type Experience } from '../actions/experiences'
 import ExperienceForm from './ExperienceForm'
 import ExperienceList from './ExperienceList'
 
-const ExperiencesView = () => {
-  const [refreshKey, setRefreshKey] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const [experiences, setExperiences] = useState<Experience[]>([])
-  const [stats, setStats] = useState({
-    total: 0,
-    countries: 0,
-    helpfulVotes: 0,
-    thisMonth: 0
-  })
+interface Props {
+  initialData: {
+    experiences: Experience[]
+    stats: { total: number; countries: number; helpfulVotes: number; thisMonth: number }
+  } | null
+  loading: boolean
+  onRefresh: () => void
+}
 
-  useEffect(() => {
-    const fetchAll = async () => {
-      setLoading(true)
-      try {
-        // getExperiencesWithStats is wrapped in unstable_cache on the server (1hr TTL).
-        // No extra client-side cache needed — the server handles it.
-        const data = await getExperiencesWithStats()
-        setStats(data.stats)
-        setExperiences(data.experiences)
-      } catch (error) {
-        console.error('Failed to fetch experiences:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchAll()
-  }, [refreshKey])
+const ExperiencesView = ({ initialData, loading, onRefresh }: Props) => {
+  const experiences = initialData?.experiences ?? []
+  const stats = initialData?.stats ?? { total: 0, countries: 0, helpfulVotes: 0, thisMonth: 0 }
 
   const handleSubmitSuccess = () => {
-    // Bump key to re-fetch; the server cache is busted via revalidateTag in the action
-    setRefreshKey(prev => prev + 1)
+    // Tell page.tsx to re-fetch; the server cache is busted via revalidateTag in the action
+    onRefresh()
   }
 
   return (
@@ -95,7 +78,7 @@ const ExperiencesView = () => {
             </h2>
           </div>
           <ExperienceList
-            key={refreshKey}
+            key={experiences.length}
             initialExperiences={loading ? null : experiences}
           />
         </div>
