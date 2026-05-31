@@ -49,7 +49,7 @@ export default function Home() {
     }
   }, [])
 
-  // Fetch when Community tab is first opened, or after a new story is submitted
+  // Fetch (or re-fetch) experience data. Called on page load and after new submissions.
   const fetchExperienceData = useCallback(async () => {
     setExperienceLoading(true)
     try {
@@ -62,12 +62,11 @@ export default function Home() {
     }
   }, [])
 
+  // Prefetch in the background as soon as the page loads — data is tiny (~50 rows)
+  // and will be ready in state before the user ever clicks the Community tab.
   useEffect(() => {
-    // Pre-fetch when user first switches to Community tab
-    if (currentView === 'experiences' && !experienceData && !experienceLoading) {
-      fetchExperienceData()
-    }
-  }, [currentView])
+    fetchExperienceData()
+  }, [])
 
   const renderView = () => {
     switch (currentView) {
