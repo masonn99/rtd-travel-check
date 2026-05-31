@@ -1,90 +1,149 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { extractTravelExperience } from '../../lib/ai';
-import { createExperience } from '../../actions/experiences';
-import { sendTelegramMessage } from '../../lib/telegram';
-import { analyzeMessageLocally } from '../../lib/nlp';
-import { getCode } from 'country-list';
+import { NextRequest, NextResponse } from 'next/server'
+import { getCode } from 'country-list'
+import { extractTravelExperience } from '../../lib/ai'
+import { analyzeMessageLocally } from '../../lib/nlp'
+import { sendTelegramMessage } from '../../lib/telegram'
+import {
+  insertTelegramExperience,
+  approveExperience,
+  rejectExperience,
+  countStoriesForCountry,
+} from '../../actions/experiences'
+
+// Always return 200 to Telegram — if we return anything else it retries endlessly
+const OK = () => NextResponse.json({ ok: true })
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const adminId = process.env.ADMIN_TELEGRAM_ID;
+    const body = await req.json()
+    const adminId = process.env.ADMIN_TELEGRAM_ID
+    const groupId = process.env.TELEGRAM_GROUP_ID // optional: restrict to one group
 
-    // --- CASE 1: BUTTON CLICK (CALLBACK QUERY) ---
+    if (!adminId) {
+      console.error('[Telegram] ADMIN_TELEGRAM_ID not set')
+      return OK()
+    }
+
+    // ── CASE 1: Button click (approve / reject) ───────────────────────────────
     if (body.callback_query) {
-      const { data, message, from } = body.callback_query;
-      
-      // Security: Only you can click the buttons
-      if (String(from.id) !== String(adminId)) {
-         return NextResponse.json({ ok: true });
+      const { data, from } = body.callback_query
+
+      // Only the admin can act on buttons
+      if (String(from.id) !== String(adminId)) return OK()
+
+      const callbackId = body.callback_query.id
+
+      if (data?.startsWith('approve_')) {
+        const id = parseInt(data.replace('approve_', ''), 10)
+        const result = await approveExperience(id)
+        await answerCallback(callbackId, result.success ? '✅ Published!' : '❌ Failed')
+        if (result.success) {
+          await sendTelegramMessage(adminId, `✅ Story #${id} is now <b>live</b> on the site.`)
+        }
+      } else if (data?.startsWith('reject_')) {
+        const id = parseInt(data.replace('reject_', ''), 10)
+        const result = await rejectExperience(id)
+        await answerCallback(callbackId, result.success ? '🗑 Rejected' : '❌ Failed')
+        if (result.success) {
+          await sendTelegramMessage(adminId, `🗑 Story #${id} rejected and removed.`)
+        }
       }
 
-      if (data.startsWith('approve_')) {
-        const [_, countryCode, countryName, type] = data.split('|');
-        const originalText = message.text;
-        const description = originalText.split('Description:')[1]?.trim() || "No description";
+      return OK()
+    }
 
-        await createExperience({
-          country_code: countryCode,
-          country_name: countryName,
-          experience_type: type,
-          title: `Report for ${countryName}`,
-          description: `${description}\n\n(Verified from Telegram Community)`,
-          author_name: "Community Member"
-        });
+    // ── CASE 2: Incoming message ───────────────────────────────────────────────
+    const message = body?.message
+    const messageText: string | undefined = message?.text
+    if (!messageText) return OK()
 
-        await sendTelegramMessage(adminId!, `✅ <b>Success!</b> Added report for ${countryName} to the database.`);
-      } else if (data === 'reject') {
-        await sendTelegramMessage(adminId!, `❌ Report rejected and ignored.`);
+    // Optional: only process messages from your community group
+    if (groupId && String(message.chat?.id) !== String(groupId)) return OK()
+
+    const messageId: number = message.message_id
+    const senderName: string = [message.from?.first_name, message.from?.last_name]
+      .filter(Boolean).join(' ') || 'Community Member'
+
+    // ── Step 1: Heuristic filter (free, no API call) ──────────────────────────
+    const local = analyzeMessageLocally(messageText)
+    if (!local.isPotentialReport) {
+      console.log(`[NLP] Skipped: "${messageText.substring(0, 60)}…" — ${local.reason}`)
+      return OK()
+    }
+
+    // ── Step 2: LLM extraction (Gemini Flash → Groq fallback) ─────────────────
+    const extraction = await extractTravelExperience(messageText)
+
+    if (!extraction.isReport || !extraction.country_name) {
+      console.log(`[AI] Not a report: "${messageText.substring(0, 60)}…"`)
+      return OK()
+    }
+
+    // ── Step 3: Save as pending_review ────────────────────────────────────────
+    const countryCode = getCode(extraction.country_name) ?? 'XX'
+    const experienceType = extraction.experience_type ?? 'Visa Required'
+    const title = extraction.title ?? `Report for ${extraction.country_name}`
+    const description = extraction.description ?? messageText
+
+    const insert = await insertTelegramExperience({
+      country_code: countryCode,
+      country_name: extraction.country_name,
+      experience_type: experienceType,
+      title,
+      description: `${description}\n\n— ${senderName} (via Telegram)`,
+      author_name: senderName,
+      telegram_message_id: messageId,
+    })
+
+    if (!insert.success) {
+      // 'duplicate' means we already processed this message — safe to ignore
+      if (insert.error !== 'duplicate') {
+        console.error('[DB] insertTelegramExperience failed:', insert.error)
       }
-      
-      return NextResponse.json({ ok: true });
+      return OK()
     }
 
-    // --- CASE 2: NEW MESSAGE FROM GROUP ---
-    const messageText = body?.message?.text;
-    if (!messageText || !adminId) return NextResponse.json({ ok: true });
+    // ── Step 4: Notify admin with approve / reject buttons ────────────────────
+    const existingCount = await countStoriesForCountry(extraction.country_name)
+    const isNewCountry = existingCount === 0
 
-    // 1. LAYER 1: Local NLP Filter (FREE)
-    const localAnalysis = analyzeMessageLocally(messageText);
-    
-    // Only proceed to LLM if it looks like a real travel report
-    if (!localAnalysis.isPotentialReport) {
-      console.log(`[NLP] Ignored message: "${messageText.substring(0, 50)}..." Reason: ${localAnalysis.reason}`);
-      return NextResponse.json({ ok: true });
-    }
+    const countryLabel = isNewCountry
+      ? `🌍 <b>NEW COUNTRY</b> — first story ever for <b>${extraction.country_name}</b>`
+      : `📖 New story for <b>${extraction.country_name}</b> (${existingCount} existing)`
 
-    // 2. LAYER 2: AI Extraction (PAID/LIMITED)
-    const extraction = await extractTravelExperience(messageText);
+    const notifText = [
+      `${countryLabel}`,
+      ``,
+      `<b>Type:</b> ${experienceType}`,
+      `<b>From:</b> ${senderName}`,
+      `<b>Title:</b> ${title}`,
+      ``,
+      `<b>Description:</b>`,
+      description.substring(0, 400) + (description.length > 400 ? '…' : ''),
+      ``,
+      `Story ID: #${insert.id}`,
+    ].join('\n')
 
-    if (extraction.isReport && extraction.country_name) {
-      const countryCode = getCode(extraction.country_name) || "??";
-      
-      // 3. LAYER 3: Human Approval (YOU)
-      const adminMessage = `
-<b>New Visa Report Detected!</b>
-<b>Confidence Score:</b> ${localAnalysis.confidence}%
-<b>Country:</b> ${extraction.country_name} (${countryCode})
-<b>Type:</b> ${extraction.experience_type}
-<b>User:</b> ${body.message.from?.first_name || "Unknown"}
-<b>Description:</b> ${extraction.description}
+    await sendTelegramMessage(adminId, notifText, {
+      inline_keyboard: [[
+        { text: '✅ Approve', callback_data: `approve_${insert.id}` },
+        { text: '❌ Reject',  callback_data: `reject_${insert.id}`  },
+      ]],
+    })
 
-Should I add this to the website?
-      `;
-
-      const callbackData = `approve_|${countryCode}|${extraction.country_name.substring(0, 15)}|${extraction.experience_type}`;
-
-      await sendTelegramMessage(adminId, adminMessage, {
-        inline_keyboard: [[
-          { text: "✅ Approve", callback_data: callbackData },
-          { text: "❌ Reject", callback_data: "reject" }
-        ]]
-      });
-    }
-
-    return NextResponse.json({ ok: true });
+    return OK()
   } catch (error) {
-    console.error("Webhook Error:", error);
-    return NextResponse.json({ ok: true });
+    console.error('[Telegram webhook] Unhandled error:', error)
+    return OK() // always 200 so Telegram doesn't retry
   }
+}
+
+/** Acknowledge a button click — removes the spinner in Telegram UI */
+async function answerCallback(callbackQueryId: string, text: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN
+  await fetch(`https://api.telegram.org/bot${token}/answerCallbackQuery`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ callback_query_id: callbackQueryId, text }),
+  }).catch(() => {})
 }
