@@ -48,6 +48,34 @@ async function migrate() {
   `
   console.log('✅ helpful_votes index created')
 
+  // 5. status column — tracks published / pending_review / rejected
+  await sql`
+    ALTER TABLE experiences
+    ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'published'
+  `
+  console.log('✅ experiences.status column added')
+
+  // 6. source column — web | telegram
+  await sql`
+    ALTER TABLE experiences
+    ADD COLUMN IF NOT EXISTS source VARCHAR(20) DEFAULT 'web'
+  `
+  console.log('✅ experiences.source column added')
+
+  // 7. telegram_message_id — deduplication: prevents processing same message twice
+  await sql`
+    ALTER TABLE experiences
+    ADD COLUMN IF NOT EXISTS telegram_message_id BIGINT UNIQUE
+  `
+  console.log('✅ experiences.telegram_message_id column added')
+
+  // 8. Index on status so the published-only filter is fast
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_experiences_status
+    ON experiences(status)
+  `
+  console.log('✅ status index created')
+
   console.log('\n🎉 Migrations complete!')
 }
 

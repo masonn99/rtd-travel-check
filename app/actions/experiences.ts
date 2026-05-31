@@ -52,6 +52,7 @@ export const getExperiences = unstable_cache(
     try {
       const result = await sql`
         SELECT * FROM experiences
+        WHERE status = 'published' OR status IS NULL
         ORDER BY created_at DESC
         LIMIT ${PAGE_SIZE}
       `
@@ -75,6 +76,7 @@ export async function loadMoreExperiences(afterId: number): Promise<Experience[]
     const result = await sql`
       SELECT * FROM experiences
       WHERE id < ${afterId}
+        AND (status = 'published' OR status IS NULL)
       ORDER BY created_at DESC
       LIMIT ${PAGE_SIZE}
     `
@@ -85,13 +87,106 @@ export async function loadMoreExperiences(afterId: number): Promise<Experience[]
   }
 }
 
+// ─── Telegram pipeline actions ─────────────────────────────────────────────────
+
+/**
+ * Insert a story extracted from Telegram as pending_review.
+ * Bypasses IP rate limiting — Telegram messages are already filtered.
+ * Returns the new row's ID so the approve button can reference it.
+ */
+export async function insertTelegramExperience(data: {
+  country_code: string
+  country_name: string
+  experience_type: string
+  title: string
+  description: string
+  author_name: string
+  telegram_message_id: number
+}): Promise<{ success: boolean; id?: number; error?: string }> {
+  const sql = getSql()
+  try {
+    const rows = await sql`
+      INSERT INTO experiences (
+        country_code, country_name, experience_type,
+        title, description, author_name,
+        status, source, telegram_message_id
+      ) VALUES (
+        ${data.country_code},
+        ${data.country_name},
+        ${data.experience_type},
+        ${data.title},
+        ${data.description},
+        ${data.author_name},
+        'pending_review',
+        'telegram',
+        ${data.telegram_message_id}
+      )
+      ON CONFLICT (telegram_message_id) DO NOTHING
+      RETURNING id
+    `
+    const id = (rows as { id: number }[])[0]?.id
+    if (!id) return { success: false, error: 'duplicate' }
+    return { success: true, id }
+  } catch (error) {
+    console.error('Error inserting telegram experience:', error)
+    return { success: false, error: String(error) }
+  }
+}
+
+/** Publish a pending story. */
+export async function approveExperience(id: number): Promise<{ success: boolean }> {
+  const sql = getSql()
+  try {
+    await sql`
+      UPDATE experiences
+      SET status = 'published', updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+    `
+    revalidateTag('experiences')
+    return { success: true }
+  } catch (error) {
+    console.error('Error approving experience:', error)
+    return { success: false }
+  }
+}
+
+/** Reject and delete a pending story. */
+export async function rejectExperience(id: number): Promise<{ success: boolean }> {
+  const sql = getSql()
+  try {
+    await sql`DELETE FROM experiences WHERE id = ${id} AND status = 'pending_review'`
+    return { success: true }
+  } catch (error) {
+    console.error('Error rejecting experience:', error)
+    return { success: false }
+  }
+}
+
+/**
+ * Check if a country already has published stories.
+ * Used by the Telegram pipeline to label notifications (new country vs existing).
+ */
+export async function countStoriesForCountry(countryName: string): Promise<number> {
+  const sql = getSql()
+  try {
+    const rows = await sql`
+      SELECT COUNT(*) as cnt FROM experiences
+      WHERE country_name ILIKE ${countryName}
+        AND (status = 'published' OR status IS NULL)
+    `
+    return Number((rows as { cnt: string }[])[0]?.cnt ?? 0)
+  } catch {
+    return 0
+  }
+}
+
 // Combined fetch — runs both queries in parallel in a single server action call.
 export const getExperiencesWithStats = unstable_cache(
   async (): Promise<{ experiences: Experience[]; stats: ExperienceStats }> => {
     const sql = getSql()
     try {
       const [experiences, statsRows] = await Promise.all([
-        sql`SELECT * FROM experiences ORDER BY created_at DESC LIMIT ${PAGE_SIZE}`,
+        sql`SELECT * FROM experiences WHERE status = 'published' OR status IS NULL ORDER BY created_at DESC LIMIT ${PAGE_SIZE}`,
         sql`
           SELECT
             COUNT(*) as total,
