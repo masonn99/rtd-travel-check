@@ -2,7 +2,7 @@
 
 import { type Experience } from '../actions/experiences'
 import ExperienceForm from './ExperienceForm'
-import ExperienceList from './ExperienceList'
+import CountryStoriesGrid from './CountryStoriesGrid'
 
 interface Props {
   initialData: {
@@ -69,17 +69,11 @@ const ExperiencesView = ({ initialData, loading, onRefresh }: Props) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Story list — receives experiences as props, no second fetch needed */}
+        {/* Country stories grid */}
         <div className="lg:col-span-8 order-2 lg:order-1">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-base font-semibold text-white flex items-center gap-2">
-              Recent Stories
-              <span className="text-[11px] text-zinc-500 font-normal bg-zinc-800/60 px-2 py-0.5 rounded-md">Newest first</span>
-            </h2>
-          </div>
-          <ExperienceList
-            key={experiences.length}
-            initialExperiences={loading ? null : experiences}
+          <CountryStoriesGrid
+            experiences={experiences}
+            loading={loading}
           />
         </div>
 
