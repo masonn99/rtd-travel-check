@@ -180,6 +180,13 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
             const tipsMatch = exp.description.match(/Tips & Advice:\n([\s\S]+)$/)
             const tips = tipsMatch ? tipsMatch[1].trim() : ''
 
+            // Telegram stories are plain text — no structured fields.
+            // Fall back to showing the raw description directly.
+            const isUnstructured = !entryExperience && !travelDate && !visaType
+            const rawText = isUnstructured
+              ? exp.description.replace(/\n\n— .+ \(via Telegram\)$/, '').trim()
+              : ''
+
             const isExpanded = expandedId === exp.id
 
             return (
@@ -250,6 +257,18 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
                 {/* Expanded content */}
                 {isExpanded && (
                   <div className="px-4 pb-4 border-t border-zinc-800/50 animate-fadeIn">
+
+                    {/* Plain-text Telegram stories */}
+                    {rawText && (
+                      <div className="mt-4">
+                        <p className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                          <span className="w-1 h-1 rounded-full bg-blue-400 inline-block" />
+                          Community Report
+                        </p>
+                        <p className="text-zinc-300 text-xs leading-relaxed">{rawText}</p>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                       {entryExperience && (
                         <div>
