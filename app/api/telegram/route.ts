@@ -55,27 +55,38 @@ export async function POST(req: NextRequest) {
     // ── CASE 2: Incoming message ───────────────────────────────────────────────
     const message = body?.message
     const messageText: string | undefined = message?.text
+    const chatId = message?.chat?.id
+
+    console.log(`[TG] Received: type=${message ? 'message' : 'other'} chatId=${chatId} hasText=${!!messageText}`)
+
     if (!messageText) return OK()
 
     // Optional: only process messages from your community group
-    if (groupId && String(message.chat?.id) !== String(groupId)) return OK()
+    if (groupId && String(chatId) !== String(groupId)) {
+      console.log(`[TG] Ignored: chatId ${chatId} doesn't match TELEGRAM_GROUP_ID ${groupId}`)
+      return OK()
+    }
 
     const messageId: number = message.message_id
     const senderName: string = [message.from?.first_name, message.from?.last_name]
       .filter(Boolean).join(' ') || 'Community Member'
 
+    console.log(`[TG] Processing message ${messageId} from ${senderName}: "${messageText.substring(0, 80)}…"`)
+
     // ── Step 1: Heuristic filter (free, no API call) ──────────────────────────
     const local = analyzeMessageLocally(messageText)
+    console.log(`[NLP] confidence=${local.confidence} isPotential=${local.isPotentialReport} reason="${local.reason}"`)
     if (!local.isPotentialReport) {
-      console.log(`[NLP] Skipped: "${messageText.substring(0, 60)}…" — ${local.reason}`)
       return OK()
     }
 
     // ── Step 2: LLM extraction (Gemini Flash → Groq fallback) ─────────────────
+    console.log(`[AI] Extracting story from message ${messageId}…`)
     const extraction = await extractTravelExperience(messageText)
+    console.log(`[AI] Result: isReport=${extraction.isReport} country="${extraction.country_name}" type="${extraction.experience_type}"`)
 
     if (!extraction.isReport || !extraction.country_name) {
-      console.log(`[AI] Not a report: "${messageText.substring(0, 60)}…"`)
+      console.log(`[AI] Not a report — skipping`)
       return OK()
     }
 
@@ -83,11 +94,11 @@ export async function POST(req: NextRequest) {
     const countryCode = getCode(extraction.country_name) ?? 'XX'
     const experienceType = extraction.experience_type ?? 'Visa Required'
     const title = extraction.title ?? `Report for ${extraction.country_name}`
-    // Always fall back to raw message text if AI returns empty description
     const description = (extraction.description && extraction.description.trim().length > 5)
       ? extraction.description
       : messageText
 
+    console.log(`[DB] Inserting pending story: "${title}" for ${extraction.country_name}`)
     const insert = await insertTelegramExperience({
       country_code: countryCode,
       country_name: extraction.country_name,
@@ -97,9 +108,9 @@ export async function POST(req: NextRequest) {
       author_name: senderName,
       telegram_message_id: messageId,
     })
+    console.log(`[DB] Insert result: success=${insert.success} id=${insert.id} error=${insert.error}`)
 
     if (!insert.success) {
-      // 'duplicate' means we already processed this message — safe to ignore
       if (insert.error !== 'duplicate') {
         console.error('[DB] insertTelegramExperience failed:', insert.error)
       }
@@ -107,6 +118,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Step 4: Notify admin with approve / reject buttons ────────────────────
+    console.log(`[TG] Sending approval notification to admin for story #${insert.id}`)
     const existingCount = await countStoriesForCountry(extraction.country_name)
     const isNewCountry = existingCount === 0
 
