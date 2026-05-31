@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import BottomNav from './components/BottomNav'
+import { getExperiencesWithStats, type Experience } from './actions/experiences'
 
 // Lazy-load each view — they are only downloaded when the user navigates to that tab.
 // This keeps the initial bundle small (the map library alone is ~1 MB).
@@ -29,13 +30,42 @@ function ViewLoader() {
   )
 }
 
+interface ExperienceData {
+  experiences: Experience[]
+  stats: { total: number; countries: number; helpfulVotes: number; thisMonth: number }
+}
+
 export default function Home() {
   const [currentView, setCurrentView] = useState('globe')
+
+  // Fetched once on first Community visit — survives tab switching.
+  // ExperiencesView receives this as props instead of fetching itself.
+  const [experienceData, setExperienceData] = useState<ExperienceData | null>(null)
+  const [experienceLoading, setExperienceLoading] = useState(false)
 
   useEffect(() => {
     if (window.innerWidth < 768) {
       setCurrentView('table')
     }
+  }, [])
+
+  // Fetch (or re-fetch) experience data. Called on page load and after new submissions.
+  const fetchExperienceData = useCallback(async () => {
+    setExperienceLoading(true)
+    try {
+      const data = await getExperiencesWithStats()
+      setExperienceData(data)
+    } catch (e) {
+      console.error('Failed to fetch experiences:', e)
+    } finally {
+      setExperienceLoading(false)
+    }
+  }, [])
+
+  // Prefetch in the background as soon as the page loads — data is tiny (~50 rows)
+  // and will be ready in state before the user ever clicks the Community tab.
+  useEffect(() => {
+    fetchExperienceData()
   }, [])
 
   const renderView = () => {
@@ -45,7 +75,13 @@ export default function Home() {
       case 'table':
         return <TableView />
       case 'experiences':
-        return <ExperiencesView />
+        return (
+          <ExperiencesView
+            initialData={experienceData}
+            loading={experienceLoading}
+            onRefresh={fetchExperienceData}
+          />
+        )
       default:
         return <WorldGlobe onViewChange={setCurrentView} />
     }
