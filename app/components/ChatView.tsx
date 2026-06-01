@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { askTravelAssistant } from '../lib/ai'
+import { chat } from '../actions/chat'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -79,7 +79,7 @@ export default function ChatView() {
     setMessages(prev => [...prev, { role: 'user', text: q }])
     setLoading(true)
     try {
-      const answer = await askTravelAssistant(q)
+      const answer = await chat(q)
       setMessages(prev => [...prev, { role: 'assistant', text: answer }])
     } catch {
       setMessages(prev => [...prev, {
