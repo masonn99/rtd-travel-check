@@ -105,7 +105,7 @@ export default function Home() {
         </div>
       </main>
       <div className="hidden md:block">
-        <Footer />
+        <Footer onViewChange={(view: string) => setCurrentView(view)} />
       </div>
       <BottomNav currentView={currentView} onViewChange={setCurrentView} />
     </div>

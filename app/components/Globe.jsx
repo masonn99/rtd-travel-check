@@ -51,10 +51,10 @@ const WorldMap = ({ onViewChange }) => {
   }), []);
 
   const statItems = [
-    { label: 'Visa Free', value: stats.visaFree, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', dot: 'bg-emerald-400' },
-    { label: 'E-Visa', value: stats.eVisa, color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20', dot: 'bg-blue-400' },
-    { label: 'Visa Required', value: stats.visaRequired, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20', dot: 'bg-amber-400' },
-    { label: 'Not Recognized', value: stats.notRecognized, color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', dot: 'bg-red-400' },
+    { label: 'Visa Free', value: stats.visaFree, color: 'text-emerald-400', dot: 'bg-emerald-400' },
+    { label: 'E-Visa', value: stats.eVisa, color: 'text-blue-400', dot: 'bg-blue-400' },
+    { label: 'Visa Required', value: stats.visaRequired, color: 'text-amber-400', dot: 'bg-amber-400' },
+    { label: 'Not Recognized', value: stats.notRecognized, color: 'text-red-400', dot: 'bg-red-400' },
   ];
 
   const legendItems = [
@@ -67,12 +67,34 @@ const WorldMap = ({ onViewChange }) => {
 
   return (
     <div className="py-6 text-white animate-fadeIn">
-      {/* Page header */}
-      <div className="mb-5">
-        <h1 className="text-2xl font-bold text-white tracking-tight">
-          Visa <span className="text-blue-400">Map</span>
-        </h1>
-        <p className="text-zinc-500 text-sm mt-1">{stats.total} countries tracked for RTD holders</p>
+      {/* Hero */}
+      <div className="mb-6 pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">
+              Visa <span className="text-blue-400">Requirements</span>
+            </h1>
+            <p className="text-zinc-400 text-sm mt-1 max-w-lg">
+              For US Refugee Travel Document (I-131 / I-571) holders — community-tracked, embassy-verified.
+            </p>
+          </div>
+          {/* Data freshness badge */}
+          <div className="flex-shrink-0">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900/60 border border-zinc-800/60 rounded-lg">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+              <span className="text-[11px] text-zinc-400 font-medium">{stats.total} countries · Updated June 2026</span>
+            </div>
+          </div>
+        </div>
+        {/* Disclaimer strip */}
+        <div className="flex items-center gap-2 mt-3 px-3 py-2 bg-amber-500/5 border border-amber-500/15 rounded-lg">
+          <svg className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+          </svg>
+          <p className="text-[11px] text-amber-400/80">
+            Visa policies change frequently. Always confirm with the official embassy before booking travel.
+          </p>
+        </div>
       </div>
 
       {/* Stats row */}
@@ -80,12 +102,12 @@ const WorldMap = ({ onViewChange }) => {
         {statItems.map((stat, i) => (
           <div
             key={stat.label}
-            className={`border rounded-xl p-4 ${stat.bg} animate-slideUp`}
+            className="border border-zinc-800/60 bg-zinc-900/50 rounded-xl p-4 animate-slideUp"
             style={{ animationDelay: `${i * 60}ms` }}
           >
             <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`} />
+              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${stat.dot}`} />
               <span className="text-[11px] text-zinc-400 font-medium">{stat.label}</span>
             </div>
           </div>
