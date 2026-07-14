@@ -93,30 +93,58 @@ export interface ConversationMessage {
   text: string
 }
 
-// City/alias → country name mappings for smarter retrieval
+// City/alias → exact country string as it appears in data.json (lowercased).
+// This powers the keyword fallback in buildChatPayload.
 const CITY_TO_COUNTRY: Record<string, string> = {
+  // UAE
   dubai: 'united arab emirates',
   'abu dhabi': 'united arab emirates',
   uae: 'united arab emirates',
+  // Korea (formal name in data.json: "Korea, Republic of")
+  seoul: 'korea, republic of',
+  'south korea': 'korea, republic of',
+  korea: 'korea, republic of',
+  // Turkey (data.json uses "Türkiye")
+  istanbul: 'türkiye',
+  ankara: 'türkiye',
+  turkey: 'türkiye',
+  // UK (data.json: "United Kingdom of Great Britain and Northern Ireland")
+  london: 'united kingdom of great britain and northern ireland',
+  uk: 'united kingdom of great britain and northern ireland',
+  'united kingdom': 'united kingdom of great britain and northern ireland',
+  england: 'united kingdom of great britain and northern ireland',
+  britain: 'united kingdom of great britain and northern ireland',
+  // Taiwan (data.json: "Taiwan, Province of China")
+  taipei: 'taiwan, province of china',
+  taiwan: 'taiwan, province of china',
+  // Vietnam (data.json: "Viet Nam")
+  vietnam: 'viet nam',
+  hanoi: 'viet nam',
+  saigon: 'viet nam',
+  // Laos (data.json: "Lao People's Democratic Republic")
+  laos: "lao people's democratic republic",
+  vientiane: "lao people's democratic republic",
+  // Moldova (data.json: "Moldova, Republic of")
+  moldova: 'moldova, republic of',
+  // Iran (data.json: "Iran, Islamic Republic of")
+  iran: 'iran, islamic republic of',
+  tehran: 'iran, islamic republic of',
+  // Standard city → country
   bangkok: 'thailand',
   tokyo: 'japan',
   osaka: 'japan',
   paris: 'france',
-  london: 'united kingdom',
-  uk: 'united kingdom',
   rome: 'italy',
   berlin: 'germany',
   amsterdam: 'netherlands',
   madrid: 'spain',
   lisbon: 'portugal',
-  seoul: 'south korea',
   beijing: 'china',
   shanghai: 'china',
   toronto: 'canada',
   montreal: 'canada',
   sydney: 'australia',
   melbourne: 'australia',
-  istanbul: 'turkey',
 }
 
 function resolveCountries(text: string): string[] {

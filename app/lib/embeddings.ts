@@ -29,9 +29,27 @@ export function cosineSimilarity(a: number[], b: number[]): number {
 
 type VisaEntry = (typeof visaData)[0]
 
+// Formal UN names → common names people actually search for.
+// Including both in the embedded text makes semantic search much more accurate.
+const COMMON_NAMES: Record<string, string> = {
+  'Korea, Republic of': 'South Korea',
+  'Türkiye': 'Turkey',
+  'United Kingdom of Great Britain and Northern Ireland': 'United Kingdom (UK, Britain, England)',
+  'Taiwan, Province of China': 'Taiwan',
+  "Lao People's Democratic Republic": 'Laos',
+  'Viet Nam': 'Vietnam',
+  'Moldova, Republic of': 'Moldova',
+  'Iran, Islamic Republic of': 'Iran',
+  'United States of America': 'United States (USA)',
+}
+
 function visaToText(e: VisaEntry): string {
+  const commonName = COMMON_NAMES[e.country]
+  const countryLine = commonName
+    ? `Country: ${commonName} (official name: ${e.country})`
+    : `Country: ${e.country}`
   return [
-    `Country: ${e.country}`,
+    countryLine,
     `Visa requirement: ${e.visaRequirement}`,
     e.duration ? `Duration: ${e.duration}` : '',
     e.notes ? `Notes: ${e.notes}` : '',
