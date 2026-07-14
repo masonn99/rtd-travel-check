@@ -87,40 +87,104 @@ export async function extractTravelExperience(text: string): Promise<ExtractionR
 
 // ─── Travel assistant chat ─────────────────────────────────────────────────────
 
+export interface ConversationMessage {
+  role: 'user' | 'assistant'
+  text: string
+}
+
+// City/alias → country name mappings for smarter retrieval
+const CITY_TO_COUNTRY: Record<string, string> = {
+  dubai: 'united arab emirates',
+  'abu dhabi': 'united arab emirates',
+  uae: 'united arab emirates',
+  bangkok: 'thailand',
+  tokyo: 'japan',
+  osaka: 'japan',
+  paris: 'france',
+  london: 'united kingdom',
+  uk: 'united kingdom',
+  rome: 'italy',
+  berlin: 'germany',
+  amsterdam: 'netherlands',
+  madrid: 'spain',
+  lisbon: 'portugal',
+  seoul: 'south korea',
+  beijing: 'china',
+  shanghai: 'china',
+  toronto: 'canada',
+  montreal: 'canada',
+  sydney: 'australia',
+  melbourne: 'australia',
+  istanbul: 'turkey',
+}
+
+function resolveCountries(text: string): string[] {
+  const lower = text.toLowerCase()
+  const countries = new Set<string>()
+  for (const [alias, country] of Object.entries(CITY_TO_COUNTRY)) {
+    if (lower.includes(alias)) countries.add(country)
+  }
+  return Array.from(countries)
+}
+
 /**
  * Answer RTD travel questions using visa data + community stories as context.
  * Primary: Groq Llama 3.3 70B (fast, good reasoning)
  * Fallback: Gemini Flash
  */
-export async function askTravelAssistant(query: string): Promise<string> {
+export async function askTravelAssistant(
+  query: string,
+  history: ConversationMessage[] = [],
+): Promise<string> {
   const allStories = await getExperiences()
-  const lowerQuery = query.toLowerCase()
 
-  const relevantOfficial = visaData.filter(item =>
-    lowerQuery.includes(item.country.toLowerCase()) ||
-    (item.country.toLowerCase() === 'united arab emirates' &&
-      (lowerQuery.includes('dubai') || lowerQuery.includes('uae')))
-  )
-  const relevantStories = allStories.filter(s =>
-    lowerQuery.includes(s.country_name.toLowerCase())
-  )
+  // Search across the full conversation so follow-up questions like
+  // "what about a visa?" still find the right country context.
+  const fullConversationText = [
+    ...history.map(m => m.text),
+    query,
+  ].join(' ').toLowerCase()
+
+  const aliasCountries = resolveCountries(fullConversationText)
+
+  const relevantOfficial = visaData.filter(item => {
+    const c = item.country.toLowerCase()
+    return (
+      fullConversationText.includes(c) ||
+      aliasCountries.includes(c)
+    )
+  })
+  const relevantStories = allStories.filter(s => {
+    const c = s.country_name.toLowerCase()
+    return (
+      fullConversationText.includes(c) ||
+      aliasCountries.includes(c)
+    )
+  })
 
   const context = {
-    officialRules: relevantOfficial.length > 0 ? relevantOfficial : visaData.slice(0, 10),
-    communityReports: relevantStories.length > 0 ? relevantStories.slice(0, 10) : allStories.slice(0, 5),
+    officialRules: relevantOfficial.length > 0 ? relevantOfficial : visaData.slice(0, 15),
+    communityReports: relevantStories.length > 0 ? relevantStories.slice(0, 15) : allStories.slice(0, 8),
   }
 
-  const systemPrompt = `You are the RTD Travel Assistant for US Refugee Travel Document (I-571) holders.
+  const systemPrompt = `You are the RTD Travel Assistant — a knowledgeable guide for holders of the US Refugee Travel Document (Form I-571).
 
 CONTEXT (official rules + community reports):
 ${JSON.stringify(context)}
 
-RULES:
-1. Base your answer on the context only.
-2. Give the official rule first, then any community reports.
-3. Map city names to countries (Dubai → UAE).
-4. If a country isn't in the context, say so honestly.
-5. Keep answers to 2-3 concise sentences.`
+GUIDELINES:
+1. Ground your answer in the context above. If a country isn't covered, say so honestly and suggest they verify with the embassy.
+2. Lead with the official visa requirement, then share what the community has reported.
+3. Map city/regional names to their country (Tokyo → Japan, Dubai → UAE, etc.).
+4. Be conversational and thorough — don't truncate useful information. Short or long, match the depth the question needs.
+5. When relevant, mention processing times, required documents, or tips from community reports.
+6. Always end with a reminder to confirm with the official embassy or consulate before travel.`
+
+  // Build history in the format the Groq / OpenAI API expects
+  const historyMessages = history.map(m => ({
+    role: m.role as 'user' | 'assistant',
+    content: m.text,
+  }))
 
   // Primary: Groq (faster for chat)
   try {
@@ -128,6 +192,7 @@ RULES:
       model: 'llama-3.3-70b-versatile',
       messages: [
         { role: 'system', content: systemPrompt },
+        ...historyMessages,
         { role: 'user', content: query },
       ],
     })
@@ -143,7 +208,11 @@ RULES:
       model: 'gemini-1.5-flash',
       systemInstruction: systemPrompt,
     })
-    const result = await model.generateContent(query)
+    // Prepend history as plain text for Gemini (no native multi-turn here)
+    const historyContext = history.length > 0
+      ? history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n') + '\n\n'
+      : ''
+    const result = await model.generateContent(historyContext + query)
     return result.response.text()
   } catch (geminiErr) {
     console.error('[AI] Gemini chat fallback failed:', geminiErr)

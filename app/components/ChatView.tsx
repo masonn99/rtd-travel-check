@@ -76,19 +76,24 @@ export default function ChatView() {
     const q = text.trim()
     if (!q || loading) return
     setInput('')
-    setMessages(prev => [...prev, { role: 'user', text: q }])
-    setLoading(true)
-    try {
-      const answer = await chat(q)
-      setMessages(prev => [...prev, { role: 'assistant', text: answer }])
-    } catch {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        text: "Sorry, I couldn't get an answer right now. Please try again in a moment."
-      }])
-    } finally {
-      setLoading(false)
-    }
+    // Capture history before adding the new user message
+    setMessages(prev => {
+      const history = prev
+      const next = [...prev, { role: 'user' as const, text: q }]
+      setLoading(true)
+      chat(q, history)
+        .then(answer => {
+          setMessages(cur => [...cur, { role: 'assistant' as const, text: answer }])
+        })
+        .catch(() => {
+          setMessages(cur => [...cur, {
+            role: 'assistant' as const,
+            text: "Sorry, I couldn't get an answer right now. Please try again in a moment."
+          }])
+        })
+        .finally(() => setLoading(false))
+      return next
+    })
   }
 
   return (
