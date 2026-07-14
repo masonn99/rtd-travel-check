@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { chat } from '../actions/chat'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -75,25 +74,45 @@ export default function ChatView() {
   const send = async (text: string) => {
     const q = text.trim()
     if (!q || loading) return
+
+    // Snapshot history BEFORE adding the new user message
+    const history = messages
     setInput('')
-    // Capture history before adding the new user message
-    setMessages(prev => {
-      const history = prev
-      const next = [...prev, { role: 'user' as const, text: q }]
-      setLoading(true)
-      chat(q, history)
-        .then(answer => {
-          setMessages(cur => [...cur, { role: 'assistant' as const, text: answer }])
+    setLoading(true)
+    setMessages(prev => [...prev, { role: 'user' as const, text: q }])
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, history }),
+      })
+
+      if (!res.ok || !res.body) throw new Error('Stream failed')
+
+      // Add an empty assistant bubble — we'll fill it chunk by chunk
+      setMessages(prev => [...prev, { role: 'assistant' as const, text: '' }])
+      setLoading(false)
+
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        setMessages(prev => {
+          const last = prev[prev.length - 1]
+          return [...prev.slice(0, -1), { ...last, text: last.text + chunk }]
         })
-        .catch(() => {
-          setMessages(cur => [...cur, {
-            role: 'assistant' as const,
-            text: "Sorry, I couldn't get an answer right now. Please try again in a moment."
-          }])
-        })
-        .finally(() => setLoading(false))
-      return next
-    })
+      }
+    } catch {
+      setLoading(false)
+      setMessages(prev => [...prev, {
+        role: 'assistant' as const,
+        text: "Sorry, I couldn't get an answer right now. Please try again in a moment.",
+      }])
+    }
   }
 
   return (

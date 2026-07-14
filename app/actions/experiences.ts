@@ -6,6 +6,7 @@ import { getSql } from '../lib/db'
 import { EXPERIENCES_PAGE_SIZE as PAGE_SIZE } from '../lib/constants'
 import { revalidateTag, unstable_cache } from 'next/cache'
 import { validateExperienceData, sanitizeExperienceData } from '../lib/security'
+import { embed, storyToText } from '../lib/embeddings'
 
 export interface Experience {
   id: number
@@ -105,11 +106,20 @@ export async function insertTelegramExperience(data: {
 }): Promise<{ success: boolean; id?: number; error?: string }> {
   const sql = getSql()
   try {
+    // Compute embedding before insert — if it fails we save without it
+    // (story still appears in keyword search, just not semantic search).
+    let embedding: number[] | null = null
+    try {
+      embedding = await embed(storyToText(data))
+    } catch (err) {
+      console.warn('[AI] Failed to embed telegram story:', err)
+    }
+
     const rows = await sql`
       INSERT INTO experiences (
         country_code, country_name, experience_type,
         title, description, author_name,
-        status, source, telegram_message_id
+        status, source, telegram_message_id, embedding
       ) VALUES (
         ${data.country_code},
         ${data.country_name},
@@ -119,7 +129,8 @@ export async function insertTelegramExperience(data: {
         ${data.author_name},
         'pending_review',
         'telegram',
-        ${data.telegram_message_id}
+        ${data.telegram_message_id},
+        ${embedding ? JSON.stringify(embedding) : null}
       )
       ON CONFLICT (telegram_message_id) DO NOTHING
       RETURNING id
@@ -290,10 +301,18 @@ export async function createExperience(data: {
 
     // Insert
     const sanitizedData = sanitizeExperienceData(data)
+
+    let embedding: number[] | null = null
+    try {
+      embedding = await embed(storyToText(sanitizedData))
+    } catch (err) {
+      console.warn('[AI] Failed to embed web story:', err)
+    }
+
     await sql`
       INSERT INTO experiences (
         country_code, country_name, experience_type,
-        title, description, author_name, author_email, ip_hash
+        title, description, author_name, author_email, ip_hash, embedding
       ) VALUES (
         ${sanitizedData.country_code},
         ${sanitizedData.country_name},
@@ -302,7 +321,8 @@ export async function createExperience(data: {
         ${sanitizedData.description},
         ${sanitizedData.author_name},
         ${sanitizedData.author_email},
-        ${ipHash}
+        ${ipHash},
+        ${embedding ? JSON.stringify(embedding) : null}
       )
     `
 

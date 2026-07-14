@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import Groq from 'groq-sdk'
 import visaData from '../../data.json'
 import { getExperiences } from '../actions/experiences'
+import { findRelevantVisa, findRelevantStories } from './embeddings'
 
 // ─── Clients (lazily initialised) ─────────────────────────────────────────────
 
@@ -127,44 +128,51 @@ function resolveCountries(text: string): string[] {
   return Array.from(countries)
 }
 
-/**
- * Answer RTD travel questions using visa data + community stories as context.
- * Primary: Groq Llama 3.3 70B (fast, good reasoning)
- * Fallback: Gemini Flash
- */
-export async function askTravelAssistant(
-  query: string,
-  history: ConversationMessage[] = [],
-): Promise<string> {
+// ─── Shared context builder ────────────────────────────────────────────────────
+
+async function buildChatPayload(query: string, history: ConversationMessage[]) {
   const allStories = await getExperiences()
 
-  // Search across the full conversation so follow-up questions like
-  // "what about a visa?" still find the right country context.
-  const fullConversationText = [
-    ...history.map(m => m.text),
-    query,
-  ].join(' ').toLowerCase()
-
+  // Keyword fallback uses the full conversation so follow-up questions
+  // ("what about the visa?") still find the right country.
+  const fullConversationText = [...history.map(m => m.text), query].join(' ').toLowerCase()
   const aliasCountries = resolveCountries(fullConversationText)
 
-  const relevantOfficial = visaData.filter(item => {
-    const c = item.country.toLowerCase()
-    return (
-      fullConversationText.includes(c) ||
-      aliasCountries.includes(c)
-    )
-  })
-  const relevantStories = allStories.filter(s => {
-    const c = s.country_name.toLowerCase()
-    return (
-      fullConversationText.includes(c) ||
-      aliasCountries.includes(c)
-    )
-  })
+  // ── Official visa rules: semantic search, keyword fallback ────────────────
+  let officialRules: typeof visaData
+  try {
+    officialRules = await findRelevantVisa(query, 8)
+  } catch (err) {
+    console.warn('[AI] Visa embedding search failed, falling back to keyword:', err)
+    const keywordMatches = visaData.filter(item => {
+      const c = item.country.toLowerCase()
+      return fullConversationText.includes(c) || aliasCountries.includes(c)
+    })
+    officialRules = keywordMatches.length > 0 ? keywordMatches : visaData.slice(0, 15)
+  }
+
+  // ── Community stories: semantic search, keyword fallback ──────────────────
+  // Semantic search only covers stories that have been embedded (new ones).
+  // Keyword search covers older stories that predate the embedding column.
+  let communityReports
+  try {
+    const semanticStories = await findRelevantStories(query, 8)
+    if (semanticStories.length > 0) {
+      communityReports = semanticStories
+    } else {
+      throw new Error('no embedded stories yet')
+    }
+  } catch {
+    const keywordMatches = allStories.filter(s => {
+      const c = s.country_name.toLowerCase()
+      return fullConversationText.includes(c) || aliasCountries.includes(c)
+    })
+    communityReports = keywordMatches.length > 0 ? keywordMatches.slice(0, 8) : allStories.slice(0, 5)
+  }
 
   const context = {
-    officialRules: relevantOfficial.length > 0 ? relevantOfficial : visaData.slice(0, 15),
-    communityReports: relevantStories.length > 0 ? relevantStories.slice(0, 15) : allStories.slice(0, 8),
+    officialRules,
+    communityReports,
   }
 
   const systemPrompt = `You are the RTD Travel Assistant — a knowledgeable guide for holders of the US Refugee Travel Document (Form I-571).
@@ -180,13 +188,22 @@ GUIDELINES:
 5. When relevant, mention processing times, required documents, or tips from community reports.
 6. Always end with a reminder to confirm with the official embassy or consulate before travel.`
 
-  // Build history in the format the Groq / OpenAI API expects
   const historyMessages = history.map(m => ({
     role: m.role as 'user' | 'assistant',
     content: m.text,
   }))
 
-  // Primary: Groq (faster for chat)
+  return { systemPrompt, historyMessages }
+}
+
+// ─── Non-streaming (kept for Telegram extraction fallback) ────────────────────
+
+export async function askTravelAssistant(
+  query: string,
+  history: ConversationMessage[] = [],
+): Promise<string> {
+  const { systemPrompt, historyMessages } = await buildChatPayload(query, history)
+
   try {
     const completion = await getGroq().chat.completions.create({
       model: 'llama-3.3-70b-versatile',
@@ -202,13 +219,11 @@ GUIDELINES:
     console.warn(`[AI] Groq chat failed (${isQuota ? 'quota' : groqErr?.message}) — falling back to Gemini`)
   }
 
-  // Fallback: Gemini Flash
   try {
     const model = getGemini().getGenerativeModel({
       model: 'gemini-1.5-flash',
       systemInstruction: systemPrompt,
     })
-    // Prepend history as plain text for Gemini (no native multi-turn here)
     const historyContext = history.length > 0
       ? history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n') + '\n\n'
       : ''
@@ -218,4 +233,67 @@ GUIDELINES:
     console.error('[AI] Gemini chat fallback failed:', geminiErr)
     return "I'm a bit busy right now — please try again in a moment."
   }
+}
+
+// ─── Streaming ────────────────────────────────────────────────────────────────
+
+const encoder = new TextEncoder()
+
+export async function askTravelAssistantStream(
+  query: string,
+  history: ConversationMessage[] = [],
+): Promise<ReadableStream<Uint8Array>> {
+  const { systemPrompt, historyMessages } = await buildChatPayload(query, history)
+
+  // Primary: Groq streaming
+  try {
+    const groqStream = await getGroq().chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      stream: true,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...historyMessages,
+        { role: 'user', content: query },
+      ],
+    })
+
+    return new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of groqStream) {
+            const text = chunk.choices[0]?.delta?.content ?? ''
+            if (text) controller.enqueue(encoder.encode(text))
+          }
+        } finally {
+          controller.close()
+        }
+      },
+    })
+  } catch (groqErr: any) {
+    const isQuota = groqErr?.status === 429 || String(groqErr).includes('quota')
+    console.warn(`[AI] Groq stream failed (${isQuota ? 'quota' : groqErr?.message}) — falling back to Gemini`)
+  }
+
+  // Fallback: Gemini streaming
+  const model = getGemini().getGenerativeModel({
+    model: 'gemini-1.5-flash',
+    systemInstruction: systemPrompt,
+  })
+  const historyContext = history.length > 0
+    ? history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n') + '\n\n'
+    : ''
+  const geminiStream = await model.generateContentStream(historyContext + query)
+
+  return new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const chunk of geminiStream.stream) {
+          const text = chunk.text()
+          if (text) controller.enqueue(encoder.encode(text))
+        }
+      } finally {
+        controller.close()
+      }
+    },
+  })
 }
