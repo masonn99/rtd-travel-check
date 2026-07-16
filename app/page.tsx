@@ -95,19 +95,29 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950">
-      <Header
-        currentView={currentView}
-        onViewChange={(view: string) => setCurrentView(view)}
-      />
-      <main className="flex-grow pb-24 md:pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {renderView()}
-        </div>
-      </main>
-      <div className="hidden md:block">
-        <Footer onViewChange={(view: string) => setCurrentView(view)} />
+      {/* Aurora — fixed behind all content, never intercepts clicks */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }} aria-hidden="true">
+        <div className="aurora-blob aurora-1" />
+        <div className="aurora-blob aurora-2" />
+        <div className="aurora-blob aurora-3" />
       </div>
-      <BottomNav currentView={currentView} onViewChange={setCurrentView} />
+
+      {/* Main layout sits above the aurora */}
+      <div className="relative flex flex-col min-h-screen" style={{ zIndex: 1 }}>
+        <Header
+          currentView={currentView}
+          onViewChange={(view: string) => setCurrentView(view)}
+        />
+        <main className="flex-grow pb-24 md:pb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {renderView()}
+          </div>
+        </main>
+        <div className="hidden md:block">
+          <Footer onViewChange={(view: string) => setCurrentView(view)} />
+        </div>
+        <BottomNav currentView={currentView} onViewChange={setCurrentView} />
+      </div>
     </div>
   )
 }

@@ -75,7 +75,7 @@ const WorldMap = ({ onViewChange }) => {
               Visa <span className="text-blue-400">Requirements</span>
             </h1>
             <p className="text-zinc-400 text-sm mt-1 max-w-lg">
-              For US Refugee Travel Document (I-131 / I-571) holders — community-tracked, embassy-verified.
+              For US Refugee Travel Document (I-131 / I-571) holders.
             </p>
           </div>
           {/* Data freshness badge */}

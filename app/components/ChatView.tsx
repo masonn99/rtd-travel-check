@@ -14,12 +14,12 @@ const SUGGESTIONS = [
   { icon: '🇨🇦', text: 'Can I visit Canada with a Refugee Travel Document?' },
 ]
 
-function Bubble({ msg }: { msg: Message }) {
+function Bubble({ msg, isStreaming }: { msg: Message; isStreaming?: boolean }) {
   const isUser = msg.role === 'user'
   return (
     <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
       {!isUser && (
-        <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm shadow-blue-600/30">
+        <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 animate-glow-pulse">
           <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
               d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -32,6 +32,9 @@ function Bubble({ msg }: { msg: Message }) {
           : 'bg-zinc-800/70 text-zinc-100 rounded-tl-sm border border-zinc-700/40'
       }`}>
         {msg.text}
+        {isStreaming && (
+          <span className="inline-block w-0.5 h-3.5 bg-blue-400 ml-0.5 align-middle animate-cursor-blink" />
+        )}
       </div>
     </div>
   )
@@ -60,6 +63,7 @@ export default function ChatView() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
+  const [streaming, setStreaming] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLInputElement>(null)
 
@@ -93,6 +97,7 @@ export default function ChatView() {
       // Add an empty assistant bubble — we'll fill it chunk by chunk
       setMessages(prev => [...prev, { role: 'assistant' as const, text: '' }])
       setLoading(false)
+      setStreaming(true)
 
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
@@ -106,8 +111,10 @@ export default function ChatView() {
           return [...prev.slice(0, -1), { ...last, text: last.text + chunk }]
         })
       }
+      setStreaming(false)
     } catch {
       setLoading(false)
+      setStreaming(false)
       setMessages(prev => [...prev, {
         role: 'assistant' as const,
         text: "Sorry, I couldn't get an answer right now. Please try again in a moment.",
@@ -116,68 +123,62 @@ export default function ChatView() {
   }
 
   return (
-    <div className="py-6 animate-fadeIn flex flex-col" style={{ height: 'calc(100vh - 10rem)' }}>
-
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/30">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">
-              RTD <span className="text-blue-400">Assistant</span>
-            </h1>
-            <p className="text-zinc-500 text-sm">Powered by community stories + official visa data</p>
-          </div>
-        </div>
-      </div>
+    <div className="animate-fadeIn flex flex-col" style={{ height: 'calc(100vh - 8rem)' }}>
 
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto space-y-4 pb-4 min-h-0">
+      <div className="flex-1 overflow-y-auto min-h-0 no-scrollbar">
         {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center gap-6 py-8">
-            {/* Empty state */}
-            <div className="text-center max-w-sm">
-              <div className="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
+          <div className="h-full flex flex-col items-center justify-center gap-8">
+
+            {/* Empty state heading */}
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="w-2 h-2 rounded-full bg-blue-400 animate-glow-pulse" />
+                <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">RTD Assistant</span>
               </div>
-              <p className="text-white font-semibold text-base mb-1">Ask me anything about RTD travel</p>
-              <p className="text-zinc-500 text-sm">I'll check official policies and real community experiences to answer your question.</p>
+              <h2 className="text-3xl font-bold text-white tracking-tight mb-2">
+                What do you want to know?
+              </h2>
+              <p className="text-zinc-500 text-sm">
+                Ask about visa rules, entry requirements, or what the community has experienced.
+              </p>
             </div>
 
-            {/* Suggestion chips */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
+            {/* Suggestion chips — minimal, no box */}
+            <div className="flex flex-wrap justify-center gap-2 max-w-xl">
               {SUGGESTIONS.map(s => (
                 <button
                   key={s.text}
                   onClick={() => send(s.text)}
-                  className="flex items-center gap-2.5 px-4 py-3 bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-800/60 hover:border-zinc-700/60 rounded-xl text-left text-sm text-zinc-300 transition-all group"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-800 hover:border-zinc-600 text-sm text-zinc-400 hover:text-white transition-all duration-200 hover:bg-zinc-800/40"
                 >
-                  <span className="text-lg flex-shrink-0">{s.icon}</span>
-                  <span className="leading-snug group-hover:text-white transition-colors">{s.text}</span>
+                  <span>{s.icon}</span>
+                  <span>{s.text}</span>
                 </button>
               ))}
             </div>
+
           </div>
         ) : (
-          <>
-            {messages.map((msg, i) => <Bubble key={i} msg={msg} />)}
+          <div className="py-6 space-y-4">
+            {messages.map((msg, i) => (
+              <Bubble
+                key={i}
+                msg={msg}
+                isStreaming={streaming && i === messages.length - 1 && msg.role === 'assistant'}
+              />
+            ))}
             {loading && <TypingIndicator />}
-          </>
+            <div ref={bottomRef} />
+          </div>
         )}
-        <div ref={bottomRef} />
       </div>
 
-      {/* Input bar */}
-      <div className="pt-4 border-t border-zinc-800/60">
-        <div className="flex gap-3">
+      {/* Unified input — button lives inside the field */}
+      <div className="pt-4">
+        <div className={`relative flex items-center bg-zinc-900/70 border rounded-2xl transition-colors duration-200 ${
+          loading ? 'border-zinc-800/40 opacity-70' : 'border-zinc-700/60 focus-within:border-blue-500/50'
+        }`}>
           <input
             ref={inputRef}
             type="text"
@@ -186,23 +187,27 @@ export default function ChatView() {
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) } }}
             placeholder="Ask about any country or visa requirement…"
             disabled={loading}
-            className="flex-1 px-4 py-3 bg-zinc-900/60 border border-zinc-800/60 rounded-xl text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition-colors disabled:opacity-50"
+            className="flex-1 bg-transparent px-5 py-4 text-sm text-white placeholder-zinc-600 focus:outline-none"
           />
           <button
             onClick={() => send(input)}
             disabled={!input.trim() || loading}
-            className="px-4 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-all flex items-center gap-2 font-semibold text-sm flex-shrink-0"
+            className={`mr-2 flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-200 ${
+              input.trim() && !loading
+                ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/30'
+                : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+            }`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-            <span className="hidden sm:inline">Ask</span>
           </button>
         </div>
-        <p className="text-[11px] text-zinc-600 mt-2 text-center">
+        <p className="text-[11px] text-zinc-700 mt-2 text-center">
           Always verify with the official embassy before travel.
         </p>
       </div>
+
     </div>
   )
 }

@@ -1,23 +1,37 @@
-import { TelegramIcon } from './Icons';
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
 
 const TABS = [
-  { id: 'globe',       label: 'Globe',      emoji: '🌍' },
-  { id: 'table',       label: 'Directory',  emoji: '🗂️' },
-  { id: 'experiences', label: 'Community',  emoji: '💬' },
-  { id: 'chat',        label: 'AI Chat',    emoji: '✨' },
-];
+  { id: 'globe',       label: 'Globe' },
+  { id: 'table',       label: 'Directory' },
+  { id: 'experiences', label: 'Community' },
+  { id: 'chat',        label: 'AI Chat' },
+]
 
 const Header = ({ onViewChange, currentView }) => {
+  const tabRefs = useRef([])
+  const [line, setLine] = useState({ left: 0, width: 0, ready: false })
+
+  useEffect(() => {
+    const idx = TABS.findIndex(t => t.id === currentView)
+    const el = tabRefs.current[idx]
+    if (el) {
+      setLine({ left: el.offsetLeft, width: el.offsetWidth, ready: true })
+    }
+  }, [currentView])
+
   return (
-    <header className="w-full bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60 sticky top-0 z-50">
+    <header className="w-full bg-zinc-950/60 backdrop-blur-xl border-b border-zinc-800/40 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16">
+        <div className="flex items-stretch justify-between h-14 sm:h-16">
+
           {/* Logo */}
           <button
             onClick={() => onViewChange('globe')}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-3 group flex-shrink-0"
           >
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:shadow-blue-600/50 transition-shadow">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center animate-glow-pulse">
               <span className="text-sm">✈️</span>
             </div>
             <div className="hidden sm:block">
@@ -27,41 +41,43 @@ const Header = ({ onViewChange, currentView }) => {
             </div>
           </button>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center">
-            <div className="flex p-1 bg-zinc-900/60 border border-zinc-800/60 rounded-xl gap-0.5">
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => onViewChange(tab.id)}
-                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                    currentView === tab.id
-                      ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/30'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
-                  }`}
-                >
-                  <span className="text-sm leading-none">{tab.emoji}</span>
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+          {/* Desktop nav — bare text, no container */}
+          <nav className="hidden md:flex items-stretch relative">
+            {/* Sliding glow underline */}
+            {line.ready && (
+              <div
+                className="absolute bottom-0 h-px bg-blue-400 transition-all duration-300 ease-out"
+                style={{
+                  left: line.left,
+                  width: line.width,
+                  boxShadow: '0 0 12px 3px rgba(96, 165, 250, 0.8)',
+                }}
+              />
+            )}
+
+            {TABS.map((tab, i) => (
+              <button
+                key={tab.id}
+                ref={el => { tabRefs.current[i] = el }}
+                onClick={() => onViewChange(tab.id)}
+                className={`px-5 text-sm font-medium tracking-wide transition-colors duration-200 ${
+                  currentView === tab.id
+                    ? 'text-white'
+                    : 'text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </nav>
 
-          {/* CTA */}
-          <a
-            href="https://t.me/+hgENDIRxoTs0NGQx"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-3 py-2 sm:px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm shadow-blue-600/30 hover:shadow-blue-600/50"
-          >
-            <TelegramIcon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Join Community</span>
-            <span className="sm:hidden">Join</span>
-          </a>
+          {/* Spacer keeps logo left + nav centered */}
+          <div className="hidden md:block w-28 flex-shrink-0" />
+
         </div>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
