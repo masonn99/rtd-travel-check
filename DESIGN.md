@@ -313,7 +313,8 @@ Depth is tonal, not shadowed. White groups sit on the grouped ground, separated 
 
 ### Shadow Vocabulary
 - **Stuck edge** (`box-shadow: 0 1px 0 rgb(var(--line))`): the sticky search band once content scrolls under it. A hairline, not a shadow.
-- **Floating control** (`box-shadow: 0 2px 8px rgba(0,0,0,0.08)`): map zoom controls over the map.
+- **Floating control** (`box-shadow: 0 2px 8px rgba(0,0,0,0.08)`): the controls that float over the globe (country picker, zoom, legend chips).
+- **Globe stage:** the globe sits directly on the page ground with no card or frame; the stage's edges fade out (CSS mask) so a zoomed map never ends in a hard rectangle. Its only glow is a soft accent atmosphere at the limb, drawn on the canvas. The selected country's detail is a floating sheet (popover shadow) over the bottom of the stage.
 - **Popover** (`box-shadow: 0 4px 16px rgba(0,0,0,0.12)`): the desktop map hover tooltip.
 - **Segment thumb** (`box-shadow: 0 1px 3px rgba(0,0,0,0.12)`): the selected segment in a segmented control.
 
