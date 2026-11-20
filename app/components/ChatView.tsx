@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { chat } from '../actions/chat'
+import { ChatIcon, ChevronIcon } from './Icons'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -9,48 +10,42 @@ interface Message {
 }
 
 const SUGGESTIONS = [
-  { icon: '🇯🇵', text: 'Is Japan visa-free for RTD holders?' },
-  { icon: '🇹🇭', text: 'What do I need to enter Thailand with an RTD?' },
-  { icon: '🌍', text: 'Which countries are easiest to visit with RTD?' },
-  { icon: '🇨🇦', text: 'Can I visit Canada with a Refugee Travel Document?' },
+  'Is Japan visa-free for RTD holders?',
+  'What do I need to enter Thailand with an RTD?',
+  'Which countries are easiest to visit with an RTD?',
+  'Can I visit Canada with a Refugee Travel Document?',
 ]
+
+const Avatar = () => (
+  <div className="w-8 h-8 rounded-full bg-accent text-accent-ink flex items-center justify-center flex-none" aria-hidden="true">
+    <ChatIcon className="w-[18px] h-[18px]" />
+  </div>
+)
 
 function Bubble({ msg }: { msg: Message }) {
   const isUser = msg.role === 'user'
   return (
-    <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-      {!isUser && (
-        <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm shadow-blue-600/30">
-          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-          </svg>
-        </div>
-      )}
-      <div className={`max-w-[75%] sm:max-w-[65%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-        isUser
-          ? 'bg-blue-600 text-white rounded-tr-sm'
-          : 'bg-zinc-800/70 text-zinc-100 rounded-tl-sm border border-zinc-700/40'
-      }`}>
+    <div className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}>
+      {!isUser && <Avatar />}
+      <div
+        className={`max-w-[85%] sm:max-w-[72%] px-3.5 py-2.5 rounded-[18px] text-[15px] leading-relaxed whitespace-pre-line ${
+          isUser ? 'bg-accent text-accent-ink rounded-br-[6px]' : 'bg-surface text-ink border border-line/70 rounded-bl-[6px]'
+        }`}
+      >
+        <span className="sr-only">{isUser ? 'You: ' : 'Assistant: '}</span>
         {msg.text}
       </div>
     </div>
   )
 }
 
-function TypingIndicator() {
+function Typing() {
   return (
-    <div className="flex gap-3">
-      <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0 shadow-sm shadow-blue-600/30">
-        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      </div>
-      <div className="bg-zinc-800/70 border border-zinc-700/40 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5">
+    <div className="flex gap-2.5" role="status" aria-label="Assistant is answering">
+      <Avatar />
+      <div className="bg-surface border border-line/70 rounded-[18px] rounded-bl-[6px] px-4 py-3.5 flex items-center gap-1.5">
         {[0, 1, 2].map(i => (
-          <span key={i} className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce"
-            style={{ animationDelay: `${i * 150}ms` }} />
+          <span key={i} className="w-1.5 h-1.5 bg-ink-3 rounded-full animate-pulse" style={{ animationDelay: `${i * 200}ms` }} />
         ))}
       </div>
     </div>
@@ -59,18 +54,13 @@ function TypingIndicator() {
 
 export default function ChatView() {
   const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
-  const inputRef  = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length) bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages, loading])
-
-  useEffect(() => {
-    setTimeout(() => inputRef.current?.focus(), 100)
-  }, [])
 
   const send = async (text: string) => {
     const q = text.trim()
@@ -84,7 +74,7 @@ export default function ChatView() {
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        text: "Sorry, I couldn't get an answer right now. Please try again in a moment."
+        text: "I couldn't get an answer just now. Try again in a moment, or check the Directory for the official rule.",
       }])
     } finally {
       setLoading(false)
@@ -92,93 +82,71 @@ export default function ChatView() {
   }
 
   return (
-    <div className="py-6 animate-fadeIn flex flex-col" style={{ height: 'calc(100vh - 10rem)' }}>
-
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/30">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">
-              RTD <span className="text-blue-400">Assistant</span>
-            </h1>
-            <p className="text-zinc-500 text-sm">Powered by community stories + official visa data</p>
-          </div>
-        </div>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 flex flex-col h-[calc(100dvh-56px-56px-env(safe-area-inset-bottom)-1rem)] md:h-[calc(100dvh-56px-2rem)]">
+      <div className="flex-none">
+        <h1 className="text-[30px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">AI Chat</h1>
+        <p className="text-[15px] text-ink-2 mt-1 max-w-[60ch]">
+          Answers from this site only: the official rule first, then what holders reported.
+        </p>
       </div>
 
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto space-y-4 pb-4 min-h-0">
+      <div className="flex-1 min-h-0 overflow-y-auto mt-5 pb-4 space-y-3" aria-live="polite">
         {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center gap-6 py-8">
-            {/* Empty state */}
-            <div className="text-center max-w-sm">
-              <div className="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <p className="text-white font-semibold text-base mb-1">Ask me anything about RTD travel</p>
-              <p className="text-zinc-500 text-sm">I'll check official policies and real community experiences to answer your question.</p>
-            </div>
-
-            {/* Suggestion chips */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
-              {SUGGESTIONS.map(s => (
-                <button
-                  key={s.text}
-                  onClick={() => send(s.text)}
-                  className="flex items-center gap-2.5 px-4 py-3 bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-800/60 hover:border-zinc-700/60 rounded-xl text-left text-sm text-zinc-300 transition-all group"
-                >
-                  <span className="text-lg flex-shrink-0">{s.icon}</span>
-                  <span className="leading-snug group-hover:text-white transition-colors">{s.text}</span>
-                </button>
+          <div>
+            <p className="text-[13px] font-semibold text-ink-2 mb-2 px-1">Try asking</p>
+            <ul className="bg-surface rounded-xl border border-line/70 overflow-hidden">
+              {SUGGESTIONS.map((s, i) => (
+                <li key={s} className="relative">
+                  {i > 0 && <span aria-hidden="true" className="absolute top-0 left-4 right-0 h-px bg-line" />}
+                  <button
+                    onClick={() => send(s)}
+                    className="w-full flex items-center justify-between gap-3 px-4 min-h-[52px] py-3 text-left text-[15px] text-ink hover:bg-fill/50 active:bg-fill transition-colors"
+                  >
+                    {s}
+                    <ChevronIcon className="w-3.5 h-3.5 text-ink-3 flex-none" />
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         ) : (
           <>
             {messages.map((msg, i) => <Bubble key={i} msg={msg} />)}
-            {loading && <TypingIndicator />}
+            {loading && <Typing />}
           </>
         )}
         <div ref={bottomRef} />
       </div>
 
-      {/* Input bar */}
-      <div className="pt-4 border-t border-zinc-800/60">
-        <div className="flex gap-3">
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) } }}
-            placeholder="Ask about any country or visa requirement…"
-            disabled={loading}
-            className="flex-1 px-4 py-3 bg-zinc-900/60 border border-zinc-800/60 rounded-xl text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 transition-colors disabled:opacity-50"
-          />
+      <form
+        className="flex-none pt-3 pb-2 border-t border-line"
+        onSubmit={e => { e.preventDefault(); send(input) }}
+      >
+        <div className="flex gap-2">
+          <label className="flex-1">
+            <span className="sr-only">Your question</span>
+            <input
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Ask about a country or visa rule"
+              disabled={loading}
+              enterKeyHint="send"
+              className="w-full h-11 px-4 rounded-full bg-surface border border-line text-[16px] text-ink placeholder:text-ink-3 outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-60"
+            />
+          </label>
           <button
-            onClick={() => send(input)}
+            type="submit"
             disabled={!input.trim() || loading}
-            className="px-4 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-all flex items-center gap-2 font-semibold text-sm flex-shrink-0"
+            className="h-11 px-5 rounded-full bg-accent text-accent-ink text-[15px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-            <span className="hidden sm:inline">Ask</span>
+            Ask
           </button>
         </div>
-        <p className="text-[11px] text-zinc-600 mt-2 text-center">
-          Always verify with the official embassy before travel.
+        <p className="text-[12px] text-ink-3 mt-2 text-center">
+          AI answers can be wrong. Always verify with the embassy before you travel.
         </p>
-      </div>
+      </form>
     </div>
   )
 }

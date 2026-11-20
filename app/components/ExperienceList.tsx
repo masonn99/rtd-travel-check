@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getExperiences, loadMoreExperiences, incrementHelpful, type Experience } from '../actions/experiences'
+import { getExperiences, getExperiencesForCountry, loadMoreExperiences, incrementHelpful, type Experience } from '../actions/experiences'
 import { EXPERIENCES_PAGE_SIZE as PAGE_SIZE } from '../lib/constants'
-import { getCode } from 'country-list'
 import { flagEmoji } from '../lib/flagEmoji'
+import { codeFor } from '../lib/countries'
 
 interface ExperienceListProps {
   filterCountry?: string | null
@@ -48,9 +48,9 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
     if (initialExperiences !== null) return
     const fetchExperiences = async () => {
       setLoading(true)
-      const data = await getExperiences()
+      const data = filterCountry ? await getExperiencesForCountry(filterCountry) : await getExperiences()
       setExperiences(data)
-      setHasMore(data.length >= PAGE_SIZE)
+      setHasMore(!filterCountry && data.length >= PAGE_SIZE)
       setLoading(false)
     }
     fetchExperiences()
@@ -97,38 +97,31 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
     }
   }
 
-  const getDifficultyColor = (score: number) => {
-    if (score <= 2) return 'text-emerald-400 bg-emerald-500/10'
-    if (score === 3) return 'text-amber-400 bg-amber-500/10'
-    return 'text-red-400 bg-red-500/10'
-  }
-
   const extractField = (description: string, field: string) => {
     const regex = new RegExp(`${field}: ([^\\n]+)`)
     const match = description.match(regex)
     return match ? match[1] : ''
   }
 
+  const formatDate = (value: Date | string, withDay = true) =>
+    new Date(value).toLocaleDateString('en-US', withDay
+      ? { day: 'numeric', month: 'short', year: 'numeric' }
+      : { month: 'short', year: 'numeric' })
+
   const filteredExperiences = experiences.filter(exp => {
-    if (filterCountry && exp.country_name !== filterCountry) return false
+    if (filterCountry && exp.country_name.toLowerCase() !== filterCountry.toLowerCase()) return false
     if (filterVisaType !== 'all' && exp.experience_type !== filterVisaType) return false
     return true
   })
 
   if (loading) {
     return (
-      <div className="space-y-3">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-4 animate-pulse">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-6 bg-zinc-800 rounded-md" />
-              <div className="h-4 w-28 bg-zinc-800 rounded-md" />
-              <div className="h-5 w-16 bg-zinc-800 rounded-lg ml-auto" />
-            </div>
-            <div className="space-y-2">
-              <div className="h-3 w-full bg-zinc-800 rounded-md" />
-              <div className="h-3 w-4/5 bg-zinc-800 rounded-md" />
-            </div>
+      <div className="border-y border-line divide-y divide-line" aria-busy="true" aria-label="Loading reports">
+        {[1, 2].map(i => (
+          <div key={i} className="py-3 space-y-2 animate-pulse">
+            <div className="h-3.5 w-40 bg-fill rounded" />
+            <div className="h-3 w-full bg-fill rounded" />
+            <div className="h-3 w-3/4 bg-fill rounded" />
           </div>
         ))}
       </div>
@@ -136,37 +129,34 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
   }
 
   return (
-    <div className="space-y-4">
-      {/* Filters */}
+    <div className="space-y-3">
       {!filterCountry && (
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        <div className="flex flex-wrap gap-2">
           {['all', 'Visa Free', 'E-Visa', 'Visa Required'].map((type) => (
             <button
               key={type}
               onClick={() => setFilterVisaType(type)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                filterVisaType === type
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/20'
-                  : 'bg-zinc-800/50 text-zinc-400 hover:text-zinc-200 border border-zinc-700/50'
+              aria-pressed={filterVisaType === type}
+              className={`h-8 px-3 rounded-full text-[14px] font-medium border transition-colors ${
+                filterVisaType === type ? 'bg-accent text-accent-ink border-accent' : 'bg-surface text-ink-2 border-line hover:text-ink'
               }`}
             >
-              {type === 'all' ? 'All Stories' : type}
+              {type === 'all' ? 'All stories' : type}
             </button>
           ))}
         </div>
       )}
 
       {filteredExperiences.length === 0 ? (
-        <div className="text-center py-12 bg-zinc-800/20 border border-zinc-700/40 rounded-2xl border-dashed">
-          <div className="text-4xl mb-3 opacity-20">📮</div>
-          <p className="text-zinc-400 font-medium text-sm">No stories yet</p>
-          <p className="text-zinc-600 text-xs mt-1">
-            Be the first to share for {filterCountry || 'this category'}.
+        <div className="border-y border-line py-4">
+          <p className="text-[15px] font-medium text-ink">No reports for {filterCountry || 'this filter'} yet</p>
+          <p className="text-[14px] text-ink-3 mt-0.5">
+            Been there on an RTD? Share how entry went in the Stories tab or the Telegram group.
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {filteredExperiences.map((exp, i) => {
+        <ul className="border-y border-line divide-y divide-line">
+          {filteredExperiences.map((exp) => {
             const travelDate = extractField(exp.description, 'Travel Date')
             const visaType = extractField(exp.description, 'Visa Type')
             const processingTime = extractField(exp.description, 'Processing Time')
@@ -180,158 +170,95 @@ const ExperienceList = ({ filterCountry = null, initialExperiences = null }: Exp
             const tipsMatch = exp.description.match(/Tips & Advice:\n([\s\S]+)$/)
             const tips = tipsMatch ? tipsMatch[1].trim() : ''
 
-            // Telegram stories are plain text — no structured fields.
-            // Fall back to showing the raw description directly.
+            // Telegram stories are plain text with no structured fields.
             const isUnstructured = !entryExperience && !travelDate && !visaType
-            const rawText = isUnstructured
+            const body = isUnstructured
               ? exp.description.replace(/\n\n— .+ \(via Telegram\)$/, '').trim()
-              : ''
+              : entryExperience
+            const viaTelegram = /\(via Telegram\)\s*$/.test(exp.description)
 
             const isExpanded = expandedId === exp.id
+            const isLong = body.length > 220 || !!tips
+            const voted = votedExperiences.has(exp.id)
+
+            const facts = [
+              visaType,
+              travelDate && `Traveled ${formatDate(travelDate + '-01', false)}`,
+              processingTime && processingTime !== 'N/A' && `Wait ${processingTime}`,
+              difficultyNum > 0 && `Difficulty ${difficultyNum}/5`,
+              hasGreenCard && 'Has green card',
+            ].filter(Boolean) as string[]
 
             return (
-              <div
-                key={exp.id}
-                className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl overflow-hidden hover:border-zinc-700/60 transition-all duration-200 animate-slideUp"
-                style={{ animationDelay: `${i * 60}ms` }}
-              >
-                {/* Card header — always visible */}
-                <button
-                  className="w-full flex items-center gap-3 p-4 text-left hover:bg-zinc-800/20 transition-colors"
-                  onClick={() => setExpandedId(isExpanded ? null : exp.id)}
-                >
-                  <div className="flex-shrink-0 text-xl leading-none">
-                    {flagEmoji(getCode(exp.country_name))}
-                  </div>
+              <li key={exp.id} className="py-3">
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="text-[14px] font-semibold text-ink truncate">
+                    {exp.author_name || 'Anonymous holder'}
+                  </p>
+                  <p className="flex-none text-[12px] text-ink-3 tabular-nums">
+                    {viaTelegram ? 'Telegram · ' : ''}{formatDate(exp.created_at)}
+                  </p>
+                </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-white text-sm">{exp.country_name}</span>
-                      {travelDate && (
-                        <span className="text-[11px] text-zinc-500">
-                          {new Date(travelDate + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                      {visaType && (
-                        <span className="text-[11px] text-blue-400 font-medium">{visaType}</span>
-                      )}
-                      {hasGreenCard && (
-                        <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-md font-medium">GC</span>
-                      )}
-                      {difficultyNum > 0 && (
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${getDifficultyColor(difficultyNum)}`}>
-                          {difficultyNum}/5
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                {!filterCountry && (
+                  <p className="text-[13px] text-ink-2 mt-0.5">
+                    <span aria-hidden="true">{flagEmoji(codeFor(exp.country_name))} </span>{exp.country_name}
+                  </p>
+                )}
 
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); handleVote(exp.id); }}
-                      disabled={votedExperiences.has(exp.id)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                        votedExperiences.has(exp.id)
-                          ? 'bg-emerald-500/15 text-emerald-400'
-                          : 'bg-zinc-800/60 text-zinc-400 hover:bg-emerald-500/10 hover:text-emerald-400'
-                      }`}
-                    >
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
-                      </svg>
-                      {exp.helpful_count || 0}
-                    </button>
-                    <svg
-                      className={`w-4 h-4 text-zinc-600 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </button>
+                {facts.length > 0 && (
+                  <p className="text-[13px] text-ink-2 mt-1">{facts.join(' · ')}</p>
+                )}
 
-                {/* Expanded content */}
-                {isExpanded && (
-                  <div className="px-4 pb-4 border-t border-zinc-800/50 animate-fadeIn">
+                {body && (
+                  <p className={`text-[14px] leading-relaxed text-ink mt-2 whitespace-pre-line ${!isExpanded && isLong ? 'line-clamp-4' : ''}`}>
+                    {body}
+                  </p>
+                )}
 
-                    {/* Plain-text Telegram stories */}
-                    {rawText && (
-                      <div className="mt-4">
-                        <p className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                          <span className="w-1 h-1 rounded-full bg-blue-400 inline-block" />
-                          Community Report
-                        </p>
-                        <p className="text-zinc-300 text-xs leading-relaxed">{rawText}</p>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                      {entryExperience && (
-                        <div>
-                          <p className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <span className="w-1 h-1 rounded-full bg-blue-400 inline-block" />
-                            Entry Experience
-                          </p>
-                          <p className="text-zinc-300 text-xs leading-relaxed">{entryExperience}</p>
-                          {processingTime && processingTime !== 'N/A' && (
-                            <div className="mt-3 inline-flex items-center gap-1.5 bg-zinc-800/50 px-2.5 py-1.5 rounded-lg">
-                              <span className="text-[10px] text-zinc-500 font-medium">Wait time:</span>
-                              <span className="text-[10px] text-white font-semibold">{processingTime}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {tips && (
-                        <div className="bg-amber-500/5 border border-amber-500/15 rounded-xl p-3">
-                          <p className="text-[11px] font-semibold text-amber-400/80 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <span className="w-1 h-1 rounded-full bg-amber-400 inline-block" />
-                            Tips
-                          </p>
-                          <p className="text-zinc-400 text-xs leading-relaxed italic">"{tips}"</p>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-2 mt-4 pt-3 border-t border-zinc-800/40">
-                      <div className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-400">
-                        {exp.author_name ? exp.author_name[0].toUpperCase() : 'A'}
-                      </div>
-                      <span className="text-xs text-zinc-500">{exp.author_name || 'Anonymous'}</span>
-                    </div>
+                {isExpanded && tips && (
+                  <div className="mt-2">
+                    <p className="text-[13px] font-semibold text-ink-2">Tips</p>
+                    <p className="text-[14px] leading-relaxed text-ink mt-0.5 whitespace-pre-line">{tips}</p>
                   </div>
                 )}
-              </div>
+
+                <div className="flex items-center gap-4 mt-2">
+                  {isLong && (
+                    <button
+                      onClick={() => setExpandedId(isExpanded ? null : exp.id)}
+                      className="text-[13px] font-semibold text-accent"
+                      aria-expanded={isExpanded}
+                    >
+                      {isExpanded ? 'Show less' : tips && !isExpanded ? 'Read more and tips' : 'Read more'}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleVote(exp.id)}
+                    disabled={voted}
+                    aria-pressed={voted}
+                    className={`ml-auto inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full text-[13px] font-medium transition-colors ${
+                      voted ? 'bg-status-free-bg text-status-free-fg' : 'bg-fill text-ink-2 hover:text-ink'
+                    }`}
+                  >
+                    {voted ? 'Helpful' : 'Mark helpful'}
+                    <span className="tabular-nums">{exp.helpful_count || 0}</span>
+                  </button>
+                </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )}
 
-      {/* Load more — only shown when not filtering by country and more pages exist */}
       {!filterCountry && hasMore && (
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center pt-1">
           <button
             onClick={handleLoadMore}
             disabled={loadingMore}
-            className="flex items-center gap-2 px-5 py-2.5 bg-zinc-800/60 hover:bg-zinc-700/60 border border-zinc-700/50 text-zinc-300 text-sm font-semibold rounded-xl transition-all disabled:opacity-50"
+            className="h-9 px-4 rounded-full bg-surface border border-line text-ink text-[14px] font-semibold disabled:opacity-60"
           >
-            {loadingMore ? (
-              <>
-                <div className="h-3.5 w-3.5 rounded-full border-2 border-zinc-600 border-t-blue-400 animate-spin" />
-                Loading…
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-                Load more stories
-              </>
-            )}
+            {loadingMore ? 'Loading…' : 'Load more stories'}
           </button>
         </div>
       )}

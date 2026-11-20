@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { type Experience } from '../actions/experiences'
 import ExperienceForm from './ExperienceForm'
-import CountryStoriesGrid from './CountryStoriesGrid'
+import CountryStoriesGrid, { type ReportSummaryRow } from './CountryStoriesGrid'
+import { useReportSummaryState } from './CountryList'
 
 interface Props {
   initialData: {
@@ -13,92 +15,59 @@ interface Props {
   onRefresh: () => void
 }
 
-const ExperiencesView = ({ initialData, loading, onRefresh }: Props) => {
-  const experiences = initialData?.experiences ?? []
-  const stats = initialData?.stats ?? { total: 0, countries: 0, helpfulVotes: 0, thisMonth: 0 }
+const ExperiencesView = ({ onRefresh }: Props) => {
+  const [refreshKey, setRefreshKey] = useState(0)
+  const { summary: raw, loaded } = useReportSummaryState(refreshKey)
+  const summary = raw as Record<string, ReportSummaryRow>
+  // Counts come from the same published reports the list shows, so they always agree.
+  const rows = Object.values(summary)
+  const reportTotal = rows.reduce((n, r) => n + r.reports, 0)
 
   const handleSubmitSuccess = () => {
-    // Tell page.tsx to re-fetch; the server cache is busted via revalidateTag in the action
+    // Re-fetch page data and the per-country summary; the action busts the server cache.
     onRefresh()
+    setRefreshKey(k => k + 1)
   }
 
   return (
-    <div className="py-6 text-white animate-fadeIn">
-      {/* Page header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            Community <span className="text-blue-400">Stories</span>
-          </h1>
-          <p className="text-zinc-500 text-sm mt-1">
-            Real experiences from RTD holders worldwide
+          <h1 className="text-[30px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">Stories</h1>
+          <p className="text-[15px] text-ink-2 mt-1 max-w-[60ch]">
+            {loaded && reportTotal > 0
+              ? `${reportTotal} reports from RTD holders about ${rows.length} countries. Each one is dated, so you can see how current it is.`
+              : 'First-hand reports from RTD holders, dated so you can see how current they are.'}
           </p>
         </div>
-        <button
-          onClick={() => document.getElementById('experience-form')?.scrollIntoView({ behavior: 'smooth' })}
-          className="flex-shrink-0 self-start sm:self-auto flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-semibold transition-all shadow-sm shadow-blue-600/30"
+        <a
+          href="#experience-form"
+          className="lg:hidden self-start sm:self-auto inline-flex items-center h-9 px-4 rounded-full bg-accent text-accent-ink text-[14px] font-semibold"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Share Story
-        </button>
+          Share your trip
+        </a>
       </div>
 
-      {/* Stats row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        {[
-          { label: 'Stories', value: stats.total, icon: '📝' },
-          { label: 'Countries', value: stats.countries, icon: '🌍' },
-          { label: 'Helpful Votes', value: stats.helpfulVotes, icon: '👍' },
-          { label: 'This Month', value: stats.thisMonth, icon: '📈' },
-        ].map((stat, i) => (
-          <div
-            key={stat.label}
-            className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-4 animate-slideUp"
-            style={{ animationDelay: `${i * 60}ms` }}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-lg">{stat.icon}</span>
-              {loading && <div className="h-3 w-3 rounded-full border-2 border-zinc-700 border-t-blue-500 animate-spin" />}
-            </div>
-            <div className="text-2xl font-bold text-white">{loading ? '—' : stat.value}</div>
-            <div className="text-[11px] text-zinc-500 font-medium mt-0.5">{stat.label}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Country stories grid */}
-        <div className="lg:col-span-8 order-2 lg:order-1">
-          <CountryStoriesGrid
-            experiences={experiences}
-            loading={loading}
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+        <div className="lg:col-span-7">
+          <CountryStoriesGrid summary={summary} loaded={loaded} />
         </div>
 
-        {/* Share form */}
-        <div className="lg:col-span-4 order-1 lg:order-2">
-          <div id="experience-form" className="lg:sticky lg:top-20 space-y-4">
-            <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-2xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-zinc-800/60 flex items-center justify-between bg-zinc-900/60">
-                <h3 className="font-semibold text-white">Share Your Experience</h3>
+        <aside className="lg:col-span-5">
+          <div id="experience-form" className="lg:sticky lg:top-20 scroll-mt-20">
+            <div className="bg-surface border border-line/70 rounded-xl">
+              <div className="px-5 pt-5">
+                <h2 className="text-[19px] font-semibold tracking-[-0.01em] text-ink">Share your trip</h2>
+                <p className="text-[14px] text-ink-2 mt-1">
+                  Name the embassy you applied at and when you traveled. Specifics help the next holder most.
+                </p>
               </div>
               <div className="p-5">
                 <ExperienceForm onSuccess={handleSubmitSuccess} embedded={true} />
               </div>
             </div>
-
-            <div className="p-4 bg-amber-500/5 border border-amber-500/15 rounded-xl">
-              <p className="text-amber-400 font-semibold text-xs mb-1.5 flex items-center gap-1.5">
-                <span>💡</span> Pro Tip
-              </p>
-              <p className="text-zinc-400 text-xs leading-relaxed">
-                Be specific about which Embassy you applied at and the exact date. This helps identify current trends.
-              </p>
-            </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   )

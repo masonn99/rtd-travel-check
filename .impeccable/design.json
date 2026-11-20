@@ -1,0 +1,720 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T02:34:26+00:00",
+  "title": "Design System: RTD Travel Check",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Settings Blue",
+        "canonical": "rgb(37 99 235)",
+        "cssVar": "--accent",
+        "dark": "#6b9bff",
+        "darkCanonical": "rgb(107 155 255)",
+        "tonalRamp": [
+          "#040a1b",
+          "#0a2153",
+          "#133a8e",
+          "#1f56cc",
+          "#407af4",
+          "#73a3ff",
+          "#a8c9ff",
+          "#e1efff"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Accent Ink",
+        "canonical": "rgb(255 255 255)",
+        "cssVar": "--accent-ink",
+        "dark": "#0b0c0f",
+        "darkCanonical": "rgb(11 12 15)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "grouped-ground": {
+        "role": "neutral",
+        "displayName": "Grouped Ground",
+        "canonical": "rgb(244 245 247)",
+        "cssVar": "--bg",
+        "dark": "#0b0c0f",
+        "darkCanonical": "rgb(11 12 15)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#a4a5a6",
+          "#c9c9ca",
+          "#eeeeef"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface White",
+        "canonical": "rgb(255 255 255)",
+        "cssVar": "--surface",
+        "dark": "#181a1f",
+        "darkCanonical": "rgb(24 26 31)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "fill": {
+        "role": "neutral",
+        "displayName": "Quiet Fill",
+        "canonical": "rgb(235 237 241)",
+        "cssVar": "--fill",
+        "dark": "#262930",
+        "darkCanonical": "rgb(38 41 48)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414244",
+          "#606164",
+          "#818285",
+          "#a4a5a7",
+          "#c8c9cb",
+          "#eeeeef"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgb(226 228 233)",
+        "cssVar": "--line",
+        "dark": "#2d3139",
+        "darkCanonical": "rgb(45 49 57)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#414245",
+          "#606165",
+          "#818286",
+          "#a4a5a8",
+          "#c8c9cb",
+          "#eeeeef"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "rgb(17 24 39)",
+        "cssVar": "--ink",
+        "dark": "#f3f4f6",
+        "darkCanonical": "rgb(243 244 246)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#22252c",
+          "#3c424e",
+          "#596172",
+          "#7a8294",
+          "#9ea5b3",
+          "#c4c9d3",
+          "#edeef2"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "rgb(75 85 99)",
+        "cssVar": "--ink-2",
+        "dark": "#c4c8d0",
+        "darkCanonical": "rgb(196 200 208)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#21252b",
+          "#3c434c",
+          "#59626f",
+          "#798391",
+          "#9ea6b0",
+          "#c4cad1",
+          "#eceff1"
+        ]
+      },
+      "ink-tertiary": {
+        "role": "neutral",
+        "displayName": "Ink Tertiary",
+        "canonical": "rgb(104 112 125)",
+        "cssVar": "--ink-3",
+        "dark": "#9ca3af",
+        "darkCanonical": "rgb(156 163 175)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#22252a",
+          "#3d424a",
+          "#5b626d",
+          "#7b838f",
+          "#a0a5af",
+          "#c5c9d0",
+          "#edeef1"
+        ]
+      },
+      "status-free-bg": {
+        "role": "status",
+        "displayName": "Visa Free Tint",
+        "canonical": "rgb(223 244 230)",
+        "cssVar": "--free-bg",
+        "dark": "#143a25",
+        "darkCanonical": "rgb(20 58 37)",
+        "tonalRamp": [
+          "#0a0c0a",
+          "#202722",
+          "#3a453e",
+          "#56665b",
+          "#76877c",
+          "#9ca9a0",
+          "#c3ccc6",
+          "#ecefed"
+        ]
+      },
+      "status-free-fg": {
+        "role": "status",
+        "displayName": "Visa Free Ink",
+        "canonical": "rgb(22 101 52)",
+        "cssVar": "--free-fg",
+        "dark": "#86efac",
+        "darkCanonical": "rgb(134 239 172)",
+        "tonalRamp": [
+          "#060d07",
+          "#112c19",
+          "#1f4d2d",
+          "#307144",
+          "#539364",
+          "#83b38e",
+          "#b3d3ba",
+          "#e6f2e8"
+        ]
+      },
+      "status-evisa-bg": {
+        "role": "status",
+        "displayName": "E-Visa Tint",
+        "canonical": "rgb(210 243 240)",
+        "cssVar": "--evisa-bg",
+        "dark": "#0e3836",
+        "darkCanonical": "rgb(14 56 54)",
+        "tonalRamp": [
+          "#080c0c",
+          "#1d2827",
+          "#344645",
+          "#4d6765",
+          "#6e8986",
+          "#95aaa8",
+          "#becdcb",
+          "#eaf0ef"
+        ]
+      },
+      "status-evisa-fg": {
+        "role": "status",
+        "displayName": "E-Visa Ink",
+        "canonical": "rgb(15 108 100)",
+        "cssVar": "--evisa-fg",
+        "dark": "#6ee2d4",
+        "darkCanonical": "rgb(110 226 212)",
+        "tonalRamp": [
+          "#050d0c",
+          "#0d2b27",
+          "#184b46",
+          "#266e67",
+          "#4b9188",
+          "#7eb1aa",
+          "#b0d1cc",
+          "#e5f2f0"
+        ]
+      },
+      "status-voa-bg": {
+        "role": "status",
+        "displayName": "Visa on Arrival Tint",
+        "canonical": "rgb(236 231 254)",
+        "cssVar": "--voa-bg",
+        "dark": "#2e1e54",
+        "darkCanonical": "rgb(46 30 84)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#25242b",
+          "#43404c",
+          "#625e70",
+          "#837f92",
+          "#a6a3b1",
+          "#cac7d1",
+          "#efeef2"
+        ]
+      },
+      "status-voa-fg": {
+        "role": "status",
+        "displayName": "Visa on Arrival Ink",
+        "canonical": "rgb(91 33 182)",
+        "cssVar": "--voa-fg",
+        "dark": "#c4b5fd",
+        "darkCanonical": "rgb(196 181 253)",
+        "tonalRamp": [
+          "#0c0819",
+          "#28184e",
+          "#482b86",
+          "#6941c0",
+          "#8965e7",
+          "#a992f6",
+          "#cbbeff",
+          "#efebff"
+        ]
+      },
+      "status-req-bg": {
+        "role": "status",
+        "displayName": "Visa Required Tint",
+        "canonical": "rgb(253 238 213)",
+        "cssVar": "--req-bg",
+        "dark": "#452b0a",
+        "darkCanonical": "rgb(69 43 10)",
+        "tonalRamp": [
+          "#0d0b08",
+          "#29241c",
+          "#494133",
+          "#6b604c",
+          "#8d816c",
+          "#ada494",
+          "#cfc8be",
+          "#f1eeea"
+        ]
+      },
+      "status-req-fg": {
+        "role": "status",
+        "displayName": "Visa Required Ink",
+        "canonical": "rgb(146 64 14)",
+        "cssVar": "--req-fg",
+        "dark": "#fcd34d",
+        "darkCanonical": "rgb(252 211 77)",
+        "tonalRamp": [
+          "#130804",
+          "#3b1b0b",
+          "#663116",
+          "#934a23",
+          "#b96b45",
+          "#d29578",
+          "#e9bfab",
+          "#fceae3"
+        ]
+      },
+      "status-nr-bg": {
+        "role": "status",
+        "displayName": "Not Recognized Tint",
+        "canonical": "rgb(254 226 226)",
+        "cssVar": "--nr-bg",
+        "dark": "#4c1818",
+        "darkCanonical": "rgb(76 24 24)",
+        "tonalRamp": [
+          "#0d0a0a",
+          "#2b2222",
+          "#4d3e3e",
+          "#705b5b",
+          "#927c7c",
+          "#b2a0a0",
+          "#d2c6c6",
+          "#f2eded"
+        ]
+      },
+      "status-nr-fg": {
+        "role": "status",
+        "displayName": "Not Recognized Ink",
+        "canonical": "rgb(185 28 28)",
+        "cssVar": "--nr-fg",
+        "dark": "#fca5a5",
+        "darkCanonical": "rgb(252 165 165)",
+        "tonalRamp": [
+          "#170604",
+          "#460e0b",
+          "#781a16",
+          "#ad2823",
+          "#d54f45",
+          "#eb8377",
+          "#fcb4ab",
+          "#ffe7e3"
+        ]
+      },
+      "map-free": {
+        "role": "status",
+        "displayName": "Map Visa Free",
+        "canonical": "rgb(34 165 91)",
+        "cssVar": "--map-free",
+        "dark": "#34be6e",
+        "darkCanonical": "rgb(52 190 110)",
+        "tonalRamp": [
+          "#030e06",
+          "#002e13",
+          "#005124",
+          "#007637",
+          "#2c9958",
+          "#6fb885",
+          "#a8d7b4",
+          "#e2f4e6"
+        ]
+      },
+      "map-evisa": {
+        "role": "status",
+        "displayName": "Map E-Visa",
+        "canonical": "rgb(20 166 152)",
+        "cssVar": "--map-evisa",
+        "dark": "#2dc8b8",
+        "darkCanonical": "rgb(45 200 184)",
+        "tonalRamp": [
+          "#030e0c",
+          "#002d28",
+          "#004f47",
+          "#007368",
+          "#1e9689",
+          "#6ab5aa",
+          "#a5d4cd",
+          "#e1f3f0"
+        ]
+      },
+      "map-voa": {
+        "role": "status",
+        "displayName": "Map Visa on Arrival",
+        "canonical": "rgb(139 92 246)",
+        "cssVar": "--map-voa",
+        "dark": "#a078fa",
+        "darkCanonical": "rgb(160 120 250)",
+        "tonalRamp": [
+          "#0c0819",
+          "#28174f",
+          "#482988",
+          "#6a3ec4",
+          "#8a63eb",
+          "#a991f9",
+          "#cbbeff",
+          "#efeaff"
+        ]
+      },
+      "map-req": {
+        "role": "status",
+        "displayName": "Map Visa Required",
+        "canonical": "rgb(240 160 32)",
+        "cssVar": "--map-req",
+        "dark": "#eea834",
+        "darkCanonical": "rgb(238 168 52)",
+        "tonalRamp": [
+          "#120901",
+          "#391e00",
+          "#643500",
+          "#914f00",
+          "#b57100",
+          "#cf9a55",
+          "#e6c297",
+          "#faecdb"
+        ]
+      },
+      "map-nr": {
+        "role": "status",
+        "displayName": "Map Not Recognized",
+        "canonical": "rgb(229 72 77)",
+        "cssVar": "--map-nr",
+        "dark": "#ec6064",
+        "darkCanonical": "rgb(236 96 100)",
+        "tonalRamp": [
+          "#170505",
+          "#460d10",
+          "#79171e",
+          "#ae242e",
+          "#d64d4f",
+          "#ec817e",
+          "#fdb3af",
+          "#ffe6e4"
+        ]
+      },
+      "map-none": {
+        "role": "status",
+        "displayName": "Map No Data",
+        "canonical": "rgb(223 226 232)",
+        "cssVar": "--map-none",
+        "dark": "#30343c",
+        "darkCanonical": "rgb(48 52 60)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#404245",
+          "#5f6166",
+          "#808287",
+          "#a3a5a9",
+          "#c8c9cc",
+          "#eeeeef"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The one large title per view. 34px from md; 28px (Directory) to 30px (other views) on phones."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Card titles such as the report form header."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "A selected item heading, such as the selected country on the map."
+      },
+      "row-title": {
+        "displayName": "Row title",
+        "purpose": "Country names in list rows; input text at 16px to prevent iOS zoom."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Subtitles (max 60ch), detail values, chat messages, embassy rows."
+      },
+      "body-small": {
+        "displayName": "Body small",
+        "purpose": "Report text, empty-state support copy; chip labels at weight 500."
+      },
+      "footnote": {
+        "displayName": "Footnote",
+        "purpose": "Row secondary lines (stay, dated report recency), counts, disclaimers."
+      },
+      "section-label": {
+        "displayName": "Section label",
+        "purpose": "Sentence-case section headings in detail panels and A to Z letter headers."
+      },
+      "pill": {
+        "displayName": "Pill",
+        "purpose": "Status pill text."
+      },
+      "tab-label": {
+        "displayName": "Tab label",
+        "purpose": "Bottom tab bar labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "stuck-edge",
+        "value": "0 1px 0 rgb(var(--line))",
+        "purpose": "Sticky search band once content scrolls under it. A hairline, not a shadow."
+      },
+      {
+        "name": "floating-control",
+        "value": "0 2px 8px rgba(0,0,0,0.08)",
+        "purpose": "Map zoom controls floating over the map."
+      },
+      {
+        "name": "popover",
+        "value": "0 4px 16px rgba(0,0,0,0.12)",
+        "purpose": "Desktop map hover tooltip. The largest shadow in the system."
+      },
+      {
+        "name": "segment-thumb",
+        "value": "0 1px 3px rgba(0,0,0,0.12)",
+        "purpose": "Selected segment in a segmented control."
+      }
+    ],
+    "motion": [
+      {
+        "name": "disclosure",
+        "value": "grid-template-rows 280ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Row grows open in place, 0fr to 1fr. Removed under reduced motion."
+      },
+      {
+        "name": "chevron-rotate",
+        "value": "transform 200ms",
+        "purpose": "Row chevron rotates 90 degrees when open."
+      },
+      {
+        "name": "state-color",
+        "value": "color, background-color 150ms",
+        "purpose": "Hover and press tints on rows, chips, tabs, buttons (Tailwind transition-colors)."
+      },
+      {
+        "name": "fade-in",
+        "value": "opacity 300ms ease-out",
+        "purpose": "View content arrival."
+      },
+      {
+        "name": "slide-up",
+        "value": "opacity + translateY(12px) 350ms ease-out",
+        "purpose": "Panels and notices arriving."
+      },
+      {
+        "name": "slide-in-right",
+        "value": "opacity + translateX(16px) 250ms ease-out",
+        "purpose": "Form step change."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Gutter widens 16px to 24px; Join label expands."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "Tabs move into the header; bottom tab bar hides; rows gain stay and report columns."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Stories splits 5/7 with a sticky form."
+      }
+    ],
+    "darkMode": "All colour tokens switch via @media (prefers-color-scheme: dark) on :root; colorMeta.<key>.dark holds each dark value. theme-color meta: #ffffff light, #181a1f dark.",
+    "focus": "Global :focus-visible outline 2px solid rgb(var(--accent)), offset 2px. Fields replace it with a 2px accent ring at 40%. Selection background rgb(var(--accent) / 0.22). Caret accent.",
+    "iconography": "One drawn line family: 24px viewBox, stroke currentColor, stroke-width 1.75, round caps and joins. Sizes 16px inline, 18px fields and mark, 24px tab bar."
+  },
+  "components": [
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "status-pill-free",
+      "description": "Tinted, non-interactive label for the five canonical visa statuses; the only status colour in lists.",
+      "html": "<div class=\"ds-pills\"><span class=\"ds-pill ds-pill-free\">Visa Free</span><span class=\"ds-pill ds-pill-evisa\">E-Visa</span><span class=\"ds-pill ds-pill-voa\">Visa on Arrival</span><span class=\"ds-pill ds-pill-req\">Visa Required</span><span class=\"ds-pill ds-pill-nr\">Not Recognized</span><span class=\"ds-pill ds-pill-none\">No official data</span></div>",
+      "css": ".ds-pills { display: flex; flex-wrap: wrap; gap: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-pill { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 600; white-space: nowrap; } .ds-pill-free { background: rgb(var(--free-bg)); color: rgb(var(--free-fg)); } .ds-pill-evisa { background: rgb(var(--evisa-bg)); color: rgb(var(--evisa-fg)); } .ds-pill-voa { background: rgb(var(--voa-bg)); color: rgb(var(--voa-fg)); } .ds-pill-req { background: rgb(var(--req-bg)); color: rgb(var(--req-fg)); } .ds-pill-nr { background: rgb(var(--nr-bg)); color: rgb(var(--nr-fg)); } .ds-pill-none { background: rgb(var(--fill)); color: rgb(var(--ink-2)); font-weight: 500; }"
+    },
+    {
+      "name": "Country Row Group",
+      "kind": "custom",
+      "refersTo": "country-row",
+      "description": "Signature inset-grouped list: flag, name, dated report line, status pill, chevron; inset hairlines; open row tinted.",
+      "html": "<ul class=\"ds-group\"><li class=\"ds-row-item\"><button class=\"ds-row\" aria-expanded=\"false\"><span class=\"ds-flag\">🇦🇱</span><span class=\"ds-name\"><span class=\"ds-name-1\">Albania</span><span class=\"ds-name-2\">No reports yet</span></span><span class=\"ds-pill ds-pill-free\">Visa Free</span><svg class=\"ds-chev\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 6 6 6-6 6\"/></svg></button></li><li class=\"ds-row-item ds-sep\"><button class=\"ds-row ds-open\" aria-expanded=\"true\"><span class=\"ds-flag\">🇦🇲</span><span class=\"ds-name\"><span class=\"ds-name-1\">Armenia</span><span class=\"ds-name-2\">2 reports · 4 mo ago</span></span><span class=\"ds-pill ds-pill-evisa\">E-Visa</span><svg class=\"ds-chev ds-chev-open\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 6 6 6-6 6\"/></svg></button></li></ul>",
+      "css": ".ds-group { list-style: none; margin: 0; padding: 0; background: rgb(var(--surface)); border: 1px solid rgb(var(--line) / 0.7); border-radius: 12px; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-row-item { position: relative; } .ds-sep::before { content: ''; position: absolute; top: 0; left: 52px; right: 0; height: 1px; background: rgb(var(--line)); } .ds-row { width: 100%; display: grid; grid-template-columns: 28px minmax(0,1fr) auto 14px; align-items: center; column-gap: 12px; min-height: 52px; padding: 7px 16px; background: transparent; border: 0; text-align: left; cursor: pointer; transition: background-color 150ms; } .ds-row:hover { background: rgb(var(--fill) / 0.5); } .ds-row:active { background: rgb(var(--fill)); } .ds-row:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: -2px; } .ds-open { background: rgb(var(--fill) / 0.6); } .ds-flag { font-size: 22px; line-height: 1; text-align: center; } .ds-name { min-width: 0; } .ds-name-1 { display: block; font-size: 16px; line-height: 21px; font-weight: 500; color: rgb(var(--ink)); } .ds-name-2 { display: block; font-size: 13px; line-height: 18px; color: rgb(var(--ink-3)); } .ds-pill { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 600; } .ds-pill-free { background: rgb(var(--free-bg)); color: rgb(var(--free-fg)); } .ds-pill-evisa { background: rgb(var(--evisa-bg)); color: rgb(var(--evisa-fg)); } .ds-chev { width: 14px; height: 14px; color: rgb(var(--ink-3)); transition: transform 200ms; } .ds-chev-open { transform: rotate(90deg); }"
+    },
+    {
+      "name": "Filter Chips",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "Horizontally scrolling status filters with tabular counts; active chip is the accent.",
+      "html": "<div class=\"ds-chips\" role=\"group\"><button class=\"ds-chip ds-chip-on\" aria-pressed=\"true\">All <span class=\"ds-count\">99</span></button><button class=\"ds-chip\" aria-pressed=\"false\">Visa Free <span class=\"ds-count\">21</span></button><button class=\"ds-chip\" aria-pressed=\"false\">E-Visa <span class=\"ds-count\">11</span></button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-chip { display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 9999px; font-size: 14px; font-weight: 500; background: rgb(var(--surface)); color: rgb(var(--ink-2)); border: 1px solid rgb(var(--line)); cursor: pointer; transition: color 150ms, background-color 150ms; } .ds-chip:hover { color: rgb(var(--ink)); } .ds-chip:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 2px; } .ds-count { font-variant-numeric: tabular-nums; color: rgb(var(--ink-3)); } .ds-chip-on { background: rgb(var(--accent)); color: rgb(var(--accent-ink)); border-color: rgb(var(--accent)); } .ds-chip-on:hover { color: rgb(var(--accent-ink)); } .ds-chip-on .ds-count { color: inherit; opacity: 0.7; }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Filled, borderless 44px field with leading line icon; accent ring on focus.",
+      "html": "<label class=\"ds-search\"><svg class=\"ds-search-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg><input class=\"ds-search-input\" type=\"search\" placeholder=\"Search countries\"></label>",
+      "css": ".ds-search { position: relative; display: block; } .ds-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: rgb(var(--ink-3)); pointer-events: none; } .ds-search-input { width: 100%; height: 44px; padding: 0 40px; border: 0; border-radius: 10px; background: rgb(var(--fill)); color: rgb(var(--ink)); font: 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; outline: none; caret-color: rgb(var(--accent)); } .ds-search-input::placeholder { color: rgb(var(--ink-3)); } .ds-search-input:focus { box-shadow: 0 0 0 2px rgb(var(--accent) / 0.4); }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Inline primary action: accent capsule, 36px.",
+      "html": "<button class=\"ds-btn-primary\">Show all countries</button>",
+      "css": ".ds-btn-primary { height: 36px; padding: 0 16px; border: 0; border-radius: 9999px; background: rgb(var(--accent)); color: rgb(var(--accent-ink)); font: 600 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; cursor: pointer; } .ds-btn-primary:hover { background: rgb(var(--accent) / 0.9); } .ds-btn-primary:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.6; }"
+    },
+    {
+      "name": "Block Button",
+      "kind": "button",
+      "refersTo": "button-primary-block",
+      "description": "Full-width form action: accent, 44px, 10px corners; paired with a quiet Back button.",
+      "html": "<div class=\"ds-btn-row\"><button class=\"ds-btn-quiet-block\">Back</button><button class=\"ds-btn-block\">Continue</button></div>",
+      "css": ".ds-btn-row { display: flex; gap: 8px; } .ds-btn-block { flex: 1; height: 44px; border: 0; border-radius: 10px; background: rgb(var(--accent)); color: rgb(var(--accent-ink)); font: 600 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; cursor: pointer; } .ds-btn-block:disabled { opacity: 0.6; cursor: wait; } .ds-btn-quiet-block { height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: rgb(var(--fill)); color: rgb(var(--ink)); font: 600 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; cursor: pointer; } .ds-btn-block:focus-visible, .ds-btn-quiet-block:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Quiet and Outline Buttons",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Secondary capsules: quiet fill (Join) and surface outline (Load more).",
+      "html": "<div class=\"ds-btn-row\"><button class=\"ds-btn-quiet\">Join</button><button class=\"ds-btn-outline\">Load more</button></div>",
+      "css": ".ds-btn-row { display: flex; gap: 8px; align-items: center; } .ds-btn-quiet { height: 32px; padding: 0 12px; border: 0; border-radius: 9999px; background: rgb(var(--fill)); color: rgb(var(--ink)); font: 600 13px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; cursor: pointer; transition: background-color 150ms; } .ds-btn-quiet:hover { background: rgb(var(--line)); } .ds-btn-outline { height: 36px; padding: 0 16px; border: 1px solid rgb(var(--line)); border-radius: 9999px; background: rgb(var(--surface)); color: rgb(var(--ink)); font: 600 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; cursor: pointer; } .ds-btn-quiet:focus-visible, .ds-btn-outline:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Bottom Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-bar",
+      "description": "Phone navigation: four equal tabs, 24px line icon over 11px label, active in accent.",
+      "html": "<nav class=\"ds-tabs\"><button class=\"ds-tab\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18\"/><path d=\"M12 3c-2.8 3.2-2.8 14.8 0 18\"/><path d=\"M12 3c2.8 3.2 2.8 14.8 0 18\"/></svg><span>Globe</span></button><button class=\"ds-tab ds-tab-on\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 6h11M9 12h11M9 18h11\"/><circle cx=\"4.5\" cy=\"6\" r=\"1\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"4.5\" cy=\"12\" r=\"1\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"4.5\" cy=\"18\" r=\"1\" fill=\"currentColor\" stroke=\"none\"/></svg><span>Directory</span></button><button class=\"ds-tab\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.4A8 8 0 1 1 20 12z\"/><path d=\"M12 8.5l.9 1.9 1.9.9-1.9.9-.9 1.9-.9-1.9-1.9-.9 1.9-.9z\" fill=\"currentColor\" stroke-width=\"1\"/></svg><span>AI Chat</span></button></nav>",
+      "css": ".ds-tabs { display: flex; align-items: stretch; justify-content: space-around; height: 56px; background: rgb(var(--surface)); border-top: 1px solid rgb(var(--line)); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 0; background: transparent; color: rgb(var(--ink-3)); cursor: pointer; transition: color 150ms; } .ds-tab svg { width: 24px; height: 24px; } .ds-tab span { font-size: 11px; font-weight: 500; line-height: 1; } .ds-tab-on { color: rgb(var(--accent)); } .ds-tab:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: -2px; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "Fill track with a surface thumb; used for the 1 to 5 difficulty rating in the report form.",
+      "html": "<div class=\"ds-seg\" role=\"radiogroup\"><button class=\"ds-seg-opt\">1</button><button class=\"ds-seg-opt\">2</button><button class=\"ds-seg-opt ds-seg-on\" aria-checked=\"true\">3</button><button class=\"ds-seg-opt\">4</button><button class=\"ds-seg-opt\">5</button></div>",
+      "css": ".ds-seg { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; border-radius: 10px; background: rgb(var(--fill)); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-seg-opt { height: 36px; border: 0; border-radius: 7px; background: transparent; color: rgb(var(--ink-2)); font-size: 15px; font-weight: 600; cursor: pointer; transition: color 150ms, background-color 150ms; } .ds-seg-opt:hover { color: rgb(var(--ink)); } .ds-seg-on { background: rgb(var(--surface)); color: rgb(var(--ink)); box-shadow: 0 1px 3px rgba(0,0,0,0.12); } .ds-seg-opt:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Chat Bubbles",
+      "kind": "custom",
+      "refersTo": "chat-bubble-user",
+      "description": "Accent user bubble right, surface assistant bubble left; 18px corners with a 6px tail corner.",
+      "html": "<div class=\"ds-chat\"><div class=\"ds-msg ds-msg-user\">Can I visit Japan with an RTD?</div><div class=\"ds-msg ds-msg-bot\">Official rule first: Japan lists Visa Required for RTD holders. Two holders reported applying at the consulate.</div></div>",
+      "css": ".ds-chat { display: flex; flex-direction: column; gap: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-msg { max-width: 72%; padding: 10px 14px; border-radius: 18px; font-size: 15px; line-height: 1.625; } .ds-msg-user { align-self: flex-end; background: rgb(var(--accent)); color: rgb(var(--accent-ink)); border-bottom-right-radius: 6px; } .ds-msg-bot { align-self: flex-start; background: rgb(var(--surface)); color: rgb(var(--ink)); border: 1px solid rgb(var(--line) / 0.7); border-bottom-left-radius: 6px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Settings Pane for the World",
+    "overview": "The site is a system list, not a themed destination. Every surface reads like a well-made settings or reference pane: a pale grouped ground, white inset-grouped lists, hairline separators, system UI type, and exactly one blue for selection and links. The craft bar is Stripe Docs and Dashboard for density and typographic discipline, Apple Settings and Health for grouped lists and the phone-first tab bar. Nothing is decorative; the only colour beyond the accent is the five status tints, and they are information.\n\nDensity is moderate and phone-first: rows are 52px tall, about eight countries show above the tab bar, and a row grows open in place instead of navigating away. Desktop widens the same list into columns rather than inventing a second layout. Dark mode is a mirror, not a separate theme: every token has a dark counterpart switched by the system setting, never by a toggle.\n\nThis world explicitly replaces the previous near-black dashboard with glowing chips, gradient text, glass panels and emoji chrome. None of those return.",
+    "keyCharacteristics": [
+      "Grouped ground plus white inset-grouped lists, hairline-separated, 12px group corners.",
+      "System font stack only; hierarchy by size and weight, never by case or tracking tricks.",
+      "One accent (blue) for selection, links and the primary action; status colour lives only in pills and map fills.",
+      "Drawn line icons from one family (24px grid, 1.75 stroke, round caps); flags are content, not chrome.",
+      "Flat at rest; small shadows only on things that float above the page.",
+      "Disclosure in place: one row open at a time, height animates, nothing re-mounts."
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "The accent is the only interactive colour. If something is selected, linked or the primary action, it is blue; if it is not, it is neutral. No second accent, no gradient, no glow.",
+        "section": "colors"
+      },
+      {
+        "name": "The Status-Is-Data Rule",
+        "body": "Status hues appear only where they mean a visa status (pill, map fill, legend swatch) or a form outcome (error red, success green). Never use them for decoration, category colour or emphasis.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mirror Rule",
+        "body": "Every colour is a token with a light and dark value switched by `prefers-color-scheme`. A raw hex in a component is a bug; the one exception is the Telegram mark, which keeps its own brand blue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Sentence-Case Rule",
+        "body": "Labels and section headings are sentence case at 13px semibold in ink-secondary or ink-tertiary. No uppercase, no wide tracking, no eyebrow line above a title.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Counts, stays and dates use tabular figures so columns of numbers align.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-Ground Rule",
+        "body": "Lists, cards and bars never cast shadows. If it sits in the page flow, it is separated by a hairline; only floating things get a shadow, and never larger than the popover value.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** put every list in a white inset group on the grouped ground, with hairlines inset to the text column (52px).",
+      "**Do** render status only through the shared pill and map fills, using the canonical five labels.",
+      "**Do** date every community report line (\"3 reports · 2 wk ago\") in the footnote style.",
+      "**Do** expand detail in place with the 280ms disclosure; keep one row open at a time.",
+      "**Do** use the system font stack, sentence case, and tabular figures for counts and stays.",
+      "**Do** draw icons from the single line family (24px grid, 1.75 stroke, round caps).",
+      "**Do** define every new colour as an RGB-channel token with a light and a dark value.",
+      "**Do** keep the large title plus one-line subtitle as the opening of every view."
+    ],
+    "donts": [
+      "**Don't** bring back the old look: near-black dashboard, glowing chips, gradient text, glass or backdrop blur, coloured drop shadows.",
+      "**Don't** use emoji as interface icons in navigation, buttons or headers; flags inside country rows are content and stay.",
+      "**Don't** add a second accent colour or use status hues for decoration.",
+      "**Don't** cast shadows on in-flow surfaces; reserve the four shadow values for floating elements.",
+      "**Don't** use uppercase labels, wide letter-spacing, or an eyebrow line above titles.",
+      "**Don't** load a web font or a display face; the system stack is the brand.",
+      "**Don't** hard-code hex or Tailwind palette colours (zinc, blue-600 and so on) in components."
+    ]
+  }
+}

@@ -1,35 +1,28 @@
 'use client'
 
-const tabs = [
-  { id: 'globe',       label: 'Globe',     emoji: '🌍' },
-  { id: 'table',       label: 'Directory', emoji: '🗂️' },
-  { id: 'experiences', label: 'Stories',   emoji: '💬' },
-  { id: 'chat',        label: 'AI Chat',   emoji: '✨' },
-];
+import { NAV_TABS } from './Header';
 
 const BottomNav = ({ currentView, onViewChange }) => {
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/70"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-line"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      aria-label="Main"
     >
-      <div className="flex items-center justify-around h-16 px-2">
-        {tabs.map((tab) => {
-          const active = currentView === tab.id;
+      <div className="flex items-stretch justify-around h-[56px]">
+        {NAV_TABS.map(({ id, label, Icon }) => {
+          const active = currentView === id;
           return (
             <button
-              key={tab.id}
-              onClick={() => onViewChange(tab.id)}
-              className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-200"
+              key={id}
+              onClick={() => onViewChange(id)}
+              aria-current={active ? 'page' : undefined}
+              className={`flex flex-col items-center justify-center gap-[3px] flex-1 transition-colors ${
+                active ? 'text-accent' : 'text-ink-3'
+              }`}
             >
-              <div className={`flex items-center justify-center w-10 h-7 rounded-lg transition-all duration-200 ${active ? 'bg-blue-600/20' : ''}`}>
-                <span className={`text-xl leading-none transition-all duration-200 ${active ? 'scale-110' : 'opacity-50'}`}>
-                  {tab.emoji}
-                </span>
-              </div>
-              <span className={`text-[10px] font-semibold tracking-wide transition-colors duration-200 ${active ? 'text-blue-400' : 'text-zinc-600'}`}>
-                {tab.label}
-              </span>
+              <Icon className="w-6 h-6" />
+              <span className="text-[11px] font-medium leading-none">{label}</span>
             </button>
           );
         })}

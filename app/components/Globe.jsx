@@ -1,202 +1,195 @@
-import { useState, useEffect, useMemo } from 'react';
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-import visaData from '/data.json';
+import { useState, useMemo, useCallback, memo } from 'react';
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { STATUS_ORDER, STATUS_LABEL } from '../lib/visa';
+import { COUNTRIES, COUNTRY_BY_NAME, STATUS_COUNTS, resolveCountry } from '../lib/countries';
+import { StatusPill, useReportSummary } from './CountryList';
+import { reportLine } from '../lib/visa';
+import { ChevronIcon } from './Icons';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
-const VISA_COLORS = {
-  free:         '#10b981', // emerald
-  evisa:        '#3b82f6', // blue
-  required:     '#f59e0b', // amber
-  notRecognized:'#ef4444', // red
-  noData:       '#3f3f46', // zinc-700
-  hover:        '#a1a1aa', // zinc-400 — clearly neutral, never mistaken for data
+/* Map fills come from tokens so light and dark both read. */
+const FILL = {
+  free: 'rgb(var(--map-free))',
+  evisa: 'rgb(var(--map-evisa))',
+  voa: 'rgb(var(--map-voa))',
+  required: 'rgb(var(--map-req))',
+  notRecognized: 'rgb(var(--map-nr))',
+  none: 'rgb(var(--map-none))',
 };
 
-const WorldMap = ({ onViewChange }) => {
-  const [loading, setLoading] = useState(true);
+// Map names that differ from data.json names.
+const ALIASES = {
+  'united kingdom': ['uk', 'united kingdom'],
+  'south korea': ['korea', 'south korea'],
+  turkey: ['türkiye', 'turkey'],
+  vietnam: ['viet nam', 'vietnam'],
+  laos: ['lao people', 'laos'],
+};
 
-  const findVisaInfo = (countryName) => {
-    return visaData.find(item => {
-      const dataCountry = item.country.toLowerCase();
-      const mapCountry = countryName.toLowerCase();
-      if (mapCountry === 'united kingdom' && dataCountry.includes('uk')) return true;
-      if (mapCountry === 'south korea' && dataCountry.includes('korea')) return true;
-      if (mapCountry === 'turkey' && dataCountry.includes('türkiye')) return true;
-      if (mapCountry === 'vietnam' && dataCountry.includes('viet nam')) return true;
-      if (mapCountry === 'laos' && dataCountry.includes('lao people')) return true;
-      if (mapCountry === dataCountry) return true;
-      if (dataCountry.length > 3 && mapCountry.length > 3) {
-        const dataRegex = new RegExp(`\\b${dataCountry}\\b`, 'i');
-        const mapRegex = new RegExp(`\\b${mapCountry}\\b`, 'i');
-        return dataRegex.test(mapCountry) || mapRegex.test(dataCountry);
-      }
-      return false;
-    });
-  };
+function findCountry(mapName) {
+  const m = mapName.toLowerCase();
+  const exact = resolveCountry(mapName);
+  if (exact) return exact;
+  const aliases = ALIASES[m];
+  return COUNTRIES.find(c => {
+    const d = c.name.toLowerCase();
+    if (aliases && aliases.some(a => d.includes(a))) return true;
+    if (d.length > 3 && m.length > 3) {
+      return new RegExp(`\\b${d}\\b`, 'i').test(m) || new RegExp(`\\b${m}\\b`, 'i').test(d);
+    }
+    return false;
+  }) || null;
+}
 
-  const getColor = (requirement) => {
-    if (requirement.includes('not required')) return VISA_COLORS.free;
-    if (requirement.includes('E-Visa') || requirement.includes('E-visa')) return VISA_COLORS.evisa;
-    if (requirement.includes('Does not recognize')) return VISA_COLORS.notRecognized;
-    return VISA_COLORS.required;
-  };
+/* The geography layer only re-renders when the selection changes. */
+const MapLayer = memo(function MapLayer({ selected, onSelect, onHover, position, onMoveEnd }) {
+  return (
+    <ComposableMap
+      projection="geoNaturalEarth1"
+      width={800}
+      height={420}
+      projectionConfig={{ scale: 155, center: [10, 4] }}
+      className="w-full h-auto touch-none"
+    >
+      <ZoomableGroup center={position.coordinates} zoom={position.zoom} minZoom={1} maxZoom={8} onMoveEnd={onMoveEnd}>
+      <Geographies geography={geoUrl}>
+        {({ geographies }) =>
+          geographies.map(geo => {
+            const mapName = geo.properties.name;
+            const country = findCountry(mapName);
+            const fill = country ? FILL[country.status] : FILL.none;
+            const isSel = country && selected === country.name;
+            const dim = selected && !isSel;
+            return (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                tabIndex={country ? 0 : -1}
+                aria-label={country ? `${country.name}: ${STATUS_LABEL[country.status]}` : undefined}
+                onClick={() => country && onSelect(country.name)}
+                onKeyDown={(e) => { if (country && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onSelect(country.name); } }}
+                onMouseMove={(e) => onHover({ name: country ? country.name : mapName, country, x: e.clientX, y: e.clientY })}
+                onMouseLeave={() => onHover(null)}
+                style={{
+                  default: {
+                    fill,
+                    opacity: dim ? 0.35 : 1,
+                    stroke: isSel ? 'rgb(var(--ink))' : 'rgb(var(--surface))',
+                    strokeWidth: (isSel ? 1.6 : 0.4) / position.zoom,
+                    outline: 'none',
+                    transition: 'opacity 200ms ease-out',
+                  },
+                  hover: {
+                    fill,
+                    opacity: 1,
+                    stroke: 'rgb(var(--ink))',
+                    strokeWidth: (country ? 1 : 0.4) / position.zoom,
+                    outline: 'none',
+                    cursor: country ? 'pointer' : 'default',
+                  },
+                  pressed: { fill, outline: 'none' },
+                }}
+              />
+            );
+          })
+        }
+      </Geographies>
+      </ZoomableGroup>
+    </ComposableMap>
+  );
+});
 
-  const stats = useMemo(() => ({
-    total: visaData.length,
-    visaFree: visaData.filter(c => c.visaRequirement.includes('not required')).length,
-    eVisa: visaData.filter(c => c.visaRequirement.includes('E-Visa') || c.visaRequirement.includes('E-visa')).length,
-    notRecognized: visaData.filter(c => c.visaRequirement.includes('Does not recognize')).length,
-    visaRequired: visaData.filter(c => c.visaRequirement === 'Visa required').length,
-  }), []);
+const WorldMap = ({ onOpenCountry }) => {
+  const [selected, setSelected] = useState(null);
+  const [hover, setHover] = useState(null);
+  const [position, setPosition] = useState({ coordinates: [10, 4], zoom: 1 });
+  const onMoveEnd = useCallback((p) => setPosition(p), []);
+  const zoomBy = (f) => setPosition(p => ({ ...p, zoom: Math.min(8, Math.max(1, p.zoom * f)) }));
+  const summary = useReportSummary();
 
-  const statItems = [
-    { label: 'Visa Free', value: stats.visaFree, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', dot: 'bg-emerald-400' },
-    { label: 'E-Visa', value: stats.eVisa, color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20', dot: 'bg-blue-400' },
-    { label: 'Visa Required', value: stats.visaRequired, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20', dot: 'bg-amber-400' },
-    { label: 'Not Recognized', value: stats.notRecognized, color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', dot: 'bg-red-400' },
-  ];
+  const onSelect = useCallback((name) => setSelected(prev => (prev === name ? null : name)), []);
+  const onHover = useCallback((h) => setHover(h), []);
 
-  const legendItems = [
-    { color: VISA_COLORS.free, label: 'Visa Free' },
-    { color: VISA_COLORS.evisa, label: 'E-Visa' },
-    { color: VISA_COLORS.required, label: 'Required' },
-    { color: VISA_COLORS.notRecognized, label: 'Not Recognized' },
-    { color: VISA_COLORS.noData, label: 'No Data' },
-  ];
+  const legend = useMemo(
+    () => STATUS_ORDER.filter(s => STATUS_COUNTS[s]).map(s => ({ status: s, label: STATUS_LABEL[s], count: STATUS_COUNTS[s] })),
+    []
+  );
+
+  const sel = selected ? COUNTRY_BY_NAME[selected.toLowerCase()] : null;
 
   return (
-    <div className="py-6 text-white animate-fadeIn">
-      {/* Page header */}
-      <div className="mb-5">
-        <h1 className="text-2xl font-bold text-white tracking-tight">
-          Visa <span className="text-blue-400">Map</span>
-        </h1>
-        <p className="text-zinc-500 text-sm mt-1">{stats.total} countries tracked for RTD holders</p>
-      </div>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 pb-6">
+      <h1 className="text-[30px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">World map</h1>
+      <p className="text-[15px] text-ink-2 mt-1 max-w-[60ch]">
+        Where a US Refugee Travel Document is accepted, and on what terms. Tap a country to see its rule; pinch or use + to zoom.
+      </p>
 
-      {/* Stats row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        {statItems.map((stat, i) => (
-          <div
-            key={stat.label}
-            className={`border rounded-xl p-4 ${stat.bg} animate-slideUp`}
-            style={{ animationDelay: `${i * 60}ms` }}
-          >
-            <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-            <div className="flex items-center gap-1.5 mt-1">
-              <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`} />
-              <span className="text-[11px] text-zinc-400 font-medium">{stat.label}</span>
-            </div>
-          </div>
+      <ul className="flex flex-wrap gap-x-4 gap-y-2 mt-5" aria-label="Legend">
+        {legend.map(({ status, label, count }) => (
+          <li key={status} className="flex items-center gap-2 text-[14px] text-ink-2">
+            <span className="w-3 h-3 rounded-[3px]" style={{ background: FILL[status] }} aria-hidden="true" />
+            {label}
+            <span className="text-ink-3 tabular-nums">{count}</span>
+          </li>
         ))}
-      </div>
+        <li className="flex items-center gap-2 text-[14px] text-ink-3">
+          <span className="w-3 h-3 rounded-[3px]" style={{ background: FILL.none }} aria-hidden="true" />
+          No data
+        </li>
+      </ul>
 
-      {/* Map container */}
-      <div className="relative bg-zinc-900/50 border border-zinc-800/60 rounded-2xl overflow-hidden">
-
-        {/* Desktop legend */}
-        <div className="absolute top-4 left-4 z-10 hidden md:block">
-          <div className="bg-zinc-950/80 backdrop-blur-md border border-zinc-800/70 rounded-xl p-3 space-y-2">
-            {legendItems.map(item => (
-              <div key={item.label} className="flex items-center gap-2.5">
-                <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: item.color }} />
-                <span className="text-[11px] text-zinc-400 font-medium">{item.label}</span>
-              </div>
-            ))}
+      <div className="mt-4 bg-surface border border-line/70 rounded-xl overflow-hidden">
+        <div className="relative px-1 sm:px-4 py-2 sm:py-4">
+          <MapLayer selected={selected} onSelect={onSelect} onHover={onHover} position={position} onMoveEnd={onMoveEnd} />
+          <div className="absolute right-3 top-3 flex flex-col rounded-[10px] bg-surface border border-line shadow-[0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden">
+            <button onClick={() => zoomBy(1.6)} aria-label="Zoom in" className="w-10 h-10 text-[20px] leading-none text-ink hover:bg-fill">+</button>
+            <span className="h-px bg-line" aria-hidden="true" />
+            <button onClick={() => zoomBy(1 / 1.6)} aria-label="Zoom out" disabled={position.zoom <= 1} className="w-10 h-10 text-[20px] leading-none text-ink hover:bg-fill disabled:text-ink-3">−</button>
           </div>
         </div>
 
-        {/* Mobile: view directory CTA */}
-        <div className="md:hidden absolute top-4 left-0 right-0 z-10 flex justify-center px-4">
-          <button
-            onClick={() => onViewChange && onViewChange('table')}
-            className="flex items-center gap-2 bg-zinc-950/90 backdrop-blur-md border border-zinc-700/60 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-lg active:scale-95 transition-all"
-          >
-            <svg className="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            Open Directory
-          </button>
-        </div>
-
-        {/* Map */}
-        <div className="h-[420px] sm:h-[560px] w-full flex items-center justify-center px-2">
-          <ComposableMap
-            projection="geoNaturalEarth1"
-            width={800}
-            height={450}
-            projectionConfig={{ scale: 155, center: [10, 0] }}
-            className="w-full h-full cursor-grab active:cursor-grabbing"
-          >
-            <Geographies geography={geoUrl}>
-              {({ geographies }) =>
-                geographies.map(geo => {
-                  const countryName = geo.properties.name;
-                  const visaInfo = findVisaInfo(countryName);
-                  const fill = visaInfo ? getColor(visaInfo.visaRequirement) : VISA_COLORS.noData;
-
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      fill={fill}
-                      stroke="#18181b"
-                      strokeWidth={0.4}
-                      style={{
-                        default: { outline: 'none', transition: 'fill 150ms' },
-                        hover:   { fill: VISA_COLORS.hover, outline: 'none', cursor: 'pointer' },
-                        pressed: { outline: 'none' },
-                      }}
-                      onMouseMove={(e) => {
-                        const tooltip = document.getElementById('map-tooltip');
-                        if (!tooltip) return;
-                        if (visaInfo) {
-                          let req = visaInfo.visaRequirement;
-                          if (req.includes('Does not recognize')) req = 'RTD Not Recognized';
-                          tooltip.innerHTML = `
-                            <div class="p-3">
-                              <p class="text-[10px] font-semibold text-zinc-500 mb-0.5">${countryName}</p>
-                              <p class="text-sm font-bold text-white">${req}</p>
-                              ${visaInfo.notes ? `<p class="text-[10px] text-zinc-400 mt-1.5 max-w-[200px] leading-snug italic">"${visaInfo.notes}"</p>` : ''}
-                            </div>
-                          `;
-                          tooltip.style.display = 'block';
-                        } else {
-                          tooltip.innerHTML = `<div class="p-3"><p class="text-[10px] font-semibold text-zinc-500">${countryName}</p><p class="text-xs text-zinc-600 mt-0.5">No data available</p></div>`;
-                          tooltip.style.display = 'block';
-                        }
-                        tooltip.style.left = `${e.clientX + 16}px`;
-                        tooltip.style.top = `${e.clientY + 16}px`;
-                      }}
-                      onMouseLeave={() => {
-                        const tooltip = document.getElementById('map-tooltip');
-                        if (tooltip) tooltip.style.display = 'none';
-                      }}
-                    />
-                  );
-                })
-              }
-            </Geographies>
-          </ComposableMap>
-        </div>
-
-        {/* Mobile bottom legend */}
-        <div className="md:hidden flex items-center justify-center gap-3 flex-wrap px-4 pb-4">
-          {legendItems.map(item => (
-            <div key={item.label} className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-sm" style={{ backgroundColor: item.color }} />
-              <span className="text-[10px] text-zinc-500 font-medium">{item.label}</span>
+        <div className="border-t border-line px-4 py-4 min-h-[92px]" aria-live="polite">
+          {sel ? (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="flex items-start gap-3 min-w-0 flex-1">
+                <span className="text-[28px] leading-none" aria-hidden="true">{sel.flag}</span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="text-[17px] font-semibold text-ink">{sel.name}</p>
+                    <StatusPill status={sel.status} />
+                  </div>
+                  <p className="text-[14px] text-ink-2 mt-1">
+                    {[sel.duration && `Up to ${sel.duration}`, sel.notes, reportLine(summary[sel.name.toLowerCase()])].filter(Boolean).join(' · ')}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => onOpenCountry && onOpenCountry(sel.name)}
+                className="flex-none self-start sm:self-auto inline-flex items-center gap-1 h-9 pl-4 pr-3 rounded-full bg-accent text-accent-ink text-[14px] font-semibold"
+              >
+                Embassy and reports
+                <ChevronIcon className="w-3.5 h-3.5" />
+              </button>
             </div>
-          ))}
+          ) : (
+            <p className="text-[15px] text-ink-3">
+              Select a country on the map for its entry rule, or browse all {COUNTRIES.length} in the Directory.
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Tooltip */}
-      <div
-        id="map-tooltip"
-        className="hidden fixed pointer-events-none bg-zinc-950/95 backdrop-blur-xl border border-zinc-800/70 rounded-xl shadow-xl z-[100]"
-      />
+      {/* Desktop hover label; touch users get the panel above instead */}
+      {hover && (
+        <div
+          className="hidden md:block fixed pointer-events-none z-[100] bg-surface border border-line rounded-lg px-3 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+          style={{ left: hover.x + 14, top: hover.y + 14 }}
+        >
+          <p className="text-[13px] font-semibold text-ink">{hover.name}</p>
+          <p className="text-[12px] text-ink-2">{hover.country ? STATUS_LABEL[hover.country.status] : 'No data yet'}</p>
+        </div>
+      )}
     </div>
   );
 };

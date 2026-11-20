@@ -1,0 +1,143 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.025Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.037Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.047Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.057Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.067Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.077Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.087Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.097Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-ticket.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.107Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-ticket.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.117Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-ticket.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.127Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-ticket.html"
+        ],
+        "createdAt": "2026-11-19T21:43:37.137Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-20T02:35:05.683Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-20T02:35:05.694Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-ticket.html"
+        ],
+        "createdAt": "2026-11-20T02:35:05.704Z",
+        "reason": "agent decision: unchosen decision-round sketch, never shipped"
+      }
+    ]
+  }
+}
