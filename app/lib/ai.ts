@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import Groq from 'groq-sdk'
 import visaData from '../../data.json'
 import { getExperiences } from '../actions/experiences'
+import { findRelevantVisa, findRelevantStories } from './embeddings'
 
 // ─── Clients (lazily initialised) ─────────────────────────────────────────────
 
@@ -87,47 +88,156 @@ export async function extractTravelExperience(text: string): Promise<ExtractionR
 
 // ─── Travel assistant chat ─────────────────────────────────────────────────────
 
-/**
- * Answer RTD travel questions using visa data + community stories as context.
- * Primary: Groq Llama 3.3 70B (fast, good reasoning)
- * Fallback: Gemini Flash
- */
-export async function askTravelAssistant(query: string): Promise<string> {
+export interface ConversationMessage {
+  role: 'user' | 'assistant'
+  text: string
+}
+
+// City/alias → exact country string as it appears in data.json (lowercased).
+// This powers the keyword fallback in buildChatPayload.
+const CITY_TO_COUNTRY: Record<string, string> = {
+  // UAE
+  dubai: 'united arab emirates',
+  'abu dhabi': 'united arab emirates',
+  uae: 'united arab emirates',
+  // Korea (formal name in data.json: "Korea, Republic of")
+  seoul: 'korea, republic of',
+  'south korea': 'korea, republic of',
+  korea: 'korea, republic of',
+  // Turkey (data.json uses "Türkiye")
+  istanbul: 'türkiye',
+  ankara: 'türkiye',
+  turkey: 'türkiye',
+  // UK (data.json: "United Kingdom of Great Britain and Northern Ireland")
+  london: 'united kingdom of great britain and northern ireland',
+  uk: 'united kingdom of great britain and northern ireland',
+  'united kingdom': 'united kingdom of great britain and northern ireland',
+  england: 'united kingdom of great britain and northern ireland',
+  britain: 'united kingdom of great britain and northern ireland',
+  // Taiwan (data.json: "Taiwan, Province of China")
+  taipei: 'taiwan, province of china',
+  taiwan: 'taiwan, province of china',
+  // Vietnam (data.json: "Viet Nam")
+  vietnam: 'viet nam',
+  hanoi: 'viet nam',
+  saigon: 'viet nam',
+  // Laos (data.json: "Lao People's Democratic Republic")
+  laos: "lao people's democratic republic",
+  vientiane: "lao people's democratic republic",
+  // Moldova (data.json: "Moldova, Republic of")
+  moldova: 'moldova, republic of',
+  // Iran (data.json: "Iran, Islamic Republic of")
+  iran: 'iran, islamic republic of',
+  tehran: 'iran, islamic republic of',
+  // Standard city → country
+  bangkok: 'thailand',
+  tokyo: 'japan',
+  osaka: 'japan',
+  paris: 'france',
+  rome: 'italy',
+  berlin: 'germany',
+  amsterdam: 'netherlands',
+  madrid: 'spain',
+  lisbon: 'portugal',
+  beijing: 'china',
+  shanghai: 'china',
+  toronto: 'canada',
+  montreal: 'canada',
+  sydney: 'australia',
+  melbourne: 'australia',
+}
+
+function resolveCountries(text: string): string[] {
+  const lower = text.toLowerCase()
+  const countries = new Set<string>()
+  for (const [alias, country] of Object.entries(CITY_TO_COUNTRY)) {
+    if (lower.includes(alias)) countries.add(country)
+  }
+  return Array.from(countries)
+}
+
+// ─── Shared context builder ────────────────────────────────────────────────────
+
+async function buildChatPayload(query: string, history: ConversationMessage[]) {
   const allStories = await getExperiences()
-  const lowerQuery = query.toLowerCase()
 
-  const relevantOfficial = visaData.filter(item =>
-    lowerQuery.includes(item.country.toLowerCase()) ||
-    (item.country.toLowerCase() === 'united arab emirates' &&
-      (lowerQuery.includes('dubai') || lowerQuery.includes('uae')))
-  )
-  const relevantStories = allStories.filter(s =>
-    lowerQuery.includes(s.country_name.toLowerCase())
-  )
+  // Keyword fallback uses the full conversation so follow-up questions
+  // ("what about the visa?") still find the right country.
+  const fullConversationText = [...history.map(m => m.text), query].join(' ').toLowerCase()
+  const aliasCountries = resolveCountries(fullConversationText)
 
-  const context = {
-    officialRules: relevantOfficial.length > 0 ? relevantOfficial : visaData.slice(0, 10),
-    communityReports: relevantStories.length > 0 ? relevantStories.slice(0, 10) : allStories.slice(0, 5),
+  // ── Official visa rules: semantic search, keyword fallback ────────────────
+  let officialRules: typeof visaData
+  try {
+    officialRules = await findRelevantVisa(query, 8)
+  } catch (err) {
+    console.warn('[AI] Visa embedding search failed, falling back to keyword:', err)
+    const keywordMatches = visaData.filter(item => {
+      const c = item.country.toLowerCase()
+      return fullConversationText.includes(c) || aliasCountries.includes(c)
+    })
+    officialRules = keywordMatches.length > 0 ? keywordMatches : visaData.slice(0, 15)
   }
 
-  const systemPrompt = `You are the RTD Travel Assistant for US Refugee Travel Document (I-571) holders.
+  // ── Community stories: semantic search, keyword fallback ──────────────────
+  // Semantic search only covers stories that have been embedded (new ones).
+  // Keyword search covers older stories that predate the embedding column.
+  let communityReports
+  try {
+    const semanticStories = await findRelevantStories(query, 8)
+    if (semanticStories.length > 0) {
+      communityReports = semanticStories
+    } else {
+      throw new Error('no embedded stories yet')
+    }
+  } catch {
+    const keywordMatches = allStories.filter(s => {
+      const c = s.country_name.toLowerCase()
+      return fullConversationText.includes(c) || aliasCountries.includes(c)
+    })
+    communityReports = keywordMatches.length > 0 ? keywordMatches.slice(0, 8) : allStories.slice(0, 5)
+  }
+
+  const context = {
+    officialRules,
+    communityReports,
+  }
+
+  const systemPrompt = `You are the RTD Travel Assistant — a knowledgeable guide for holders of the US Refugee Travel Document (Form I-571).
 
 CONTEXT (official rules + community reports):
 ${JSON.stringify(context)}
 
-RULES:
-1. Base your answer on the context only.
-2. Give the official rule first, then any community reports.
-3. Map city names to countries (Dubai → UAE).
-4. If a country isn't in the context, say so honestly.
-5. Keep answers to 2-3 concise sentences.`
+GUIDELINES:
+1. Ground your answer in the context above. If a country isn't covered, say so honestly and suggest they verify with the embassy.
+2. Lead with the official visa requirement, then share what the community has reported.
+3. Map city/regional names to their country (Tokyo → Japan, Dubai → UAE, etc.).
+4. Be conversational and thorough — don't truncate useful information. Short or long, match the depth the question needs.
+5. When relevant, mention processing times, required documents, or tips from community reports.
+6. Always end with a reminder to confirm with the official embassy or consulate before travel.`
 
-  // Primary: Groq (faster for chat)
+  const historyMessages = history.map(m => ({
+    role: m.role as 'user' | 'assistant',
+    content: m.text,
+  }))
+
+  return { systemPrompt, historyMessages }
+}
+
+// ─── Non-streaming (kept for Telegram extraction fallback) ────────────────────
+
+export async function askTravelAssistant(
+  query: string,
+  history: ConversationMessage[] = [],
+): Promise<string> {
+  const { systemPrompt, historyMessages } = await buildChatPayload(query, history)
+
   try {
     const completion = await getGroq().chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages: [
         { role: 'system', content: systemPrompt },
+        ...historyMessages,
         { role: 'user', content: query },
       ],
     })
@@ -137,16 +247,81 @@ RULES:
     console.warn(`[AI] Groq chat failed (${isQuota ? 'quota' : groqErr?.message}) — falling back to Gemini`)
   }
 
-  // Fallback: Gemini Flash
   try {
     const model = getGemini().getGenerativeModel({
       model: 'gemini-1.5-flash',
       systemInstruction: systemPrompt,
     })
-    const result = await model.generateContent(query)
+    const historyContext = history.length > 0
+      ? history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n') + '\n\n'
+      : ''
+    const result = await model.generateContent(historyContext + query)
     return result.response.text()
   } catch (geminiErr) {
     console.error('[AI] Gemini chat fallback failed:', geminiErr)
     return "I'm a bit busy right now — please try again in a moment."
   }
+}
+
+// ─── Streaming ────────────────────────────────────────────────────────────────
+
+const encoder = new TextEncoder()
+
+export async function askTravelAssistantStream(
+  query: string,
+  history: ConversationMessage[] = [],
+): Promise<ReadableStream<Uint8Array>> {
+  const { systemPrompt, historyMessages } = await buildChatPayload(query, history)
+
+  // Primary: Groq streaming
+  try {
+    const groqStream = await getGroq().chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      stream: true,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...historyMessages,
+        { role: 'user', content: query },
+      ],
+    })
+
+    return new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of groqStream) {
+            const text = chunk.choices[0]?.delta?.content ?? ''
+            if (text) controller.enqueue(encoder.encode(text))
+          }
+        } finally {
+          controller.close()
+        }
+      },
+    })
+  } catch (groqErr: any) {
+    const isQuota = groqErr?.status === 429 || String(groqErr).includes('quota')
+    console.warn(`[AI] Groq stream failed (${isQuota ? 'quota' : groqErr?.message}) — falling back to Gemini`)
+  }
+
+  // Fallback: Gemini streaming
+  const model = getGemini().getGenerativeModel({
+    model: 'gemini-1.5-flash',
+    systemInstruction: systemPrompt,
+  })
+  const historyContext = history.length > 0
+    ? history.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n') + '\n\n'
+    : ''
+  const geminiStream = await model.generateContentStream(historyContext + query)
+
+  return new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const chunk of geminiStream.stream) {
+          const text = chunk.text()
+          if (text) controller.enqueue(encoder.encode(text))
+        }
+      } finally {
+        controller.close()
+      }
+    },
+  })
 }
