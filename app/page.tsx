@@ -29,7 +29,7 @@ const ChatView = dynamic(() => import('./components/ChatView'), {
 function ViewLoader() {
   return (
     <div className="flex items-center justify-center py-32">
-      <div className="h-6 w-6 rounded-full border-2 border-zinc-700 border-t-blue-500 animate-spin" />
+      <div className="h-6 w-6 rounded-full border-2 border-line border-t-accent animate-spin" role="status" aria-label="Loading" />
     </div>
   )
 }
@@ -41,6 +41,19 @@ interface ExperienceData {
 
 export default function Home() {
   const [currentView, setCurrentView] = useState('globe')
+  // Country to open when arriving in the Directory from the map
+  const [focusCountry, setFocusCountry] = useState<string | null>(null)
+
+  const changeView = useCallback((view: string) => {
+    setFocusCountry(null)
+    setCurrentView(view)
+    window.scrollTo({ top: 0 })
+  }, [])
+
+  const openCountry = useCallback((name: string) => {
+    setFocusCountry(name)
+    setCurrentView('table')
+  }, [])
 
   // Fetched once on first Community visit — survives tab switching.
   // ExperiencesView receives this as props instead of fetching itself.
@@ -75,9 +88,9 @@ export default function Home() {
   const renderView = () => {
     switch (currentView) {
       case 'globe':
-        return <WorldGlobe onViewChange={setCurrentView} />
+        return <WorldGlobe onOpenCountry={openCountry} />
       case 'table':
-        return <TableView />
+        return <TableView focusCountry={focusCountry} />
       case 'experiences':
         return (
           <ExperiencesView
@@ -89,35 +102,25 @@ export default function Home() {
       case 'chat':
         return <ChatView />
       default:
-        return <WorldGlobe onViewChange={setCurrentView} />
+        return <WorldGlobe onOpenCountry={openCountry} />
     }
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-950">
-      {/* Aurora — fixed behind all content, never intercepts clicks */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }} aria-hidden="true">
-        <div className="aurora-blob aurora-1" />
-        <div className="aurora-blob aurora-2" />
-        <div className="aurora-blob aurora-3" />
-      </div>
-
-      {/* Main layout sits above the aurora */}
-      <div className="relative flex flex-col min-h-screen" style={{ zIndex: 1 }}>
-        <Header
-          currentView={currentView}
-          onViewChange={(view: string) => setCurrentView(view)}
-        />
-        <main className="flex-grow pb-24 md:pb-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {renderView()}
-          </div>
-        </main>
+    <div className="min-h-screen flex flex-col bg-bg">
+      <Header
+        currentView={currentView}
+        onViewChange={changeView}
+      />
+      <main className={`flex-grow ${currentView === 'chat' ? 'pb-[calc(56px+env(safe-area-inset-bottom))] md:pb-0' : 'pb-24 md:pb-8'}`}>
+        {renderView()}
+      </main>
+      {currentView !== 'chat' && (
         <div className="hidden md:block">
-          <Footer onViewChange={(view: string) => setCurrentView(view)} />
+          <Footer />
         </div>
-        <BottomNav currentView={currentView} onViewChange={setCurrentView} />
-      </div>
+      )}
+      <BottomNav currentView={currentView} onViewChange={changeView} />
     </div>
   )
 }

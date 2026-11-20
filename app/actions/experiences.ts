@@ -191,6 +191,62 @@ export async function countStoriesForCountry(countryName: string): Promise<numbe
   }
 }
 
+/**
+ * Every published report for one country, newest first.
+ * The Directory's country panel uses this so older reports are not lost
+ * behind the global first-page limit.
+ */
+export async function getExperiencesForCountry(countryName: string): Promise<Experience[]> {
+  const sql = getSql()
+  try {
+    const rows = await sql`
+      SELECT * FROM experiences
+      WHERE country_name ILIKE ${countryName}
+        AND (status = 'published' OR status IS NULL)
+      ORDER BY created_at DESC
+      LIMIT 100
+    `
+    return rows as Experience[]
+  } catch (error) {
+    console.error('Error fetching country experiences:', error)
+    return []
+  }
+}
+
+/**
+ * Per-country report count and most recent report date, for the Directory rows.
+ * One small GROUP BY; cached like the other reads and busted by the same tag.
+ */
+export interface CountryReportSummary {
+  country_name: string
+  reports: number
+  latest: string
+}
+
+export const getCountryReportSummary = unstable_cache(
+  async (): Promise<CountryReportSummary[]> => {
+    const sql = getSql()
+    try {
+      const rows = await sql`
+        SELECT country_name, COUNT(*)::int AS reports, MAX(created_at) AS latest
+        FROM experiences
+        WHERE status = 'published' OR status IS NULL
+        GROUP BY country_name
+      `
+      return (rows as { country_name: string; reports: number; latest: Date | string }[]).map(r => ({
+        country_name: r.country_name,
+        reports: Number(r.reports) || 0,
+        latest: new Date(r.latest).toISOString(),
+      }))
+    } catch (error) {
+      console.error('Error fetching country report summary:', error)
+      return []
+    }
+  },
+  ['country-report-summary'],
+  { revalidate: 3600, tags: ['experiences'] }
+)
+
 // Combined fetch — runs both queries in parallel in a single server action call.
 export const getExperiencesWithStats = unstable_cache(
   async (): Promise<{ experiences: Experience[]; stats: ExperienceStats }> => {
