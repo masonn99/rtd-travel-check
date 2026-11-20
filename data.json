@@ -592,5 +592,11 @@
     "visaRequirement": "E-Visa",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "Country2",
+    "visaRequirement": "Visa not required",
+    "duration": "N/A",
+    "notes": "You will need at least 5 months validity on your document to enter the kingdom."
   }
 ]
