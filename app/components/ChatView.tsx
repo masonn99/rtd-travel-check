@@ -121,7 +121,7 @@ export default function ChatView() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 flex flex-col h-[calc(100dvh-56px-56px-env(safe-area-inset-bottom)-1rem)] md:h-[calc(100dvh-56px-2rem)]">
       <div className="flex-none">
-        <h1 className="text-[30px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">AI Chat</h1>
+        <h1 className="text-[28px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">AI Chat</h1>
         <p className="text-[15px] text-ink-2 mt-1 max-w-[60ch]">
           Answers from this site only: the official rule first, then what holders reported.
         </p>

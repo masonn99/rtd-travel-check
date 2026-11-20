@@ -27,6 +27,7 @@ colors:
   map-req: "#f0a020"
   map-nr: "#e5484d"
   map-none: "#dfe2e8"
+  map-ocean: "#e9eff7"
 typography:
   display:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
@@ -260,7 +261,7 @@ A cool neutral ground with one saturated blue, plus five paired status tints tha
 ### Status
 Five fixed pairs, each a tinted ground with a deep same-hue text that passes AA in both themes. They map one-to-one to the canonical labels: **Visa Free** (green), **E-Visa** (teal), **Visa on Arrival** (violet), **Visa Required** (amber), **Not Recognized** (red). The red and green pairs double as form error and success notices.
 
-Map fills are the same five hues at area saturation (map-free through map-nr), plus a neutral map-none for countries without data. Pills and map always agree on hue.
+Map fills are the same five hues at area saturation (map-free through map-nr), plus a neutral map-none for countries without data and a cool map-ocean (#e9eff7 light, #141b26 dark) for the globe's sea. Pills and map always agree on hue.
 
 ### Named Rules
 **The One Blue Rule.** The accent is the only interactive colour. If something is selected, linked or the primary action, it is blue; if it is not, it is neutral. No second accent, no gradient, no glow.

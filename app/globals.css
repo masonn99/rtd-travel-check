@@ -29,6 +29,7 @@
   --map-req: 240 160 32;
   --map-nr: 229 72 77;
   --map-none: 223 226 232;
+  --map-ocean: 233 239 247;
 
   color-scheme: light;
 }
@@ -57,6 +58,7 @@
     --map-req: 238 168 52;
     --map-nr: 236 96 100;
     --map-none: 48 52 60;
+    --map-ocean: 20 27 38;
 
     color-scheme: dark;
   }
