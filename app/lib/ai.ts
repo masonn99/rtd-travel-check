@@ -68,10 +68,10 @@ export async function extractTravelExperience(text: string): Promise<ExtractionR
     console.warn(`[AI] Gemini failed (${isQuota ? 'quota' : geminiErr?.message}) — falling back to Groq`)
   }
 
-  // Fallback: Groq Llama 3.1 8B
+  // Fallback: Groq gpt-oss-20b
   try {
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.1-8b-instant',
+      model: 'openai/gpt-oss-20b',
       response_format: { type: 'json_object' },
       messages: [
         { role: 'system', content: EXTRACTION_SYSTEM },
@@ -234,7 +234,7 @@ export async function askTravelAssistant(
 
   try {
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       messages: [
         { role: 'system', content: systemPrompt },
         ...historyMessages,
@@ -276,7 +276,7 @@ export async function askTravelAssistantStream(
   // Primary: Groq streaming
   try {
     const groqStream = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       stream: true,
       messages: [
         { role: 'system', content: systemPrompt },
