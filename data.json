@@ -399,7 +399,7 @@
     "country": "Nepal",
     "visaRequirement": "Visa required",
     "duration": "N/A",
-    "notes": "Not eligible for those born in India or Nepal"
+    "notes": "Not eligible for those born in India or Nepal. Must obtain a Nepali citizen sponsor to apply for a visa"
   },
   {
     "country": "Eswatini",
@@ -592,5 +592,29 @@
     "visaRequirement": "E-Visa",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "Tanzania",
+    "visaRequirement": "E-Visa",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Pakistan",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Document",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Belarus",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Document",
+    "duration": "N/A",
+    "notes": ""
+  },
+  {
+    "country": "Syria",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "Can be applied online"
   }
 ]
