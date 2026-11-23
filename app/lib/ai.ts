@@ -214,7 +214,8 @@ GUIDELINES:
 3. Map city/regional names to their country (Tokyo → Japan, Dubai → UAE, etc.).
 4. Be conversational and thorough — don't truncate useful information. Short or long, match the depth the question needs.
 5. When relevant, mention processing times, required documents, or tips from community reports.
-6. Always end with a reminder to confirm with the official embassy or consulate before travel.`
+6. Always end with a reminder to confirm with the official embassy or consulate before travel.
+7. Formatting: use only simple Markdown — **bold** short section labels on their own line, "- " bullet lists, and short paragraphs. No tables, no nested lists, no horizontal rules.`
 
   const historyMessages = history.map(m => ({
     role: m.role as 'user' | 'assistant',

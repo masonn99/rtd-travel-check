@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { ChatIcon, ChevronIcon } from './Icons'
+import ChatMarkdown from './ChatMarkdown'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -27,12 +28,12 @@ function Bubble({ msg, isStreaming }: { msg: Message; isStreaming?: boolean }) {
     <div className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}>
       {!isUser && <Avatar />}
       <div
-        className={`max-w-[85%] sm:max-w-[72%] px-3.5 py-2.5 rounded-[18px] text-[15px] leading-relaxed whitespace-pre-line ${
-          isUser ? 'bg-accent text-accent-ink rounded-br-[6px]' : 'bg-surface text-ink border border-line/70 rounded-bl-[6px]'
+        className={`max-w-[85%] sm:max-w-[72%] px-3.5 py-2.5 rounded-[18px] text-[15px] leading-relaxed ${
+          isUser ? 'whitespace-pre-line bg-accent text-accent-ink rounded-br-[6px]' : 'bg-surface text-ink border border-line/70 rounded-bl-[6px]'
         }`}
       >
         <span className="sr-only">{isUser ? 'You: ' : 'Assistant: '}</span>
-        {msg.text}
+        {isUser ? msg.text : <ChatMarkdown text={msg.text} />}
         {isStreaming && (
           <span className="inline-block w-[2px] h-[1em] bg-accent ml-0.5 align-[-0.15em] animate-pulse" aria-hidden="true" />
         )}
