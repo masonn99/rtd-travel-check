@@ -8,6 +8,16 @@ import { Fragment, type ReactNode } from 'react'
  * simply render as plain text until the closing marker arrives.
  */
 
+/** Only allow absolute http(s) URLs; anything else (javascript:, data:, relative) is rejected. */
+function safeHref(raw: string): string | null {
+  try {
+    const url = new URL(raw)
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null
+  } catch {
+    return null
+  }
+}
+
 const INLINE = /(\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\s][^*\n]*\*|`[^`\n]+`|\[[^\]\n]+\]\(https?:\/\/[^)\s]+\))/g
 
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
@@ -21,9 +31,11 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
       return <code key={key} className="px-1 py-0.5 rounded bg-ink/5 text-[0.9em]">{part.slice(1, -1)}</code>
     }
     const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/)
-    if (link) {
+    const href = link ? safeHref(link[2]) : null
+    if (link && !href) return <Fragment key={key}>{link[1]}</Fragment>
+    if (link && href) {
       return (
-        <a key={key} href={link[2]} target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-2">
+        <a key={key} href={href} target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-2">
           {link[1]}
         </a>
       )
