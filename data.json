@@ -624,22 +624,34 @@
     "notes": "An invitation letter must be registered with the Migration Service of Kazakhstan. The invitation letter must be prepared and submitted to the Migration Service by the inviting individual or organization in Kazakhstan."
   },
   {
-    "country": "Serbia",
-    "visaRequirement": "Visa required",
-    "duration": "N/A",
-    "notes": "Can be applied online. Green card holders can travel visa-free."
-  },
-   {
-    "country": "Baharain",
-    "visaRequirement": "Does not recognize US issued Refugee Travel Document",
-    "duration": "N/A",
-    "notes": ""
-  },
-  {
     "country": "Antigua and Barbuda",
     "visaRequirement": "E-Visa",
-    "duration": "N/A",
-    "notes": ""
+    "duration": "",
+    "notes": "Antigua and Barbuda recognizes the US Refugee Travel Document, but holders are required to apply for an electronic visa (eVisa) prior to travel."
+  },
+  {
+    "country": "Bahrain",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Document",
+    "duration": "",
+    "notes": "The embassy stated that the visa system does not accept travel documents and directed to check the website."
+  },
+  {
+    "country": "Niger",
+    "visaRequirement": "Visa required",
+    "duration": "",
+    "notes": "Persons with the USCSIS travel document may request a Nigerian visa, same as US passport holders."
+  },
+  {
+    "country": "Saint Lucia",
+    "visaRequirement": "Visa required",
+    "duration": "",
+    "notes": "You must apply for a visa by emailing your completed application and required documents to the Immigration Department. A fee of US$50 (cash) is payable upon arrival."
+  },
+  {
+    "country": "Serbia",
+    "visaRequirement": "Visa required",
+    "duration": "",
+    "notes": "Holders of US Refugee Travel Documents need a visa for entry to the Republic of Serbia, though holders of US visas or residence permits may enter without a prior visa for up to 90 days."
   },
   {
     "country": "Iraq",
@@ -647,7 +659,5 @@
     "duration": "N/A",
     "notes": ""
   }
-  
-
 
 ]

@@ -344,7 +344,7 @@ export async function createExperience(data: {
       SELECT COUNT(*) as cnt
       FROM experiences
       WHERE ip_hash = ${ipHash}
-        AND created_at > NOW() - INTERVAL '${RATE_LIMIT_WINDOW_H} hours'
+        AND created_at > NOW() - make_interval(hours => ${RATE_LIMIT_WINDOW_H})
     `
     const recentCount = Number((countRows as Record<string, unknown>[])[0].cnt)
 
