@@ -616,5 +616,13 @@
     "visaRequirement": "Visa required",
     "duration": "N/A",
     "notes": "Can be applied online"
+  },
+  {
+    "country": "Kazakhstan",
+    "visaRequirement": "Visa required",
+    "duration": "N/A",
+    "notes": "An invitation letter must be registered with the Migration Service of Kazakhstan. The invitation letter must be prepared and submitted to the Migration Service by the inviting individual or organization in Kazakhstan."
   }
+
+
 ]
