@@ -652,5 +652,12 @@
     "visaRequirement": "Visa required",
     "duration": "",
     "notes": "Holders of US Refugee Travel Documents need a visa for entry to the Republic of Serbia, though holders of US visas or residence permits may enter without a prior visa for up to 90 days."
+  },
+  {
+    "country": "Iraq",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Document",
+    "duration": "N/A",
+    "notes": ""
   }
+
 ]
