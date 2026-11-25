@@ -640,6 +640,12 @@
     "visaRequirement": "E-Visa",
     "duration": "N/A",
     "notes": ""
+  },
+  {
+    "country": "Iraq",
+    "visaRequirement": "Does not recognize US issued Refugee Travel Document",
+    "duration": "N/A",
+    "notes": ""
   }
   
 
