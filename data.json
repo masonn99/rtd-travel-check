@@ -664,5 +664,11 @@
     "visaRequirement": "E-Visa",
     "duration": "",
     "notes": "You can apply for your visa online, and once approved, it will be sent to you by email to print out and present."
+  },
+  {
+    "country": "Congo",
+    "visaRequirement": "Visa required",
+    "duration": "",
+    "notes": "There is no e-visa or visa on arrival. You must apply for a visa prior to travel by sending required documents via FedEx or dropping them off in person, with processing taking 7-10 days."
   }
 ]
