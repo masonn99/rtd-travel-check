@@ -33,7 +33,7 @@ const ExperiencesView = ({ onRefresh }: Props) => {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 pb-6">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
-          <h1 className="text-[30px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">Stories</h1>
+          <h1 className="text-[28px] md:text-[34px] leading-tight font-bold tracking-[-0.025em] text-ink">Stories</h1>
           <p className="text-[15px] text-ink-2 mt-1 max-w-[60ch]">
             {loaded && reportTotal > 0
               ? `${reportTotal} reports from RTD holders about ${rows.length} countries. Each one is dated, so you can see how current it is.`

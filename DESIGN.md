@@ -27,6 +27,7 @@ colors:
   map-req: "#f0a020"
   map-nr: "#e5484d"
   map-none: "#dfe2e8"
+  map-ocean: "#e9eff7"
 typography:
   display:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
@@ -260,7 +261,7 @@ A cool neutral ground with one saturated blue, plus five paired status tints tha
 ### Status
 Five fixed pairs, each a tinted ground with a deep same-hue text that passes AA in both themes. They map one-to-one to the canonical labels: **Visa Free** (green), **E-Visa** (teal), **Visa on Arrival** (violet), **Visa Required** (amber), **Not Recognized** (red). The red and green pairs double as form error and success notices.
 
-Map fills are the same five hues at area saturation (map-free through map-nr), plus a neutral map-none for countries without data. Pills and map always agree on hue.
+Map fills are the same five hues at area saturation (map-free through map-nr), plus a neutral map-none for countries without data and a cool map-ocean (#e9eff7 light, #141b26 dark) for the globe's sea. Pills and map always agree on hue.
 
 ### Named Rules
 **The One Blue Rule.** The accent is the only interactive colour. If something is selected, linked or the primary action, it is blue; if it is not, it is neutral. No second accent, no gradient, no glow.
@@ -312,7 +313,8 @@ Depth is tonal, not shadowed. White groups sit on the grouped ground, separated 
 
 ### Shadow Vocabulary
 - **Stuck edge** (`box-shadow: 0 1px 0 rgb(var(--line))`): the sticky search band once content scrolls under it. A hairline, not a shadow.
-- **Floating control** (`box-shadow: 0 2px 8px rgba(0,0,0,0.08)`): map zoom controls over the map.
+- **Floating control** (`box-shadow: 0 2px 8px rgba(0,0,0,0.08)`): the controls that float over the globe (country picker, zoom, legend chips).
+- **Globe stage:** the globe sits directly on the page ground with no card or frame; the stage's edges fade out (CSS mask) so a zoomed map never ends in a hard rectangle. Its only glow is a soft accent atmosphere at the limb, drawn on the canvas. The selected country's detail is a floating sheet (popover shadow) over the bottom of the stage.
 - **Popover** (`box-shadow: 0 4px 16px rgba(0,0,0,0.12)`): the desktop map hover tooltip.
 - **Segment thumb** (`box-shadow: 0 1px 3px rgba(0,0,0,0.12)`): the selected segment in a segmented control.
 
